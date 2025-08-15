@@ -1,10 +1,45 @@
-//import React from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Users, TreePine, Heart, Shield, Search, Plus } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 
 export default function LandingPage() {
     const navigate = useNavigate();
+
+    // array holding features
+    const features = [
+        {
+            icon: <TreePine className="w-8 h-8" />,
+            title: "Interactive Family Tree",
+            description: "Visualize your family connections with our beautiful, interactive tree diagram."
+        },
+        {
+            icon: <Users className="w-8 h-8" />,
+            title: "Member Management",
+            description: "Add, edit, and organize family members with detailed profiles and relationships."
+        },
+        {
+            icon: <Search className="w-8 h-8" />,
+            title: "Smart Search",
+            description: "Quickly find family members by name, birth year, or relationship status."
+        },
+        {
+            icon: <Heart className="w-8 h-8" />,
+            title: "Relationship Tracking",
+            description: "Track complex family relationships including spouses, children, and extended family."
+        },
+        {
+            icon: <Shield className="w-8 h-8" />,
+            title: "Secure & Private",
+            description: "Your family data is protected with enterprise-grade security and privacy controls."
+        },
+        {
+            icon: <Plus className="w-8 h-8" />,
+            title: "Easy to Use",
+            description: "Intuitive interface makes it simple to build and maintain your family tree."
+        }
+    ];
 
     return (
         <>
@@ -54,7 +89,7 @@ export default function LandingPage() {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {/* {features.map((feature, index) => (
+                            {features.map((feature, index) => (
                                 <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:scale-105 border-0 bg-gradient-to-br from-card to-secondary/20">
                                     <CardHeader className="text-center pb-4">
                                         <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -68,11 +103,45 @@ export default function LandingPage() {
                                         </CardDescription>
                                     </CardContent>
                                 </Card>
-                            ))} */}
+                            ))}
                         </div>
                     </div>
                 </section>
 
+                {/* CTA Section */}
+                <section className="py-24 bg-gradient-to-r from-primary to-accent">
+                    <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                            Start Building Your Family Legacy Today
+                        </h2>
+                        <p className="text-xl text-white/90 mb-8">
+                            Join thousands of families who have already discovered their roots and connected their stories.
+                        </p>
+                        <Button
+                            size="lg"
+                            onClick={() => navigate('/auth')}
+                            className="bg-white text-primary hover:bg-white/90 px-8 py-6 text-lg font-semibold"
+                        >
+                            Create Your Family Tree
+                        </Button>
+                    </div>
+                </section>
+
+                {/* Footer */}
+                <footer className="bg-background border-t py-12">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                        <div className="flex items-center justify-center mb-4">
+                            <TreePine className="w-8 h-8 text-primary mr-2" />
+                            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                                FamilyTree
+                            </span>
+                        </div>
+                        <p className="text-muted-foreground">
+                            Building connections, preserving stories, celebrating families.
+                        </p>
+                    </div>
+                    Copyright &copy; 2025 All rights reserved | Made with by 
+                </footer>
 
             </div>
         </>
