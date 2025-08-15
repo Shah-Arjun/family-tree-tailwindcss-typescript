@@ -1,7 +1,9 @@
-import React from "react";
+// import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Users, TreePine, Heart, Shield, Search, Plus } from "lucide-react";
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import { useNavigate } from 'react-router-dom';
 
 export default function LandingPage() {
@@ -140,7 +142,8 @@ export default function LandingPage() {
                             Building connections, preserving stories, celebrating families.
                         </p>
                     </div>
-                    Copyright &copy; 2025 All rights reserved | Made with by 
+
+                    <p className="p-10 m-1">Copyright &copy; 2025 All rights reserved | Made with <i className="fa-solid fa-heart"></i> by Arjun.</p>
                 </footer>
 
             </div>
