@@ -1,15 +1,13 @@
-//import React from "react-dom";
+// import React from "react-dom";
 import '../App.css';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Users, TreePine, Heart, Shield, Search, Plus } from "lucide-react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
-
-
-
-
 import { useNavigate } from 'react-router-dom';
+
+
 
 export default function LandingPage() {
     const navigate = useNavigate();
@@ -49,7 +47,6 @@ export default function LandingPage() {
     ];
 
     return (
-        <>
             <div>
                 {/* Hero Section */}
                 <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-accent/5 to-background">
@@ -148,10 +145,16 @@ export default function LandingPage() {
                         </p>
                     </div>
 
-                    <p className="p-10 m-1">Copyright &copy; 2025 All rights reserved | Made with <FontAwesomeIcon icon={faHeart} className="text-danger"/> <Heart className="text-danger"/> by Arjun.</p>
                 </footer>
+                                    <p className="p-2 m-2 bg-[oklch(74%_0.238_322.16)]">Copyright &copy; 2025 All rights reserved | Made with <FontAwesomeIcon icon={faHeart} className="text-[#dd3434]"/> by Arjun.</p>
 
+
+
+
+<div className="bg-[var(--my-bg)] text-black p-4">
+  This div has a red background
+</div>
             </div>
-        </>
+
     );
 }
