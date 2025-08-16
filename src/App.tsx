@@ -37,6 +37,7 @@ import './App.css'
 
 
 import { Button } from "@/components/ui/button"
+import DarkModeToggleButton from './components/ui/toggle';
  
 // function App() {
 //   return (
@@ -46,12 +47,12 @@ import { Button } from "@/components/ui/button"
 //   )
 // }
 
-import Layout from './components/Layout';
 
 function App() {
   return (
 <>
-<Layout>
+
+<DarkModeToggleButton/>
 
     <div className="bg-background text-foreground min-h-screen flex items-center justify-center">
       <div className="card shadow-elegant p-6 rounded-lg">
@@ -60,8 +61,8 @@ function App() {
           <Button bg-gray text-red>Click me</Button>
 
       </div>
+      
     </div>
-</Layout>
 </>
 
 

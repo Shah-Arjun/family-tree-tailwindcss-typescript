@@ -6,11 +6,13 @@ import { Users, TreePine, Heart, Shield, Search, Plus } from "lucide-react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import DarkModeToggleButton from '@/components/ui/toggle';
 
 
 
 export default function LandingPage() {
     const navigate = useNavigate();
+
 
     // array holding features
     const features = [
@@ -48,6 +50,7 @@ export default function LandingPage() {
 
     return (
             <div>
+             <DarkModeToggleButton/>   
                 {/* Hero Section */}
                 <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-accent/5 to-background">
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20"></div>
