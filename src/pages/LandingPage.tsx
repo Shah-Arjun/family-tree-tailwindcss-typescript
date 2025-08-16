@@ -1,8 +1,13 @@
-// import React from "react";
+//import React from "react-dom";
+import '../App.css';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Users, TreePine, Heart, Shield, Search, Plus } from "lucide-react";
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+
+
+
 
 import { useNavigate } from 'react-router-dom';
 
@@ -143,7 +148,7 @@ export default function LandingPage() {
                         </p>
                     </div>
 
-                    <p className="p-10 m-1">Copyright &copy; 2025 All rights reserved | Made with <i className="fa-solid fa-heart"></i> by Arjun.</p>
+                    <p className="p-10 m-1">Copyright &copy; 2025 All rights reserved | Made with <FontAwesomeIcon icon={faHeart} className="text-danger"/> <Heart className="text-danger"/> by Arjun.</p>
                 </footer>
 
             </div>
