@@ -1,4 +1,4 @@
-/* @import "tailwindcss";
+@import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -185,13 +185,13 @@ button:focus-visible {
   }
 }
 
- */
 
- @import "tailwindcss";
+
+/* @import "tailwindcss";
 @import "tw-animate-css";
 @import "../tailwind.config.ts"
 @import "tailwindcss/preflight"
-@tailwind utilities;
+@tailwind utilities; */
 
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.

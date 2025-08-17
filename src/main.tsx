@@ -17,6 +17,7 @@ import App from './App.tsx';
 import './index.css';
 import LandingPage from './pages/LandingPage.tsx';
 import AuthPage from './pages/AuthPage.tsx';
+import FamilyTreeApp from './pages/FamilyTreeApp.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -25,6 +26,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<App />} />
         <Route path="/landingpage" element={<LandingPage />} />
         <Route path="/auth" element={<AuthPage />} />
+        <Route path='/family-tree' element={<FamilyTreeApp />}></Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

@@ -34,7 +34,7 @@ const AuthPage = () => {
     <>
     <DarkModeToggleButton/>
 
-    <div className="max-h-screen bg-gradient-to-br from-primary/10 via-background to-accent/10 flex items-center justify-center p-4">
+    <div className="max-h-screen h-100 from-primary/10 via-background to-accent/10 flex items-center justify-center p-4">
     
       <div className=" inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5"></div>
       

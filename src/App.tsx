@@ -7,7 +7,7 @@ import './App.css'
 //   const [count, setCount] = useState(0)
 
 //   return (
-//     <>
+//     
 //       <div>
 //         <a href="https://vite.dev" target="_blank">
 //           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -28,7 +28,7 @@ import './App.css'
 //       <p className="read-the-docs">
 //         Click on the Vite and React logos to learn more
 //       </p>
-//     </>
+//     
 //   )
 // }
 
@@ -54,7 +54,7 @@ function App() {
 
 <DarkModeToggleButton/>
 
-    <div className="bg-background text-foreground min-h-screen flex items-center justify-center">
+    <div className="bg-background text-foreground max-h-screen flex items-center justify-center">
       <div className="card shadow-elegant p-6 rounded-lg">
         <h1 className="text-3xl font-bold text-primary">Hello World</h1>
         <p className="text-muted-foreground mt-2">This uses your design system colors!</p>
