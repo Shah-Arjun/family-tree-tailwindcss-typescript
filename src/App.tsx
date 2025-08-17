@@ -3,6 +3,9 @@
 // import viteLogo from '/vite.svg'
 import './App.css'
 
+import { Toaster } from "./components/ui/sonner";
+
+
 // function App() {
 //   const [count, setCount] = useState(0)
 
@@ -59,6 +62,7 @@ function App() {
         <h1 className="text-3xl font-bold text-primary">Hello World</h1>
         <p className="text-muted-foreground mt-2">This uses your design system colors!</p>
           <Button bg-gray text-red>Click me</Button>
+      <Toaster position="top-right" richColors expand />
 
       </div>
       

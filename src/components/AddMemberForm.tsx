@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import { FamilyMember } from '@/types/family';
+import type { FamilyMember } from '@/types/family';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,6 +19,9 @@ import {
   FileText
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+
+
+
 
 interface AddMemberFormProps {
   members: FamilyMember[];
