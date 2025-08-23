@@ -1,4 +1,4 @@
-export interface FamilyMember {
+export type FamilyMember = {
   id: string;
   name: string;
   dateOfBirth?: string;

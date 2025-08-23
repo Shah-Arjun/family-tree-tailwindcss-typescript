@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { FamilyMember } from '@/types/family';
+import type { FamilyMember } from '@/types/family';
 import { MemberCard } from './MemberCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';

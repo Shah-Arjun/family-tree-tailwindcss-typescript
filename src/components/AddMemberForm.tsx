@@ -18,10 +18,7 @@ import {
   Phone,
   FileText
 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-
-
-
+import { toast } from '@/hooks/use-toast';
 
 interface AddMemberFormProps {
   members: FamilyMember[];
@@ -34,7 +31,6 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
   onAddMember, 
   onCancel 
 }) => {
-  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
     dateOfBirth: '',
@@ -77,11 +73,8 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
     e.preventDefault();
     
     if (!formData.name.trim()) {
-      toast({
-        title: "Error",
-        description: "Name is required",
-        variant: "destructive"
-      });
+      toast.error("Name is required");
+toast.success(`${formData.name} has been added to the family tree!`);
       return;
     }
 
@@ -96,10 +89,8 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
 
     onAddMember(newMember);
     
-    toast({
-      title: "Success",
-      description: `${formData.name} has been added to the family tree!`
-    });
+   toast.error("Name is required");
+toast.success(`${formData.name} has been added to the family tree!`);
 
     // Reset form
     setFormData({

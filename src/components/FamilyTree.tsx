@@ -1,10 +1,11 @@
 import React, { useState, useCallback } from 'react';
-// import Tree from 'react-d3-tree';
-// import { FamilyTreeData } from '@/types/family';
-// import { FamilyTreeNode } from './FamilyTreeNode';
+import Tree from 'react-d3-tree';
+import type { FamilyTreeData } from '@/types/family';
+import { FamilyTreeNode } from './FamilyTreeNode';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ZoomIn, ZoomOut, RotateCcw, Maximize2 } from 'lucide-react';
+import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+// import { Maximize2 } from 'lucide-react';
 
 interface FamilyTreeProps {
   treeData: FamilyTreeData;

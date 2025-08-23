@@ -3,7 +3,7 @@
 // import viteLogo from '/vite.svg'
 import './App.css'
 
-import { Toaster } from "./components/ui/sonner";
+//import { Toaster } from "@/components/ui/sonner"
 
 
 // function App() {
@@ -38,6 +38,7 @@ import { Toaster } from "./components/ui/sonner";
 // export default App
 
 
+import { Toaster } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import DarkModeToggleButton from './components/ui/toggle';
@@ -62,7 +63,7 @@ function App() {
         <h1 className="text-3xl font-bold text-primary">Hello World</h1>
         <p className="text-muted-foreground mt-2">This uses your design system colors!</p>
           <Button bg-gray text-red>Click me</Button>
-      <Toaster position="top-right" richColors expand />
+    <Toaster position="top-right" richColors expand />
 
       </div>
       
