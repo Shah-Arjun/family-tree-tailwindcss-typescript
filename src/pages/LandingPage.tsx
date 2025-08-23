@@ -1,4 +1,3 @@
-// import React from "react-dom";
 import '../App.css';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
@@ -8,13 +7,9 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import DarkModeToggleButton from '@/components/ui/toggle';
 
-
-
 export default function LandingPage() {
     const navigate = useNavigate();
 
-
-    // array holding features
     const features = [
         {
             icon: <TreePine className="w-8 h-8" />,
@@ -49,8 +44,9 @@ export default function LandingPage() {
     ];
 
     return (
-        <div>
+        <div className="bg-background text-foreground">
             <DarkModeToggleButton />
+
             {/* Hero Section */}
             <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-accent/5 to-background">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20"></div>
@@ -68,14 +64,14 @@ export default function LandingPage() {
                             <Button
                                 size="lg"
                                 onClick={() => navigate("/auth")}
-                                className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white px-8 py-6 text-lg">
+                                className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white px-8 py-6 text-lg shadow-lg rounded-2xl">
                                 Get Started
                             </Button>
                             <Button
                                 variant="outline"
                                 size="lg"
                                 onClick={() => navigate("/demo")}
-                                className="px-8 py-6 text-lg border-primary text-primary hover:bg-primary hover:text-white">
+                                className="px-8 py-6 text-lg border-primary text-primary hover:bg-primary hover:text-white rounded-2xl">
                                 View Demo
                             </Button>
                         </div>
@@ -97,9 +93,11 @@ export default function LandingPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {features.map((feature, index) => (
-                            <Card key={index} className="group hover:shadow-lg transition-all duration-300 hover:scale-105 border-0 bg-gradient-to-br from-card to-secondary/20">
+                            <Card
+                                key={index}
+                                className="group hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-border bg-card rounded-2xl">
                                 <CardHeader className="text-center pb-4">
-                                    <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300">
+                                    <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300 shadow-md">
                                         {feature.icon}
                                     </div>
                                     <CardTitle className="text-xl text-foreground">{feature.title}</CardTitle>
@@ -127,7 +125,7 @@ export default function LandingPage() {
                     <Button
                         size="lg"
                         onClick={() => navigate('/auth')}
-                        className="bg-white text-primary hover:bg-white/90 px-8 py-6 text-lg font-semibold"
+                        className="bg-white text-primary hover:bg-white/90 px-8 py-6 text-lg font-semibold rounded-2xl shadow-lg"
                     >
                         Create Your Family Tree
                     </Button>
@@ -135,7 +133,7 @@ export default function LandingPage() {
             </section>
 
             {/* Footer */}
-            <footer className="bg-background border-t py-12">
+            <footer className="bg-background border-t border-border py-12">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <div className="flex items-center justify-center mb-4">
                         <TreePine className="w-8 h-8 text-primary mr-2" />
@@ -147,12 +145,12 @@ export default function LandingPage() {
                         Building connections, preserving stories, celebrating families.
                     </p>
                 </div>
-
             </footer>
-            <p className="p-2 bg-[oklch(74%_0.238_322.16)]">Copyright &copy; 2025 All rights reserved | Made with <FontAwesomeIcon icon={faHeart} className="text-[#dd3434]" /> by Arjun.</p>
 
-
+            <p className="p-4 text-center bg-card border-t border-border text-sm text-muted-foreground">
+                Copyright &copy; 2025 All rights reserved | Made with{" "}
+                <FontAwesomeIcon icon={faHeart} className="text-[#dd3434]" /> by Arjun.
+            </p>
         </div>
-
     );
 }
