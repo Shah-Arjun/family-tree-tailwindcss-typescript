@@ -7,6 +7,7 @@ import { TreePine, ArrowLeft, Mail, Lock, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import DarkModeToggleButton from '@/components/ui/toggle';
 
+
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
@@ -175,5 +176,6 @@ const AuthPage = () => {
     </>
   );
 };
+
 
 export default AuthPage;

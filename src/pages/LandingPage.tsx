@@ -45,6 +45,7 @@ export default function LandingPage() {
 
     return (
         <div className="bg-background text-foreground">
+            {/* toggle button for dark/ehite mode */}
             <DarkModeToggleButton />
 
             {/* Hero Section */}
