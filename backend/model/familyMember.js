@@ -3,10 +3,10 @@ const { type } = require("os");
 const { ref } = require("process");
 
 const familyMembSchema = new mongoose.Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    },
+    // userId: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "User"
+    // },
     name: {
         type: String,
         required: true
