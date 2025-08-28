@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 
-// import routes
+// import routes   , mounting the routes/api's
 const familyRoutes = require('./routes/familyRoutes');
 app.use('/api/family', familyRoutes);   //base route for all other routes
 

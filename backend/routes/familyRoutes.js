@@ -1,3 +1,6 @@
+// All API endpoints will remain here
+
+
 // Import the Express library
 const express = require('express');
 
@@ -10,6 +13,8 @@ const router = express.Router();
 // These functions contain the logic for handling each API request
 const { addMember } = require('../controllers/familyController');
 
+
+//API endpoints
 
 // Define a POST route for '/' (root of this router)
 // When a POST request is made to '/', the addMember controller runs
