@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require('express');           // Import the Express library
 const cors = require("cors");
 const { connectDatabase } = require("./database/db");
 require("dotenv").config();               // Load environment variables from .env
@@ -11,6 +11,13 @@ app.use(cors());
 app.use(express.json());
 
 
+// import routes
+const familyRoutes = require('./routes/familyRoutes');
+app.use('/api/family', familyRoutes);   //base route for all other routes
+
+
+
+
 //DB connection function called from database/db.js
 connectDatabase();
 
@@ -19,6 +26,8 @@ connectDatabase();
 app.get("/", (req, res) => {
     res.send("this is home page");
 })
+
+
 
 
 
