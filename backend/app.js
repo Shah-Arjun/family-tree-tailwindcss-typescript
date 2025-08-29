@@ -7,8 +7,14 @@ const app = express();           // create express app
 
 
 //middleware
-app.use(cors());            // allow forntend to call backend
+app.use(cors());            // allow forntend to call backend, allow all origin
 app.use(express.json());    // parse incoming JSON body
+
+
+//or restrict to specific frontend origin
+// app.use(cors({ origin: "http://localhost:5173" }));
+
+
 
 
 // import routes   , mounting the routes/api's
