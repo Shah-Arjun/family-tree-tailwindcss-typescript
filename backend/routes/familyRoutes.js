@@ -11,7 +11,7 @@ const router = express.Router();
 
 // Import all controller functions from 'familyController.js'
 // These functions contain the logic for handling each API request
-const { addMember, getMembers, getMemberById, updateMember } = require('../controllers/familyController');
+const { addMember, getMembers, getMemberById, updateMember, deleteMember } = require('../controllers/familyController');
 
 
 //API endpoints
@@ -25,6 +25,8 @@ router.get('/', getMembers);
 router.get("/:id", getMemberById);
 
 router.put('/:id', updateMember);
+
+router.delete('/:id', deleteMember);
 
 
 

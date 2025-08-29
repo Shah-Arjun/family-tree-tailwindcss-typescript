@@ -53,3 +53,14 @@ exports.updateMember = async (req,res) => {
         res.status(400).json({error: err.message});
     }
 }
+
+
+// delete member by id
+exports.deleteMember = async (req, res) => {
+    try {
+        const deleted = await FamilyMember.findByIdAndDelete(req.params.id);
+        res.json({message: 'Deleted'})
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+}
