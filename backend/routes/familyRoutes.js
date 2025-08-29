@@ -11,7 +11,7 @@ const router = express.Router();
 
 // Import all controller functions from 'familyController.js'
 // These functions contain the logic for handling each API request
-const { addMember } = require('../controllers/familyController');
+const { addMember, getMembers } = require('../controllers/familyController');
 
 
 //API endpoints
@@ -20,6 +20,7 @@ const { addMember } = require('../controllers/familyController');
 // When a POST request is made to '/', the addMember controller runs
 router.post('/', addMember);      // These are relative to /api/family (from app.js)
 
+router.get("/", getMembers);
 
 
 
