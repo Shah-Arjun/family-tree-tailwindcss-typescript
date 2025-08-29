@@ -19,7 +19,7 @@ exports.addMember = async (req, res) => {
 //API logic to get all members
 exports.getMembers = async (req, res) => {
     try {
-        const members = FamilyMember.find().sort({createdAt: -1});
+        const members = await FamilyMember.find().sort({createdAt: -1});
         res.status(200).josn(members);
     } catch (err) {
         res.status(400).json({error:err.message});

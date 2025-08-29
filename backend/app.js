@@ -3,12 +3,12 @@ const cors = require("cors");
 const { connectDatabase } = require("./database/db");
 require("dotenv").config();               // Load environment variables from .env
 
-const app = express();
+const app = express();           // create express app
 
 
 //middleware
-app.use(cors());
-app.use(express.json());
+app.use(cors());            // allow forntend to call backend
+app.use(express.json());    // parse incoming JSON body
 
 
 // import routes   , mounting the routes/api's
