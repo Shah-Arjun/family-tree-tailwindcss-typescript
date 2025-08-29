@@ -10,7 +10,6 @@ export const addMember = async (member) => {
     return res.data;
 }
 
-
 //GET all members
 export const getMembers = async () => {
     const res = await axios.get(API_URL);
@@ -23,3 +22,15 @@ export const getMemberById = async (id) => {
     return res.data;
 }
 
+
+// Update a member
+export const updateMember = async (id, member) => {
+    const res = await axios.put(`${API_URL}${id}`, member);
+    return res.data;
+}
+
+// Delete a member by ID
+export const deleteMember = async (id) => {
+    const res = await axios.delete(`${API_URL}${id}`);
+    return res.data;
+}
