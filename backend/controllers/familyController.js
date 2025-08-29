@@ -1,6 +1,7 @@
 //all API's logic based on familyMember model goes here
 
 // importing model
+const { error } = require('console');
 const FamilyMember = require('../model/familyMember');
 
 // API logic to add family member
@@ -19,9 +20,21 @@ exports.addMember = async (req, res) => {
 //API logic to get all members
 exports.getMembers = async (req, res) => {
     try {
-        const members = await FamilyMember.find().sort({createdAt: -1});
-        res.status(200).josn(members);
+        const members = await FamilyMember.find().sort({createdAt: -1});   // Find all & sort newest first
+        res.json(members);    //return JSON array
     } catch (err) {
-        res.status(400).json({error:err.message});
+        res.status(500).json({error: err.message});
+    }
+}
+
+
+//API logic to get single member by ID
+exports.getMemberById = async (req, res) => {
+    try {
+        const member = await FamilyMember.findById(req.params.id);
+        if(!member) return res.status(404).json({error: 'Not found'});
+        res.json(member);
+    } catch (err) {
+        res.status(500).json({error: err.message});
     }
 }
