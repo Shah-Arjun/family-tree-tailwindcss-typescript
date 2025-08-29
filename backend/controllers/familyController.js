@@ -38,3 +38,18 @@ exports.getMemberById = async (req, res) => {
         res.status(500).json({error: err.message});
     }
 }
+
+
+// Update member by id
+exports.updateMember = async (req,res) => {
+    try {
+        const updated = await FamilyMember.findByIdAndUpdate(
+            req.params.id,     // find by requested id
+            req.body,         // update with req data
+            {new: true}        // return updated data
+        );
+        res.json(updated);      // response to frontend
+    } catch (err) {
+        res.status(400).json({error: err.message});
+    }
+}
