@@ -59,7 +59,7 @@ const familyMembSchema = new mongoose.Schema(
 
         //additional info
         notes: {type: String},
-        isAlive: {type: Boolean, required: true},
+        isAlive: {type: Boolean, default: true, required: true},
 
 
         
