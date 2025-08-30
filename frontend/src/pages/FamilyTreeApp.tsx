@@ -6,6 +6,8 @@ import { FamilyTree } from '@/components/FamilyTree';
 import { MembersList } from '@/components/MembersList';
 import { AddMemberForm } from '@/components/AddMemberForm';
 
+
+
 const FamilyTreeApp = () => {
   const [activeTab, setActiveTab] = useState('tree');
   const [members, setMembers] = useState<FamilyMember[]>(mockFamilyMembers);
@@ -50,6 +52,9 @@ const FamilyTreeApp = () => {
     }
   };
 
+
+
+  
   return (
     <div className="min-h-screen bg-background">
       <Navigation
