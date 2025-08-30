@@ -1,4 +1,4 @@
-//import React from 'react'
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom"; // ✅ import
 
 
@@ -11,7 +11,12 @@ import { Input } from '@/components/ui/input'
 
 // icons from lucide-react
 import { UserCheck, Users, UserX, Search, SortAsc, SortDesc} from 'lucide-react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@radix-ui/react-select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
+import type { FamilyMember } from "@/types/family";
+import { memberServices } from "@/services/memberServices";
+
+
 
 
 
@@ -24,6 +29,39 @@ export const MembersList = () => {
     navigate("/add-member");
   }
 
+
+//to fetch members from backend  
+  const [members, setMembers] = useState<FamilyMember[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const data = await memberServices.getMembers(); // ✅ axios service
+        setMembers(data);
+      } catch (err) {
+        console.error("Error fetching members:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMembers();
+  }, []);
+
+
+  //for showing the count 
+  const stats = useMemo (() => {
+    return {
+      total: members.length,
+      paternal: members.filter(m => m.side === 'paternal').length,
+      maternal: members.filter(m => m.side === 'maternal').length,
+      current: members.filter(m => m.side === 'current').length,
+      alive: members.filter(m => m.isAlive).length,
+      deceased: members.filter(m => !m.isAlive).length,
+      male: members.filter(m => m.gender === 'male').length,
+      female: members.filter(m => m.gender === 'female').length,
+    };
+  }, [members]);
 
 
 
@@ -58,24 +96,24 @@ export const MembersList = () => {
           <div className="flex flex-wrap gap-2 mt-4">
             <Badge variant='outline' className='flex items-center space-x-1'>
               <Users className='w-3 h-3' />
-              <span>Total: { }</span>
+              <span>Total: {stats.total }</span>
             </Badge>
 
-            <Badge variant='outline' className='bg-family-parental/10 text-family-parental border-family-parental'>
-              Parental: {}
+            <Badge variant='outline' className='bg-family-paternal/10 text-family-paternal border-family-paternal'>
+              Paternal: {stats.paternal}
             </Badge>
 
             <Badge variant='outline' className='bg-family-maternal/10 text-family-maternal border-family-maternal'>
-              Maternal: {}
+              Maternal: {stats.maternal}
             </Badge>
 
             <Badge variant='outline'>
-              Current: {}
+              Current: {stats.current}
             </Badge>
 
             <Badge variant='outline' className='text-green-600 border-gray-600'>
               <UserX className="w-3 h-3 mr-1" />
-              Deceased: {}
+              Deceased: {stats.deceased}
             </Badge>
           </div>
         </CardHeader>
@@ -147,7 +185,7 @@ export const MembersList = () => {
       </Card>
 
 
-      {/* Results */}
+      {/*Search Results */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">
@@ -176,6 +214,37 @@ export const MembersList = () => {
         }
 
       </div>
+
+
+
+      {/* backend members */}
+      <div className="space-y-6">
+      <Card>
+        <CardContent>
+          {loading ? (
+            <p>Loading members...</p>
+          ) : members.length === 0 ? (
+            <p>No members found.</p>
+          ) : (
+            <ul className="space-y-2">
+              {members.map((m) => (
+                <li
+                  key={m.id}
+                  className="p-3 border rounded-lg flex justify-between"
+                >
+                  <span>
+                    <strong>{m.name}</strong> – {m.gender} / {m.side}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    {m.isAlive}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </CardContent>
+      </Card>
+    </div>
 
 
     </div>
