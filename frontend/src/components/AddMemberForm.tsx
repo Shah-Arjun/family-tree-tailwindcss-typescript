@@ -8,15 +8,15 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { 
-  UserPlus, 
-  Upload, 
+import {
+  UserPlus,
+  Upload,
   Calendar,
   MapPin,
   Briefcase,
   Mail,
   Phone,
-  FileText
+  FileText,
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
@@ -26,17 +26,16 @@ interface AddMemberFormProps {
   onCancel?: () => void;
 }
 
-
-
-export const AddMemberForm: React.FC<AddMemberFormProps> = ({ 
-  members, 
-  onAddMember, 
-  onCancel 
+export const AddMemberForm: React.FC<AddMemberFormProps> = ({
+  members,
+  onAddMember,
+  onCancel,
 }) => {
   const [formData, setFormData] = useState({
     name: '',
     dateOfBirth: '',
     dateOfDeath: '',
+    age:'',
     gender: 'unknown' as 'male' | 'female' | 'unknown',
     photo: '',
     email: '',
@@ -49,56 +48,55 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
     generation: 0,
     side: 'current' as 'paternal' | 'maternal' | 'current',
     notes: '',
-    isAlive: true
+    isAlive: true,
   });
 
-  const availableParents = members.filter(m => 
-    m.generation >= formData.generation && 
-    (m.gender === 'male' || m.gender === 'female')
+  const availableParents = members.filter(
+    (m) => m.generation >= formData.generation && (m.gender === 'male' || m.gender === 'female')
   );
-  
-  const availableFathers = availableParents.filter(m => m.gender === 'male');
-  const availableMothers = availableParents.filter(m => m.gender === 'female');
-  const availableSpouses = members.filter(m => 
-    m.generation === formData.generation && 
-    !m.spouseId
+
+  const availableFathers = availableParents.filter((m) => m.gender === 'male');
+  const availableMothers = availableParents.filter((m) => m.gender === 'female');
+
+  const availableSpouses = members.filter(
+    (m) => m.generation === formData.generation && !m.spouseId
   );
 
   const handleInputChange = (field: string, value: any) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.name.trim()) {
-      toast.error("Name is required");
-toast.success(`${formData.name} has been added to the family tree!`);
+      toast.error('Name is required');
       return;
     }
 
     const newMember: Omit<FamilyMember, 'id'> = {
       ...formData,
+      age: 0,
       childrenIds: [],
       name: formData.name.trim(),
       fatherId: formData.fatherId === 'none' ? '' : formData.fatherId,
       motherId: formData.motherId === 'none' ? '' : formData.motherId,
-      spouseId: formData.spouseId === 'none' ? '' : formData.spouseId
+      spouseId: formData.spouseId === 'none' ? '' : formData.spouseId,
     };
 
     onAddMember(newMember);
-    
-   toast.error("Name is required");
-toast.success(`${formData.name} has been added to the family tree!`);
+
+    toast.success(`${formData.name} has been added to the family tree!`);
 
     // Reset form
     setFormData({
       name: '',
       dateOfBirth: '',
       dateOfDeath: '',
+      age: '',
       gender: 'unknown',
       photo: '',
       email: '',
@@ -111,13 +109,12 @@ toast.success(`${formData.name} has been added to the family tree!`);
       generation: 0,
       side: 'current',
       notes: '',
-      isAlive: true
+      isAlive: true,
     });
   };
 
-  const getInitials = (name: string) => {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
-  };
+  const getInitials = (name: string) =>
+    name.split(' ').map((n) => n[0]).join('').toUpperCase();
 
   return (
     <Card className="max-w-4xl mx-auto">
@@ -135,14 +132,21 @@ toast.success(`${formData.name} has been added to the family tree!`);
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Profile Section */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold border-b pb-2">Profile Information</h3>
-            
+            <h3 className="text-lg font-semibold border-b pb-2">
+              Profile Information
+            </h3>
+
             <div className="flex items-start space-x-6">
+              {/* Avatar + Upload */}
               <div className="flex flex-col items-center space-y-2">
                 <Avatar className="w-20 h-20">
                   <AvatarImage src={formData.photo} alt={formData.name} />
                   <AvatarFallback>
-                    {formData.name ? getInitials(formData.name) : <UserPlus className="w-8 h-8" />}
+                    {formData.name ? (
+                      getInitials(formData.name)
+                    ) : (
+                      <UserPlus className="w-8 h-8" />
+                    )}
                   </AvatarFallback>
                 </Avatar>
                 <Button type="button" variant="outline" size="sm" className="flex items-center space-x-1">
@@ -151,6 +155,7 @@ toast.success(`${formData.name} has been added to the family tree!`);
                 </Button>
               </div>
 
+              {/* Inputs */}
               <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name *</Label>
@@ -165,7 +170,10 @@ toast.success(`${formData.name} has been added to the family tree!`);
 
                 <div className="space-y-2">
                   <Label htmlFor="gender">Gender</Label>
-                  <Select value={formData.gender} onValueChange={(value) => handleInputChange('gender', value)}>
+                  <Select
+                    value={formData.gender}
+                    onValueChange={(value) => handleInputChange('gender', value)}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Select gender" />
                     </SelectTrigger>
@@ -214,8 +222,9 @@ toast.success(`${formData.name} has been added to the family tree!`);
 
           {/* Contact & Personal Information */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold border-b pb-2">Contact & Personal Information</h3>
-            
+            <h3 className="text-lg font-semibold border-b pb-2">
+              Contact & Personal Information
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="email" className="flex items-center space-x-1">
@@ -274,12 +283,16 @@ toast.success(`${formData.name} has been added to the family tree!`);
 
           {/* Family Relationships */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold border-b pb-2">Family Relationships</h3>
-            
+            <h3 className="text-lg font-semibold border-b pb-2">
+              Family Relationships
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="side">Family Side</Label>
-                <Select value={formData.side} onValueChange={(value) => handleInputChange('side', value)}>
+                <Select
+                  value={formData.side}
+                  onValueChange={(value) => handleInputChange('side', value)}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select family side" />
                   </SelectTrigger>
@@ -293,8 +306,8 @@ toast.success(`${formData.name} has been added to the family tree!`);
 
               <div className="space-y-2">
                 <Label htmlFor="generation">Generation</Label>
-                <Select 
-                  value={formData.generation.toString()} 
+                <Select
+                  value={formData.generation.toString()}
                   onValueChange={(value) => handleInputChange('generation', parseInt(value))}
                 >
                   <SelectTrigger>
@@ -312,14 +325,17 @@ toast.success(`${formData.name} has been added to the family tree!`);
 
               <div className="space-y-2">
                 <Label htmlFor="father">Father</Label>
-                <Select value={formData.fatherId} onValueChange={(value) => handleInputChange('fatherId', value)}>
+                <Select
+                  value={formData.fatherId}
+                  onValueChange={(value) => handleInputChange('fatherId', value)}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select father" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="none">No father selected</SelectItem>
                     {availableFathers.map((father) => (
-                      <SelectItem key={father.id} value={father.id}>
+                      <SelectItem key={father.id} value={father?.id ?? ""}>
                         {father.name}
                       </SelectItem>
                     ))}
@@ -329,14 +345,17 @@ toast.success(`${formData.name} has been added to the family tree!`);
 
               <div className="space-y-2">
                 <Label htmlFor="mother">Mother</Label>
-                <Select value={formData.motherId} onValueChange={(value) => handleInputChange('motherId', value)}>
+                <Select
+                  value={formData.motherId}
+                  onValueChange={(value) => handleInputChange('motherId', value)}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select mother" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="none">No mother selected</SelectItem>
                     {availableMothers.map((mother) => (
-                      <SelectItem key={mother.id} value={mother.id}>
+                      <SelectItem key={mother.id} value={mother.id ?? ""}>
                         {mother.name}
                       </SelectItem>
                     ))}
@@ -346,14 +365,17 @@ toast.success(`${formData.name} has been added to the family tree!`);
 
               <div className="space-y-2">
                 <Label htmlFor="spouse">Spouse</Label>
-                <Select value={formData.spouseId} onValueChange={(value) => handleInputChange('spouseId', value)}>
+                <Select
+                  value={formData.spouseId}
+                  onValueChange={(value) => handleInputChange('spouseId', value)}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select spouse" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="none">No spouse selected</SelectItem>
                     {availableSpouses.map((spouse) => (
-                      <SelectItem key={spouse.id} value={spouse.id}>
+                      <SelectItem key={spouse.id} value={spouse.id ?? ""}>
                         {spouse.name}
                       </SelectItem>
                     ))}
@@ -365,8 +387,9 @@ toast.success(`${formData.name} has been added to the family tree!`);
 
           {/* Notes */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold border-b pb-2">Additional Information</h3>
-            
+            <h3 className="text-lg font-semibold border-b pb-2">
+              Additional Information
+            </h3>
             <div className="space-y-2">
               <Label htmlFor="notes" className="flex items-center space-x-1">
                 <FileText className="w-4 h-4" />
@@ -399,6 +422,3 @@ toast.success(`${formData.name} has been added to the family tree!`);
     </Card>
   );
 };
-
-
-export default AddMemberForm;

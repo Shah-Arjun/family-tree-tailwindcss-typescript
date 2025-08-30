@@ -23,7 +23,7 @@ import FamilyTreeApp from './pages/FamilyTreeApp.tsx';
 
 //components
 import MembersList from "./components/MembersList";
-import AddMemberForm from "./components/AddMemberForm";
+import {AddMemberForm} from "./components/AddMemberForm.tsx";
 
 // types
 import type { FamilyMember } from "./types/family"; 
