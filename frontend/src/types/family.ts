@@ -18,7 +18,7 @@ export type FamilyMember = {
   email?: string;
   phone?: string;
   occupation?: string;
-  location?: string;
+  address?: string;
   
   // Relationships
   fatherId?: string;
