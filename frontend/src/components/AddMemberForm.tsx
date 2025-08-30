@@ -399,3 +399,6 @@ toast.success(`${formData.name} has been added to the family tree!`);
     </Card>
   );
 };
+
+
+export default AddMemberForm;

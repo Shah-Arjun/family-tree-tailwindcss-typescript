@@ -1,10 +1,13 @@
-// import React from 'react'
+//import React from 'react'
+import { useNavigate } from "react-router-dom"; // ✅ import
+
 
 //ui components from shadcn/ui
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
+
 
 // icons from lucide-react
 import { UserCheck, Users, UserX, Search, SortAsc, SortDesc} from 'lucide-react'
@@ -13,6 +16,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 
 
 export const MembersList = () => {
+
+  //for navigation when add member button is clicked
+  const navigate = useNavigate() ;    //initializing navigate
+
+  const handleAddMember = () => {
+    navigate("/add-member");
+  }
+
+
+
+
   return (
     <div className='space-y-6'>
 
@@ -30,9 +44,9 @@ export const MembersList = () => {
               </p>
             </div>
 
-            {/* left to make button functional */}
-            {1 && (
-              <Button className='flex items-center space-x-2'>
+           
+            {handleAddMember && (
+              <Button onClick={handleAddMember} className='flex items-center space-x-2'>
                 <UserCheck className='w-4 h-4' />
                 <span>Add Member</span>
               </Button>
@@ -124,7 +138,7 @@ export const MembersList = () => {
               </Select>
 
               <Button variant='outline' size='sm' className='px-3' >
-                {/* {sortOrder === 'asc' ? <SortAsc className='w-4 h-4'/> : <SortDesc className='w-4 h-4'/>} */}
+                {1 ? <SortAsc className='w-4 h-4'/> : <SortDesc className='w-4 h-4'/>}
               </Button>
             </div>
 
