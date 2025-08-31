@@ -8,7 +8,7 @@
 // Optional properties (?) may or may not exist (like email, photo).
 
 export type FamilyMember = {
-  id?: string;
+  id: string;
   name: string;
   dateOfBirth?: string;
   dateOfDeath?: string;
