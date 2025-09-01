@@ -71,8 +71,11 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
     const fetchMembers = async () => {
       try {
         const res = await memberServices.getMembers(); // axios call
-        console.log('members fetchrd:', fetchMembers)
-        setFetchedMembers(res); 
+
+
+        console.log('members fetchrd:', fetchMembers)  //for test
+        setFetchedMembers(res.data); 
+
       } catch (err) {
         console.error("Error fetching members:", err);
       }
