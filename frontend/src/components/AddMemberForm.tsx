@@ -71,6 +71,7 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
     const fetchMembers = async () => {
       try {
         const res = await memberServices.getMembers(); // axios call
+        console.log('members fetchrd:', fetchMembers)
         setFetchedMembers(res); 
       } catch (err) {
         console.error("Error fetching members:", err);
@@ -81,7 +82,7 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
   }, []);
 
   const availableParents = fetchedMembers.filter(m =>
-    m.generation >= formData.generation &&
+    m.generation > formData.generation &&
     (m.gender === 'male' || m.gender === 'female')
   );
 
@@ -450,15 +451,12 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
 
 
       {/* backend members-----debug */}
-      <div>
+      {/* <div>
   <h3>Available Fathers:</h3>
   <ul>
-    {availableFathers.length === 0 ? "no father" : (
-    availableFathers.map(f => (
-      <li key={f.id}>{f.name} (Generation: {f.generation})</li>
-    )))}
+    {availableParents.length === 0 && "sfather"}
   </ul>
-</div>
+</div> */}
 
 
         </form>
