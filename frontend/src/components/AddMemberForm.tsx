@@ -65,13 +65,13 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
 
 
   //to fetch members from backend  
-  const [fmembers, setMembers] = useState<FamilyMember[]>([]);
+  const [fetchedMembers, setFetchedMembers] = useState<FamilyMember[]>([]);
 
   useEffect(() => {
     const fetchMembers = async () => {
       try {
         const res = await memberServices.getMembers(); // axios call
-        setMembers(res); 
+        setFetchedMembers(res); 
       } catch (err) {
         console.error("Error fetching members:", err);
       }
@@ -80,14 +80,14 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
     fetchMembers();   //calling function immediately
   }, []);
 
-  const availableParents = fmembers.filter(m =>
+  const availableParents = fetchedMembers.filter(m =>
     m.generation >= formData.generation &&
     (m.gender === 'male' || m.gender === 'female')
   );
 
   const availableFathers = availableParents.filter(m => m.gender === 'male');
   const availableMothers = availableParents.filter(m => m.gender === 'female');
-  const availableSpouses = fmembers.filter(m =>
+  const availableSpouses = fetchedMembers.filter(m =>
     m.generation === formData.generation &&
     !m.spouseId
   );
@@ -450,15 +450,15 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
 
 
       {/* backend members-----debug */}
-      {/* <div>
+      <div>
   <h3>Available Fathers:</h3>
   <ul>
-    {fmembers.length === 0 ? "no father" : (
-    fmembers.map(f => (
+    {availableFathers.length === 0 ? "no father" : (
+    availableFathers.map(f => (
       <li key={f.id}>{f.name} (Generation: {f.generation})</li>
     )))}
   </ul>
-</div> */}
+</div>
 
 
         </form>
