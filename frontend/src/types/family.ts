@@ -8,7 +8,7 @@
 // Optional properties (?) may or may not exist (like email, photo).
 
 export type FamilyMember = {
-  id: string;
+  _id: string;
   name: string;
   dateOfBirth?: string;
   dateOfDeath?: string;
@@ -42,7 +42,7 @@ export type FamilyMember = {
 // Used when you build a hierarchical tree view.
 export interface TreeNodeData {
   name: string;
-  id: string;
+  _id: string;
   gender: 'male' | 'female' | 'unknown';
   generation: number;
   side: 'paternal' | 'maternal' | 'current';
@@ -58,7 +58,7 @@ export interface TreeNodeData {
 // Each child in children is also FamilyTreeData, so the structure is recursive.
 export interface FamilyTreeData {
   name: string;
-  id: string;
+  _id: string;
   gender: 'male' | 'female' | 'unknown';
   generation: number;
   side: 'paternal' | 'maternal' | 'current';

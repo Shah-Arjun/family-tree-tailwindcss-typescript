@@ -22,20 +22,20 @@ import {memberServices} from "@/services/memberServices";
 
 //typescript interface for type validation
 interface AddMemberFormProps {
-  members: FamilyMember[];
+  // members: FamilyMember[];
   onAddMember: (member: Omit<FamilyMember, 'id'>) => void;
   onCancel?: () => void;
 }
 
 export const AddMemberForm: React.FC<AddMemberFormProps> = ({ 
-  members, 
+  // members, 
   onAddMember, 
   onCancel 
 }) => {
 
   const [formData, setFormData] = useState<FamilyMember>({
     name: "",
-    id: "",
+    _id: "",
     age: 0,
     gender: 'unknown' as 'male' | 'female' | 'unknown',
     fatherId: "",
@@ -72,25 +72,24 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
       try {
         const res = await memberServices.getMembers(); // axios call
 
-
-        console.log('members fetchrd:', fetchMembers)  //for test
-        setFetchedMembers(res.data); 
+        console.log('members fetchrd:', res)  //for test
+        setFetchedMembers(res); 
 
       } catch (err) {
         console.error("Error fetching members:", err);
       }
     };
-
     fetchMembers();   //calling function immediately
   }, []);
 
-  const availableParents = fetchedMembers.filter(m =>
-    m.generation > formData.generation &&
-    (m.gender === 'male' || m.gender === 'female')
+  const availableParents = fetchedMembers.filter(m =>{
+    const gender = m.gender?.toLowerCase();
+    return gender === 'male' || gender === 'female'}
   );
 
-  const availableFathers = availableParents.filter(m => m.gender === 'male');
-  const availableMothers = availableParents.filter(m => m.gender === 'female');
+const availableFathers = availableParents.filter((m) => m.gender?.toLowerCase() === "male");
+const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() === "female");
+
   const availableSpouses = fetchedMembers.filter(m =>
     m.generation === formData.generation &&
     !m.spouseId
@@ -129,7 +128,7 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
      // Reset form after submitted
     setFormData({
     name: "",
-    id: "",
+    _id: "",
     age: 0,
     gender: 'unknown',
     fatherId: "",
@@ -365,9 +364,9 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
                     <SelectValue placeholder="Select father" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">No father selected</SelectItem>
+                    <SelectItem value= "none">No father selected</SelectItem>
                     {availableFathers.map((father) => (
-                      <SelectItem key={father.id} value={father.id}>
+                      <SelectItem key={father._id} value={father._id}>
                         {father.name}
                       </SelectItem>
                     ))}
@@ -384,7 +383,7 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
                   <SelectContent>
                     <SelectItem value="none">No mother selected</SelectItem>
                     {availableMothers.map((mother) => (
-                      <SelectItem key={mother.id} value={mother.id}>
+                      <SelectItem key={mother._id} value={mother._id}>
                         {mother.name}
                       </SelectItem>
                     ))}
@@ -401,7 +400,7 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
                   <SelectContent>
                     <SelectItem value="none">No spouse selected</SelectItem>
                     {availableSpouses.map((spouse) => (
-                      <SelectItem key={spouse.id} value={spouse.id}>
+                      <SelectItem key={spouse._id} value={spouse._id}>
                         {spouse.name}
                       </SelectItem>
                     ))}
@@ -448,19 +447,6 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
               <span>Add Family Member</span>
             </Button>
           </div>
-
-
-
-
-
-      {/* backend members-----debug */}
-      {/* <div>
-  <h3>Available Fathers:</h3>
-  <ul>
-    {availableParents.length === 0 && "sfather"}
-  </ul>
-</div> */}
-
 
         </form>
       </CardContent>
