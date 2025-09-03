@@ -97,8 +97,8 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
 
 
   // when add member button is clicked ie. form submitted
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit =async (e: React.FormEvent) => {
+    e.preventDefault();   // prevent reload page,  stay on the same page and can process the data smoothly.
 
     if(!formData.name.trim()) {
       alert({
@@ -109,42 +109,37 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
       return;
     }
 
-     const newMember: Omit<FamilyMember, 'id'> = {
-      ...formData,
-      childrenIds: [],
-      name: formData.name.trim(),
-      fatherId: formData.fatherId === 'none' ? '' : formData.fatherId,
-      motherId: formData.motherId === 'none' ? '' : formData.motherId,
-      spouseId: formData.spouseId === 'none' ? '' : formData.spouseId
-    };
+    if(!formData.fatherId) return;
 
-    onAddMember(newMember);
-
-     alert({
-      title: "Success",
-      description: `${formData.name} has been added to the family tree!`
-    });
+    try {
+      const res = await memberServices.addMember(formData);
+      console.log('Member added', res);
+      alert("Member added successfully!");
+    } catch (err) {
+      console.error("Error saving member: ", err);
+      alert("Something went worng while saving!")
+    }
 
      // Reset form after submitted
-    setFormData({
-    name: "",
-    _id: "",
-    age: 0,
-    gender: 'unknown',
-    fatherId: "",
-    motherId: "",
-    spouseId: "",
-    dateOfBirth: "",
-    dateOfDeath: "",
-    generation: 0,
-    side: 'current',
-    email: "",
-    phone: "",
-    address: "",
-    photo: "",
-    childrenIds: [],
-    isAlive: true,
-  });
+  //   setFormData({
+  //   name: "",
+  //   _id: "",
+  //   age: 0,
+  //   gender: 'unknown',
+  //   fatherId: "",
+  //   motherId: "",
+  //   spouseId: "",
+  //   dateOfBirth: "",
+  //   dateOfDeath: "",
+  //   generation: 0,
+  //   side: 'current',
+  //   email: "",
+  //   phone: "",
+  //   address: "",
+  //   photo: "",
+  //   childrenIds: [],
+  //   isAlive: true,
+  // });
 
   }
 
