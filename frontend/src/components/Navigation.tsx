@@ -1,25 +1,48 @@
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { 
-  TreePine, 
-  Users, 
-  UserPlus, 
+
+//to show the bumber fo mombers in db
+import { Badge } from '@/components/ui/badge';  
+import { memberServices } from '@/services/memberServices';
+
+import {
+  TreePine,
+  Users,
+  UserPlus,
   Settings,
   User,
-  LogOut 
+  LogOut
 } from 'lucide-react';
 
+// TypeScript interface for props that Navigation will receive
 interface NavigationProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
-  memberCount: number;
 }
 
-export const Navigation: React.FC<NavigationProps> = ({ 
-  activeTab, 
-  onTabChange, 
-  memberCount 
+
+// uses the NavigationProps interface for strong typing/validation.
+export const Navigation: React.FC<NavigationProps> = ({
+  activeTab,
+  onTabChange,
 }) => {
+  // to fetch member and count its number
+  const [memberCount, setMemberCount] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const members = await memberServices.getMembers();
+        setMemberCount(members.length);
+      } catch (error) {
+        console.log("Failed  to fetch members:", error)
+      }
+    };
+    fetchMembers();
+  }, [])
+
+
+  // nav-items / menu as an object
   const navItems = [
     {
       id: 'tree',
@@ -46,7 +69,8 @@ export const Navigation: React.FC<NavigationProps> = ({
     <div className="bg-card border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+
+          {/* tree logo */}
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-family rounded-lg flex items-center justify-center">
               <TreePine className="w-6 h-6 text-white" />
@@ -62,7 +86,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
-              
+
               return (
                 <Button
                   key={item.id}
@@ -74,8 +98,8 @@ export const Navigation: React.FC<NavigationProps> = ({
                   <Icon className="w-4 h-4" />
                   <span className="hidden sm:inline">{item.label}</span>
                   {item.badge && (
-                    <Badge variant="secondary" className="ml-2 text-xs">
-                      {item.badge}
+                    <Badge variant="secondary" className="ml-0 text-xs">
+                      {memberCount}
                     </Badge>
                   )}
                 </Button>
