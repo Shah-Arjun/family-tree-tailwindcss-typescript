@@ -1,6 +1,5 @@
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
-// @ts-ignore
 import animatePlugin from "tailwindcss-animate";
 
 export default {
