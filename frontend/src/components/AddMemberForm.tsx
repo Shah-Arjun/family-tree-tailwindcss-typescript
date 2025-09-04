@@ -29,7 +29,7 @@ interface AddMemberFormProps {
 
 export const AddMemberForm: React.FC<AddMemberFormProps> = ({ 
   // members, 
-  onAddMember, 
+  // onAddMember, 
   onCancel 
 }) => {
 
@@ -55,7 +55,7 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
 
 
   // to handle input change in form input fields when user types
-  const handleInputChange = (field:keyof FamilyMember, value: string | number | boolean) => {
+  const handleInputChange = (field:keyof FamilyMember, value: string | number | boolean | undefined) => {
     setFormData((prev) => ({
       ...prev,                  // keep the old data
        [field]: value,          // update only the changed field 
@@ -72,7 +72,7 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
       try {
         const res = await memberServices.getMembers(); // axios call
 
-        console.log('members fetchrd:', res)  //for test
+        console.log('members fetched:', res)  //for test
         setFetchedMembers(res); 
 
       } catch (err) {
@@ -101,18 +101,23 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
     e.preventDefault();   // prevent reload page,  stay on the same page and can process the data smoothly.
 
     if(!formData.name.trim()) {
-      alert({
-        title: "Error",
-        description: "Name is required",
-        variant: "destructive"
-      });
+      alert("Name is required!");
       return;
     }
 
-    if(!formData.fatherId) return;
+    // Prepare new member data
+    const newMember: Omit<FamilyMember, '_id'> = {
+      ...formData,
+      name: formData.name.trim(),
+      fatherId: formData.fatherId === 'none' ? undefined : formData.fatherId,
+      motherId: formData.motherId === 'none' ? undefined : formData.motherId,
+      spouseId: formData.spouseId === 'none' ? undefined : formData.spouseId,
+      childrenIds: [],
+      generation: formData.generation,
+    };
 
     try {
-      const res = await memberServices.addMember(formData);
+      const res = await memberServices.addMember(newMember);
       console.log('Member added', res);
       alert("Member added successfully!");
     } catch (err) {

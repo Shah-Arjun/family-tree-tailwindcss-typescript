@@ -28,7 +28,7 @@ const familyMembSchema = new mongoose.Schema(
         //     enum: ['Father', 'Mother', 'Brother', 'Sister', 'Uncle', 'Aunt', 'Cousin', 'Grandpa', 'Grandma', 'Other'],
         //     required: true
         // },
-        photoUrl: {
+        photo: {
             type: String,   //local or cloudinary url
             default: ''
         },
@@ -41,7 +41,7 @@ const familyMembSchema = new mongoose.Schema(
         occupation: {
             type: String
         },
-        loaction: {
+        address: {
             type: String
         },
 
@@ -50,11 +50,11 @@ const familyMembSchema = new mongoose.Schema(
         fatherId: {type: mongoose.Schema.Types.ObjectId, ref: 'familyMember'},
         motherId: {type: mongoose.Schema.Types.ObjectId, ref: 'familyMember'},
         spouseId: {type: mongoose.Schema.Types.ObjectId, ref: 'familyMember'},
-        childernIds: [{type: mongoose.Schema.Types.ObjectId, ref: 'familyMember', default: [] }],
+        childrenIds: [{type: mongoose.Schema.Types.ObjectId, ref: 'familyMember', default: [] }],
 
 
         // family tree info
-        genereation: {type: Number, required: true},
+        generation: {type: Number, required: true},
         side: {type: String, enum:['paternal', 'maternal', 'current'], required: true},
 
         //additional info
