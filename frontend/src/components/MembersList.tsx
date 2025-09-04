@@ -18,9 +18,13 @@ import { memberServices } from "@/services/memberServices";
 
 
 
-
-
 export const MembersList = () => {
+  //hook for search functionality
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sideFilter, setSideFilter] = useState<string>('all');
+  const [genderFilter, setGenderFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<string>('name');
 
   //for navigation when add member button is clicked
   const navigate = useNavigate() ;    //initializing navigate
@@ -37,7 +41,7 @@ export const MembersList = () => {
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const data = await memberServices.getMembers(); // ✅ axios service
+        const data = await memberServices.getMembers(); // axios service
         setMembers(data);
       } catch (err) {
         console.error("Error fetching members:", err);
@@ -64,6 +68,39 @@ export const MembersList = () => {
   }, [members]);
 
 
+  //for search member functionality
+  const filteredAndSortedMembers = useMemo(() => {
+    let filtered = members.filter(member => {
+      const matchesSearch = member.name.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()) || 
+                            (member.occupation || '').toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
+                            (member.address || '').toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase());
+
+      const matchesSide = sideFilter === 'all' || member.side === sideFilter;
+      const matchesGender = genderFilter === 'all' || member.gender === genderFilter;
+      const matchesStatus = statusFilter === 'all' || 
+                          (statusFilter === 'alive' && member.isAlive) ||
+                          (statusFilter === 'deceased' && !member.isAlive);
+
+      return matchesSearch && matchesSide && matchesGender && matchesStatus;
+    });
+
+    // sort members
+    filtered.sort((a, b) => {
+      let aVlaue, bVlaue;
+
+      switch(sortBy){
+        case 'name':
+          aVlaue = a.name.toLocaleLowerCase();
+          bVlaue = b.name.toLocaleLowerCase();
+          break;
+        case 'age':
+          aVlaue = a.dateOfBirth ? new Date(a.dateOfBirth).getTime() : 0;
+          bVlaue = b.dateOfBirth ? new Date(b.dateOfBirth).getTime() : 0;
+          break;
+      }
+    })
+
+  }) 
 
   return (
     <div className='space-y-6'>
@@ -189,17 +226,17 @@ export const MembersList = () => {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">
-            {} member {} found
+            {filteredAndSortedMembers.length} member {filteredAndSortedMembers.length !== 1 ? 's': ''} found
           </h3>
         </div>
 
-        {1? 
+        {filteredAndSortedMembers === 0 ? 
         (
           <Card>
             <CardContent className='text-center py-12'>
               <Users className='w-12 h-12 text-muted-foreground mx-auto mg-4' />
               <h3 className='text-lg font-semibold text-muted-foreground mb-2'>
-                No member found
+                No members found
               </h3>
               <p className='text-muted-foreground'>
                 Try adjusting your search criteria or filters.
@@ -208,7 +245,13 @@ export const MembersList = () => {
           </Card>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {}
+              {filteredAndSortedMembers.map((member) => (
+                <Card 
+                key={member.id}
+                member={member}
+                compact
+                ></Card>
+              ) )}
             </div>
           )
         }
@@ -229,7 +272,7 @@ export const MembersList = () => {
             <ul className="space-y-2">
               {members.map((m) => (
                 <li
-                  key={m.id}
+                  key={m._id}
                   className="p-3 border rounded-lg flex justify-between"
                 >
                   <span>
