@@ -26,6 +26,7 @@ const FamilyTreeApp = () => {
     setMembers(prev => prev.filter(m => m._id !== memberId));
   };
 
+  
   const renderContent = () => {
     switch (activeTab) {
       case 'tree':
@@ -54,7 +55,6 @@ const FamilyTreeApp = () => {
 
 
 
-  
   return (
     <div className="min-h-screen bg-background">
       <Navigation
