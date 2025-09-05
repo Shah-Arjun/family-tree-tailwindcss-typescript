@@ -15,22 +15,23 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 
 import type { FamilyMember } from "@/types/family";
 import { memberServices } from "@/services/memberServices";
+import {MemberCard} from '@/components/MemberCard'
 
 //member cars props
 interface MembersListProps {
   members: FamilyMember[];
   onEdit?: (member: FamilyMember) => void;
   onDelete?: (memberId: string) => void;
-  onAddMember?: () => void;
+  // onAddMember?: () => void;
 }
 
 
 
 export const MembersList: React.FC<MembersListProps> = ({
-  members,
+  members:initialMembers,
   onEdit,
   onDelete,
-  onAddMember
+  // onAddMember
 }) => {
   //hook for search functionality
   const [searchTerm, setSearchTerm] = useState('');
@@ -50,7 +51,7 @@ export const MembersList: React.FC<MembersListProps> = ({
 
 
 //to fetch members from backend  
-  const [members, setMembers] = useState<FamilyMember[]>([]);
+  const [members, setMembers] = useState<FamilyMember[]>(initialMembers);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -281,11 +282,13 @@ export const MembersList: React.FC<MembersListProps> = ({
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {filteredAndSortedMembers.map((member) => (
-                <Card 
+                <MemberCard 
                 key={member._id}
                 member={member}
+                onEdit={onEdit}
+                onDelete={onDelete}
                 compact
-                ></Card>
+                ></MemberCard>
               ) )}
             </div>
           )
@@ -302,7 +305,7 @@ export const MembersList: React.FC<MembersListProps> = ({
           {loading ? (
             <p>Loading members...</p>
           ) : members.length === 0 ? (
-            <p>No members found.</p>
+            <p>No members exist.</p>
           ) : (
             <ul className="space-y-2">
               {members.map((m) => (

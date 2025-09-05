@@ -23,6 +23,10 @@ interface MemberCardProps {
   compact?: boolean;
 }
 
+
+
+
+
 export const MemberCard: React.FC<MemberCardProps> = ({ 
   member, 
   onEdit, 
@@ -107,7 +111,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => onDelete(member.id)}
+                  onClick={() => onDelete(member._id)}
                   className="h-8 w-8 p-0 text-destructive hover:text-destructive"
                 >
                   <Trash2 className="h-4 w-4" />
@@ -180,7 +184,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => onDelete(member.id)}
+                onClick={() => onDelete(member._id)}
                 className="text-destructive border-destructive hover:bg-destructive hover:text-white"
               >
                 <Trash2 className="h-4 w-4 mr-2" />
@@ -216,11 +220,11 @@ export const MemberCard: React.FC<MemberCardProps> = ({
               </div>
             )}
 
-            {member.location && (
+            {member.address && (
               <div className="flex items-center space-x-2 text-sm">
                 <MapPin className="w-4 h-4 text-muted-foreground" />
-                <span className="text-muted-foreground">Location:</span>
-                <span>{member.location}</span>
+                <span className="text-muted-foreground">Address:</span>
+                <span>{member.address}</span>
               </div>
             )}
           </div>
