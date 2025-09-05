@@ -265,7 +265,8 @@ export const MembersList: React.FC<MembersListProps> = ({
           </h3>
         </div>
 
-        {filteredAndSortedMembers.length === 0 ?
+       {loading ? 'Lodaing members...' :
+        filteredAndSortedMembers.length === 0 ?
           (
             <Card>
               <CardContent className='text-center py-12'>
