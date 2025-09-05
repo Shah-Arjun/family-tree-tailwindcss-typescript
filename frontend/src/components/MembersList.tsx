@@ -16,15 +16,30 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import type { FamilyMember } from "@/types/family";
 import { memberServices } from "@/services/memberServices";
 
+//member cars props
+interface MembersListProps {
+  members: FamilyMember[];
+  onEdit?: (member: FamilyMember) => void;
+  onDelete?: (memberId: string) => void;
+  onAddMember?: () => void;
+}
 
 
-export const MembersList = () => {
+
+export const MembersList: React.FC<MembersListProps> = ({
+  members,
+  onEdit,
+  onDelete,
+  onAddMember
+}) => {
   //hook for search functionality
   const [searchTerm, setSearchTerm] = useState('');
   const [sideFilter, setSideFilter] = useState<string>('all');
   const [genderFilter, setGenderFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('name');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
 
   //for navigation when add member button is clicked
   const navigate = useNavigate() ;    //initializing navigate
@@ -84,23 +99,43 @@ export const MembersList = () => {
       return matchesSearch && matchesSide && matchesGender && matchesStatus;
     });
 
-    // sort members
+    // sort members functionality
     filtered.sort((a, b) => {
-      let aVlaue, bVlaue;
+      let aValue, bValue;
 
       switch(sortBy){
         case 'name':
-          aVlaue = a.name.toLocaleLowerCase();
-          bVlaue = b.name.toLocaleLowerCase();
+          aValue = a.name.toLocaleLowerCase();
+          bValue = b.name.toLocaleLowerCase();
           break;
         case 'age':
-          aVlaue = a.dateOfBirth ? new Date(a.dateOfBirth).getTime() : 0;
-          bVlaue = b.dateOfBirth ? new Date(b.dateOfBirth).getTime() : 0;
+          aValue = a.dateOfBirth ? new Date(a.dateOfBirth).getTime() : 0;
+          bValue = b.dateOfBirth ? new Date(b.dateOfBirth).getTime() : 0;
           break;
+        case 'generation':
+          aValue = a.generation;
+          bValue = b.generation;
+          break;
+        default:
+          aValue = a.name.toLocaleLowerCase();
+          bValue = b.name.toLocaleLowerCase();
       }
-    })
+      if(sortOrder === 'asc'){
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;   // -1 ==> means a comes befor b,    1 ==> means b comes before a,   0 ==> equal
+      }else{
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;   //
+      }
+    });
+    return filtered;
 
-  }) 
+  }, [members, searchTerm, sideFilter, genderFilter, statusFilter, sortBy, sortOrder ]);
+
+
+  //to change the sort order
+  const toggleSortOrder = () => {
+    setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
+  };
+
 
   return (
     <div className='space-y-6'>
@@ -230,7 +265,7 @@ export const MembersList = () => {
           </h3>
         </div>
 
-        {filteredAndSortedMembers === 0 ? 
+        {filteredAndSortedMembers.length === 0 ? 
         (
           <Card>
             <CardContent className='text-center py-12'>
@@ -247,7 +282,7 @@ export const MembersList = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {filteredAndSortedMembers.map((member) => (
                 <Card 
-                key={member.id}
+                key={member._id}
                 member={member}
                 compact
                 ></Card>
