@@ -299,7 +299,7 @@ export const MembersList: React.FC<MembersListProps> = ({
 
 
       {/* backend members */}
-      <div className="space-y-6">
+      {/* <div className="space-y-6">
       <Card>
         <CardContent>
           {loading ? (
@@ -325,7 +325,7 @@ export const MembersList: React.FC<MembersListProps> = ({
           )}
         </CardContent>
       </Card>
-    </div>
+    </div> */}
 
 
     </div>
