@@ -3,14 +3,15 @@ import type { FamilyMember, FamilyTreeData} from '@/types/family';
 export const mockFamilyMembers: FamilyMember[] = [
   // Current user
   {
-    id: 'user-1',
+    _id: 'user-1',
     name: 'John Smith',
     dateOfBirth: '1990-05-15',
     gender: 'male',
+    age: 0,
     email: 'john.smith@email.com',
     phone: '+1234567890',
     occupation: 'Software Engineer',
-    location: 'San Francisco, CA',
+    address: 'San Francisco, CA',
     spouseId: 'spouse-1',
     childrenIds: ['child-1', 'child-2'],
     fatherId: 'father-1',
@@ -23,14 +24,15 @@ export const mockFamilyMembers: FamilyMember[] = [
 
   // Spouse
   {
-    id: 'spouse-1',
+    _id: 'spouse-1',
+    age:0,
     name: 'Sarah Johnson Smith',
     dateOfBirth: '1992-08-22',
     gender: 'female',
     email: 'sarah.smith@email.com',
     phone: '+1234567891',
     occupation: 'Graphic Designer',
-    location: 'San Francisco, CA',
+    address: 'San Francisco, CA',
     spouseId: 'user-1',
     childrenIds: ['child-1', 'child-2'],
     fatherId: 'maternal-gf-1',
@@ -42,11 +44,13 @@ export const mockFamilyMembers: FamilyMember[] = [
 
   // Children
   {
-    id: 'child-1',
+    _id: 'child-1',
     name: 'Emma Smith',
     dateOfBirth: '2018-03-10',
+        age:0,
+
     gender: 'female',
-    location: 'San Francisco, CA',
+    address: 'San Francisco, CA',
     fatherId: 'user-1',
     motherId: 'spouse-1',
     childrenIds: [],
@@ -55,11 +59,13 @@ export const mockFamilyMembers: FamilyMember[] = [
     isAlive: true
   },
   {
-    id: 'child-2',
+    _id: 'child-2',
     name: 'Lucas Smith',
     dateOfBirth: '2020-11-08',
     gender: 'male',
-    location: 'San Francisco, CA',
+        age:0,
+
+    address: 'San Francisco, CA',
     fatherId: 'user-1',
     motherId: 'spouse-1',
     childrenIds: [],
@@ -70,12 +76,14 @@ export const mockFamilyMembers: FamilyMember[] = [
 
   // Paternal side (Father's family)
   {
-    id: 'father-1',
+    _id: 'father-1',
     name: 'Robert Smith',
     dateOfBirth: '1965-12-03',
     gender: 'male',
     occupation: 'Retired Engineer',
-    location: 'Portland, OR',
+    address: 'Portland, OR',
+        age:0,
+
     spouseId: 'mother-1',
     childrenIds: ['user-1', 'sibling-1'],
     fatherId: 'paternal-gf-1',
@@ -85,12 +93,14 @@ export const mockFamilyMembers: FamilyMember[] = [
     isAlive: true
   },
   {
-    id: 'mother-1',
+    _id: 'mother-1',
     name: 'Linda Wilson Smith',
+        age:0,
+
     dateOfBirth: '1967-04-18',
     gender: 'female',
     occupation: 'Teacher',
-    location: 'Portland, OR',
+    address: 'Portland, OR',
     spouseId: 'father-1',
     childrenIds: ['user-1', 'sibling-1'],
     fatherId: 'maternal-side-gf-1',
@@ -102,12 +112,14 @@ export const mockFamilyMembers: FamilyMember[] = [
 
   // Sibling
   {
-    id: 'sibling-1',
+    _id: 'sibling-1',
     name: 'Michael Smith',
     dateOfBirth: '1988-09-12',
     gender: 'male',
     occupation: 'Doctor',
-    location: 'Seattle, WA',
+        age:0,
+
+    address: 'Seattle, WA',
     fatherId: 'father-1',
     motherId: 'mother-1',
     childrenIds: ['nephew-1'],
@@ -118,11 +130,13 @@ export const mockFamilyMembers: FamilyMember[] = [
 
   // Nephew
   {
-    id: 'nephew-1',
+    _id: 'nephew-1',
     name: 'James Smith',
     dateOfBirth: '2015-07-20',
     gender: 'male',
     fatherId: 'sibling-1',
+        age:0,
+
     childrenIds: [],
     generation: -1,
     side: 'paternal',
@@ -131,13 +145,15 @@ export const mockFamilyMembers: FamilyMember[] = [
 
   // Paternal Grandparents
   {
-    id: 'paternal-gf-1',
+    _id: 'paternal-gf-1',
     name: 'William Smith',
     dateOfBirth: '1940-01-15',
     dateOfDeath: '2015-06-10',
     gender: 'male',
     occupation: 'Veteran, Factory Worker',
-    location: 'Portland, OR',
+        age:0,
+
+    address: 'Portland, OR',
     spouseId: 'paternal-gm-1',
     childrenIds: ['father-1', 'uncle-1'],
     generation: 2,
@@ -145,12 +161,14 @@ export const mockFamilyMembers: FamilyMember[] = [
     isAlive: false
   },
   {
-    id: 'paternal-gm-1',
+    _id: 'paternal-gm-1',
     name: 'Dorothy Miller Smith',
     dateOfBirth: '1942-08-30',
     gender: 'female',
     occupation: 'Homemaker',
-    location: 'Portland, OR',
+        age:0,
+
+    address: 'Portland, OR',
     spouseId: 'paternal-gf-1',
     childrenIds: ['father-1', 'uncle-1'],
     generation: 2,
@@ -160,12 +178,14 @@ export const mockFamilyMembers: FamilyMember[] = [
 
   // Uncle (father's brother)
   {
-    id: 'uncle-1',
+    _id: 'uncle-1',
+        age:0,
+
     name: 'David Smith',
     dateOfBirth: '1963-11-25',
     gender: 'male',
     occupation: 'Business Owner',
-    location: 'Denver, CO',
+    address: 'Denver, CO',
     fatherId: 'paternal-gf-1',
     motherId: 'paternal-gm-1',
     childrenIds: ['cousin-1', 'cousin-2'],
@@ -176,8 +196,10 @@ export const mockFamilyMembers: FamilyMember[] = [
 
   // Cousins
   {
-    id: 'cousin-1',
+    _id: 'cousin-1',
     name: 'Ashley Smith',
+        age:0,
+
     dateOfBirth: '1985-02-14',
     gender: 'female',
     occupation: 'Nurse',
@@ -188,9 +210,11 @@ export const mockFamilyMembers: FamilyMember[] = [
     isAlive: true
   },
   {
-    id: 'cousin-2',
+    _id: 'cousin-2',
     name: 'Ryan Smith',
     dateOfBirth: '1987-10-05',
+        age:0,
+
     gender: 'male',
     occupation: 'Mechanic',
     fatherId: 'uncle-1',
@@ -202,12 +226,14 @@ export const mockFamilyMembers: FamilyMember[] = [
 
   // Maternal side (Mother's parents - from spouse side)
   {
-    id: 'maternal-gf-1',
+    _id: 'maternal-gf-1',
     name: 'Richard Johnson',
     dateOfBirth: '1960-03-22',
+        age:0,
+
     gender: 'male',
     occupation: 'Retired Accountant',
-    location: 'Chicago, IL',
+    address: 'Chicago, IL',
     spouseId: 'maternal-gm-1',
     childrenIds: ['spouse-1', 'mother-in-law-sibling-1'],
     generation: 1,
@@ -215,12 +241,14 @@ export const mockFamilyMembers: FamilyMember[] = [
     isAlive: true
   },
   {
-    id: 'maternal-gm-1',
+    _id: 'maternal-gm-1',
     name: 'Patricia Davis Johnson',
     dateOfBirth: '1962-07-08',
+        age:0,
+
     gender: 'female',
     occupation: 'Retired Librarian',
-    location: 'Chicago, IL',
+    address: 'Chicago, IL',
     spouseId: 'maternal-gf-1',
     childrenIds: ['spouse-1', 'mother-in-law-sibling-1'],
     generation: 1,
@@ -230,9 +258,11 @@ export const mockFamilyMembers: FamilyMember[] = [
 
   // Mother's side grandparents (user's maternal grandparents)
   {
-    id: 'maternal-side-gf-1',
+    _id: 'maternal-side-gf-1',
     name: 'George Wilson',
     dateOfBirth: '1938-05-12',
+        age:0,
+
     dateOfDeath: '2018-12-15',
     gender: 'male',
     occupation: 'Farmer',
@@ -243,9 +273,11 @@ export const mockFamilyMembers: FamilyMember[] = [
     isAlive: false
   },
   {
-    id: 'maternal-side-gm-1',
+    _id: 'maternal-side-gm-1',
     name: 'Mary Thompson Wilson',
     dateOfBirth: '1940-09-18',
+        age:0,
+
     gender: 'female',
     occupation: 'Seamstress',
     spouseId: 'maternal-side-gf-1',
@@ -257,9 +289,11 @@ export const mockFamilyMembers: FamilyMember[] = [
 
   // Spouse's sibling
   {
-    id: 'mother-in-law-sibling-1',
+    _id: 'mother-in-law-sibling-1',
     name: 'Jennifer Johnson Martinez',
     dateOfBirth: '1990-01-30',
+        age:0,
+
     gender: 'female',
     occupation: 'Marketing Manager',
     fatherId: 'maternal-gf-1',
@@ -272,9 +306,11 @@ export const mockFamilyMembers: FamilyMember[] = [
 
   // Niece (through spouse's side)
   {
-    id: 'niece-1',
+    _id: 'niece-1',
     name: 'Sofia Martinez',
     dateOfBirth: '2019-05-15',
+        age:0,
+
     gender: 'female',
     motherId: 'mother-in-law-sibling-1',
     childrenIds: [],
@@ -286,10 +322,10 @@ export const mockFamilyMembers: FamilyMember[] = [
 
 // Transform flat data into tree structure
 export const transformToTreeData = (members: FamilyMember[]): FamilyTreeData => {
-  const memberMap = new Map(members.map(m => [m.id, m]));
+  const memberMap = new Map(members.map(m => [m._id, m]));
   
   // Find the root (current user)
-  const currentUser = members.find(m => m.id === 'user-1')!;
+  const currentUser = members.find(m => m._id === 'user-1')!;
   
   const buildNode = (member: FamilyMember): FamilyTreeData => {
     const children = member.childrenIds
@@ -299,7 +335,7 @@ export const transformToTreeData = (members: FamilyMember[]): FamilyTreeData => 
 
     return {
       name: member.name,
-      id: member.id,
+      _id: member._id,
       gender: member.gender,
       generation: member.generation,
       side: member.side,

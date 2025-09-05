@@ -23,7 +23,7 @@ import {memberServices} from "@/services/memberServices";
 //typescript interface for type validation
 interface AddMemberFormProps {
   // members: FamilyMember[];
-  onAddMember: (member: Omit<FamilyMember, 'id'>) => void;
+  // onAddMember: (member: Omit<FamilyMember, 'id'>) => void;
   onCancel?: () => void;
 }
 

@@ -23,7 +23,7 @@ const FamilyTreeApp = () => {
   };
 
   const handleDeleteMember = (memberId: string) => {
-    setMembers(prev => prev.filter(m => m.id !== memberId));
+    setMembers(prev => prev.filter(m => m._id !== memberId));
   };
 
   const renderContent = () => {
@@ -42,8 +42,8 @@ const FamilyTreeApp = () => {
       case 'add':
         return (
           <AddMemberForm
-            members={members}
-            onAddMember={handleAddMember}
+            // members={members}
+            // onAddMember={handleAddMember}
             onCancel={() => setActiveTab('members')}
           />
         );
@@ -60,7 +60,7 @@ const FamilyTreeApp = () => {
       <Navigation
         activeTab={activeTab}
         onTabChange={setActiveTab}
-        memberCount={members.length}
+        // memberCount={members.length}
       />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
