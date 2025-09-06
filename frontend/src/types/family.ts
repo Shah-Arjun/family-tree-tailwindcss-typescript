@@ -41,8 +41,8 @@ export type FamilyMember = {
 // Adds children?: TreeNodeData[] → each node can have multiple children.
 // Used when you build a hierarchical tree view.
 export interface TreeNodeData {
-  name: string;
   _id: string;
+  name: string;
   gender: 'male' | 'female' | 'unknown';
   generation: number;
   side: 'paternal' | 'maternal' | 'current';
@@ -53,12 +53,12 @@ export interface TreeNodeData {
   children?: TreeNodeData[];
 }
 
-
+//for node
 // Essentially the same as TreeNodeData but semantically used to represent the entire family tree starting from a root person.
 // Each child in children is also FamilyTreeData, so the structure is recursive.
 export interface FamilyTreeData {
-  name: string;
   _id: string;
+  name: string;
   gender: 'male' | 'female' | 'unknown';
   generation: number;
   side: 'paternal' | 'maternal' | 'current';
