@@ -1,3 +1,5 @@
+// this components makes node of each member for tree structure
+
 import type { FamilyTreeData } from '@/types/family';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -10,6 +12,8 @@ interface FamilyTreeNodeProps {
   nodeDatum: FamilyTreeData;          // holds all info about family, required
   onNodeClick?: (nodeData: FamilyTreeData) => void;     //callback when card is clicked, optional
 }
+
+
 
 export const FamilyTreeNode: React.FC<FamilyTreeNodeProps> = ({
   nodeDatum,
