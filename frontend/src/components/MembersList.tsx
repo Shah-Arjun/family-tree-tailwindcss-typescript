@@ -162,11 +162,11 @@ export const MembersList: React.FC<MembersListProps> = ({
               <span>Total: {stats.total}</span>
             </Badge>
 
-            <Badge variant='outline' className='bg-family-paternal/10 text-family-paternal border-family-paternal'>
+            <Badge variant='outline' className='bg-family-paternal/10 text-[#870082] border-family-paternal'>
               Paternal: {stats.paternal}
             </Badge>
 
-            <Badge variant='outline' className='bg-family-maternal/10 text-family-maternal border-family-maternal'>
+            <Badge variant='outline' className='bg-family-maternal/10 text-[#2e0da6] border-family-maternal'>
               Maternal: {stats.maternal}
             </Badge>
 

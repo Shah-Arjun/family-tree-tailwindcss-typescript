@@ -35,8 +35,8 @@ export const MemberCard: React.FC<MemberCardProps> = ({
 }) => {
   const getGenderColor = (gender: string) => {
     switch (gender) {
-      case 'male': return 'bg-family-male text-white';
-      case 'female': return 'bg-family-female text-white';
+      case 'male': return 'bg-family-male text-muted-foreground';
+      case 'female': return 'bg-family-female text-[pink]';
       default: return 'bg-family-unknown text-white';
     }
   };
@@ -72,7 +72,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         <CardContent className="p-4">
           <div className="flex items-center space-x-3">
             <div className="relative">
-              <Avatar className="w-12 h-12">
+              <Avatar className="border-1 border-muted-foreground w-12 h-12">
                 <AvatarImage src={member.photo} alt={member.name} />
                 <AvatarFallback className={getGenderColor(member.gender)}>
                   {getInitials(member.name)}
