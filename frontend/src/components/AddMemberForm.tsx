@@ -147,6 +147,7 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
     photo: "",
     childrenIds: [],
     isAlive: true,
+    notes:""
   });
 
   }
