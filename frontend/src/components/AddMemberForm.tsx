@@ -126,25 +126,24 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
     }
 
      // Reset form after submitted
-  //   setFormData({
-  //   name: "",
-  //   _id: "",
-  //   age: 0,
-  //   gender: 'unknown',
-  //   fatherId: "",
-  //   motherId: "",
-  //   spouseId: "",
-  //   dateOfBirth: "",
-  //   dateOfDeath: "",
-  //   generation: 0,
-  //   side: 'current',
-  //   email: "",
-  //   phone: "",
-  //   address: "",
-  //   photo: "",
-  //   childrenIds: [],
-  //   isAlive: true,
-  // });
+    setFormData({
+      
+    name: "",
+    gender: 'unknown',
+    fatherId: "",
+    motherId: "",
+    spouseId: "",
+    dateOfBirth: "",
+    dateOfDeath: "",
+    generation: 0,
+    side: 'current',
+    email: "",
+    phone: "",
+    address: "",
+    photo: "",
+    childrenIds: [],
+    isAlive: true,
+  });
 
   }
 
@@ -271,7 +270,6 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
                   placeholder="Enter email"
-                  required
                 />
               </div>
 
@@ -281,11 +279,10 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
                   <span>Phone</span>
                 </Label>           
                 <Input
-                  id="email"
+                  id="phone"
                   value={formData.phone}
                   onChange={(e) => handleInputChange('phone', e.target.value)}
                   placeholder="+977 9800000000"
-                  required
                 />
               </div>
 
@@ -299,7 +296,6 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
                   value={formData.occupation}
                   onChange={(e) => handleInputChange('occupation', e.target.value)}
                   placeholder="Job title or profession"
-                  required
                 />
               </div>
 
@@ -313,7 +309,6 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
                   value={formData.address}
                   onChange={(e) => handleInputChange('address', e.target.value)}
                   placeholder="City, State/Country"
-                  required
                 />
               </div>
 
