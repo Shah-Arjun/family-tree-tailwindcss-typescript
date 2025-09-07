@@ -55,9 +55,9 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
 
 
   // to handle input change in form input fields when user types
-  const handleInputChange = <k extends keyof FamilyMember>(
-    field:k, 
-    value: FamilyMember[k]
+  const handleInputChange = (
+    field:keyof FamilyMember, 
+    value: string | number | boolean | undefined
   ) => {
     setFormData((prev) => ({
       ...prev,                  // keep the old data
