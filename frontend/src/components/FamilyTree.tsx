@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';   //RotateCcw icon for reset
 // import { Maximize2 } from 'lucide-react';
 import { memberServices } from '@/services/memberServices';
+import { buildFamilyTree } from '@/utils/transform';
 
 
 // pops interface for what the FamilyTree component receives
@@ -33,8 +34,15 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await memberServices.getMembers();  //API call
-        setTreeData(data);
+        setLoading(true);
+        const members = await memberServices.getMembers();  //API call
+      const tree = buildFamilyTree(members);     //build tree
+             if (tree.length > 0) {
+        setTreeData(tree[0]);
+      } else {
+        setTreeData(null);
+      }
+
       } catch (err) {
         console.error("Error fetching family tree:", err);
       } finally {
