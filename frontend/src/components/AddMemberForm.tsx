@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 //components from shadcn
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui//avatar';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input'
@@ -55,7 +55,10 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
 
 
   // to handle input change in form input fields when user types
-  const handleInputChange = (field:keyof FamilyMember, value: string | number | boolean | undefined) => {
+  const handleInputChange = <k extends keyof FamilyMember>(
+    field:k, 
+    value: FamilyMember[k]
+  ) => {
     setFormData((prev) => ({
       ...prev,                  // keep the old data
        [field]: value,          // update only the changed field 
@@ -127,8 +130,9 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
 
      // Reset form after submitted
     setFormData({
-      
     name: "",
+     _id: "",
+    age: 0,
     gender: 'unknown',
     fatherId: "",
     motherId: "",
