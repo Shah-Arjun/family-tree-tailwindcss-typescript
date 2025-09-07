@@ -29,13 +29,17 @@ export const transformFamilyMember = (data: any): FamilyMember => ({
   isAlive: data.isAlive,
 });
 
-// 🔑 New helper: convert FamilyMember[] → FamilyTreeData
-export function buildFamilyTree(members: FamilyMember[]): FamilyTreeData[] {
-  const map: Record<string, FamilyTreeData> = {};
 
-  // Step 1: make a map of _id -> FamilyTreeData
-  members.forEach((m) => {
-    map[m._id] = {
+
+/**
+ * Builds a nested FamilyTreeData structure from flat FamilyMember[]
+ */
+export const buildFamilyTree = (members: FamilyMember[]): FamilyTreeData[] => {
+  const memberMap: Record<string, FamilyTreeData> = {};
+
+  // Step 1: Create a map of all members
+  members.forEach(m => {
+    memberMap[m._id] = {
       _id: m._id,
       name: m.name,
       gender: m.gender,
@@ -45,24 +49,23 @@ export function buildFamilyTree(members: FamilyMember[]): FamilyTreeData[] {
       dateOfBirth: m.dateOfBirth,
       dateOfDeath: m.dateOfDeath,
       isAlive: m.isAlive,
-      children: [],
+      children: []
     };
   });
 
   const roots: FamilyTreeData[] = [];
 
-  // Step 2: connect children to their parents
-  members.forEach((m) => {
-    const node = map[m._id];
-    if (m.fatherId && map[m.fatherId]) {
-      map[m.fatherId].children!.push(node);
-    } else if (m.motherId && map[m.motherId]) {
-      map[m.motherId].children!.push(node);
+  // Step 2: Link children to parents
+  members.forEach(m => {
+    if (m.fatherId && memberMap[m.fatherId]) {
+      memberMap[m.fatherId].children!.push(memberMap[m._id]);
+    } else if (m.motherId && memberMap[m.motherId]) {
+      memberMap[m.motherId].children!.push(memberMap[m._id]);
     } else {
       // No parent → treat as root
-      roots.push(node);
+      roots.push(memberMap[m._id]);
     }
   });
 
-  return roots; // could be one root or multiple
-}
+  return roots;
+};
