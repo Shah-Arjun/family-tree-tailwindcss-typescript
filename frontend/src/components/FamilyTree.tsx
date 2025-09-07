@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';   //RotateCcw icon for reset
 // import { Maximize2 } from 'lucide-react';
 import { memberServices } from '@/services/memberServices';
-import { data } from 'react-router-dom';
 
 
 // pops interface for what the FamilyTree component receives
@@ -20,41 +19,44 @@ interface FamilyTreeProps {
 
 
 
-export const FamilyTree: React.FC<FamilyTreeProps> = ({ 
-  treeData, 
-  onNodeClick 
+export const FamilyTree: React.FC<FamilyTreeProps> = ({
+  //  treeData, 
+  onNodeClick
 }) => {
   const [translate, setTranslate] = useState({ x: 0, y: 0 });             //to change the position of tree
   const [zoom, setZoom] = useState(0.8);    // initially 80%                              // starting = 0.8 = 80% 
   const [treeRef, setTreeRef] = useState<HTMLDivElement | null>(null);    // Stores a reference to the container DOM element (the div that holds the tree).
   const [treeData, setTreeData] = useState<FamilyTreeData | null>(null);
-  const [loading, setLoading = useState(true)]
+  const [loading, setLoading] = useState(true);
 
+  // fetch data feom backend
   useEffect(() => {
-    //replace with frontend API endpoints
-   const res = memberServices.getMembers();
-   res.json()
-   data: () => {data: FamilyTreeData}
-   setTreeData(data)
-   setLoading(false)
-  })
-
-
-
-
-
+    const fetchData = async () => {
+      try {
+        const data = await memberServices.getMembers();  //API call
+        setTreeData(data);
+      } catch (err) {
+        console.error("Error fetching family tree:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
 
 
   // Custom node rendering, renders each member calling FamilyTreeNode
   const renderCustomNode = useCallback((rd3tProps: any) => {
     return (
-      <FamilyTreeNode 
+      <FamilyTreeNode
         nodeDatum={rd3tProps.nodeDatum}   // data passed to FamilyTreeNode
         onNodeClick={onNodeClick}
       />
     );
   }, [onNodeClick]);
+
+
 
   // Center the tree when component mounts,,,, this runs after the components renders(or when treeRef changes)
   useEffect(() => {
@@ -78,11 +80,11 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({
   };
 
 
-// handles reset when reset icon is clicked
+  // handles reset when reset icon is clicked
   const handleReset = () => {
     setZoom(0.8);                                              // set to initial --> 80%
     if (treeRef) {                                            // to recalculate translate to re-center the tree
-      const dimensions = treeRef.getBoundingClientRect();     
+      const dimensions = treeRef.getBoundingClientRect();
       setTranslate({
         x: dimensions.width / 2,
         y: dimensions.height / 4
@@ -90,6 +92,9 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({
     }
   };
 
+
+  if(loading) return  <p>Loading family tree...</p>;
+  if(!treeData) return <p>No family data available</p>
 
   return (
     <Card className="w-full h-full pb-0 border-0 shadow-[gray]">    {/*outer card */}
@@ -127,13 +132,13 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({
         </div>
       </CardHeader>
       <CardContent className="bg-amber-100 p-0">        {/*below than header ---> tree structure part */}
-        <div 
+        <div
           ref={setTreeRef}
           className="w-full h-[600px] bg-gradient-warm rounded-lg border overflow-hidden"
           style={{ minHeight: '600px' }}
         >
           {/* react-d3-tree component with props */}
-          <Tree        
+          <Tree
             data={treeData}
             translate={translate}
             zoom={zoom}
