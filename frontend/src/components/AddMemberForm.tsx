@@ -158,6 +158,20 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
   //   name.split(' ').map((n) => n[0]).join('').toUpperCase();
   // }
 
+
+  // for photo upload feature
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if(file) {
+      setPhoto(file)
+      setPreview(URL.createObjectURL(file));  // preview file
+    }
+  }
+
+
   return (
     <Card className="max-w-4xl mx-auto border-muted-foreground">
 
@@ -183,8 +197,9 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
               {/* profile section-left */}
               <div className="flex flex-col items-center space-y-2">
                 <Avatar className="w-20 h-20">
+                  <AvatarFallback onChange={handleFileChange}>
                   <AvatarImage src={formData.photo} alt={formData.name} />
-                  <AvatarFallback>
+                  <AvatarFallback /> 
                     {formData?.name[0] ?? <UserPlus className="w-8 h-8" />}
                   </AvatarFallback>
                 </Avatar>
