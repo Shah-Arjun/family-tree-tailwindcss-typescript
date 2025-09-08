@@ -37,7 +37,7 @@ export const transformFamilyMember = (data: any): FamilyMember => ({
 export const buildFamilyTree = (members: FamilyMember[]): FamilyTreeData[] => {
   const memberMap: Record<string, FamilyTreeData> = {};
 
-  // Step 1: Create a map of all members
+  // Step 1: Convert all FamilyMember to FamilyTreeData
   members.forEach(m => {
     memberMap[m._id] = {
       _id: m._id,
@@ -57,12 +57,32 @@ export const buildFamilyTree = (members: FamilyMember[]): FamilyTreeData[] => {
 
   // Step 2: Link children to parents
   members.forEach(m => {
+    let attachedToParent = false;
+
+    // Attach to father if available
     if (m.fatherId && memberMap[m.fatherId]) {
       memberMap[m.fatherId].children!.push(memberMap[m._id]);
-    } else if (m.motherId && memberMap[m.motherId]) {
+      attachedToParent = true;
+    }
+
+    // Attach to mother if available
+    if (m.motherId && memberMap[m.motherId]) {
       memberMap[m.motherId].children!.push(memberMap[m._id]);
-    } else {
-      // No parent → treat as root
+      attachedToParent = true;
+    }
+
+    // If parent missing but childrenIds exist, attach children manually
+    if (m.childrenIds?.length > 0) {
+      m.childrenIds.forEach(cid => {
+        if (memberMap[cid]) {
+          memberMap[m._id].children!.push(memberMap[cid]);
+          attachedToParent = true;
+        }
+      });
+    }
+
+    // If not attached anywhere → treat as root
+    if (!attachedToParent) {
       roots.push(memberMap[m._id]);
     }
   });
