@@ -1,9 +1,9 @@
 import express from "express";           // Import the Express library
-import cors from "cors";
+import cors from "cors";                 // for backend frontend connection
 import {connectDatabase} from "./database/db.js"
 import dotenv from "dotenv";               // Load environment variables from .env
 import path from "path";                // for photo
-import { fileURLToPath } from "url";    // needed for __dirname
+import { fileURLToPath } from "url";    // needed for __dirname  
 
 
 dotenv.config();
@@ -44,8 +44,6 @@ connectDatabase();
 app.get("/", (req, res) => {
     res.send("this is home page");
 })
-
-
 
 
 
