@@ -122,7 +122,7 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
       return;
     }
 
-    if (photo) {
+    
       // Build FormData if photo exists
       const formDataToSend = new FormData();
       formDataToSend.append("name", formData.name);
@@ -140,15 +140,18 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
       if (formData.notes) formDataToSend.append("notes", formData.notes);
 
       // Append file
-      formDataToSend.append("photo", photo);
+     if(photo) formDataToSend.append("photo", photo);
 
-      await memberServices.addMember(formDataToSend, true);
-    } else {
-      // Send as JSON if no photo
-      await memberServices.addMember(formData);
-    }
+   try{
+    await memberServices.addMember(formDataToSend, true)
+        alert("Member added successfully!");
 
-    alert("Member added successfully!");
+   }catch(err){
+    console.error(err)
+    alert("Error adding member.")
+    return
+   }
+
 
     //reset form after submission
     setFormData({
