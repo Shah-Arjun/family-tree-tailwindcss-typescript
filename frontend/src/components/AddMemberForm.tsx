@@ -17,7 +17,7 @@ import { Calendar, Upload, UserPlus, Mail, Phone, Briefcase, MapPin, FileText } 
 import type { FamilyMember } from '@/types/family';
 
 //services
-import {memberServices} from "@/services/memberServices";
+import { memberServices } from "@/services/memberServices";
 
 
 //typescript interface for type validation
@@ -27,10 +27,10 @@ interface AddMemberFormProps {
   onCancel?: () => void;
 }
 
-export const AddMemberForm: React.FC<AddMemberFormProps> = ({ 
+export const AddMemberForm: React.FC<AddMemberFormProps> = ({
   // members, 
   // onAddMember, 
-  onCancel 
+  onCancel
 }) => {
 
   const [formData, setFormData] = useState<FamilyMember>({
@@ -51,20 +51,33 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
     photo: "",
     childrenIds: [],
     isAlive: true,
+    notes: "",
   });
 
 
   // to handle input change in form input fields when user types
   const handleInputChange = (
-    field:keyof FamilyMember, 
+    field: keyof FamilyMember,
     value: string | number | boolean | undefined
   ) => {
     setFormData((prev) => ({
       ...prev,                  // keep the old data
-       [field]: value,          // update only the changed field 
-      }))
+      [field]: value,          // update only the changed field 
+    }))
   }
 
+
+  // for photo upload feature
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setPhoto(file)
+      setPreview(URL.createObjectURL(file));  // preview file
+    }
+  };
 
 
   //to fetch members from backend  
@@ -76,7 +89,7 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
         const res = await memberServices.getMembers(); // axios call
 
         console.log('members fetched:', res)  //for test
-        setFetchedMembers(res); 
+        setFetchedMembers(res);
 
       } catch (err) {
         console.error("Error fetching members:", err);
@@ -85,13 +98,14 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
     fetchMembers();   //calling function immediately
   }, []);
 
-  const availableParents = fetchedMembers.filter(m =>{
+  const availableParents = fetchedMembers.filter(m => {
     const gender = m.gender?.toLowerCase();
-    return gender === 'male' || gender === 'female'}
+    return gender === 'male' || gender === 'female'
+  }
   );
 
-const availableFathers = availableParents.filter((m) => m.gender?.toLowerCase() === "male");
-const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() === "female");
+  const availableFathers = availableParents.filter((m) => m.gender?.toLowerCase() === "male");
+  const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() === "female");
 
   const availableSpouses = fetchedMembers.filter(m =>
     m.generation === formData.generation &&
@@ -100,57 +114,68 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
 
 
   // when add member button is clicked ie. form submitted
-  const handleSubmit =async (e: React.FormEvent) => {
-    e.preventDefault();   // prevent reload page,  stay on the same page and can process the data smoothly.
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-    if(!formData.name.trim()) {
+    if (!formData.name.trim()) {
       alert("Name is required!");
       return;
     }
 
-    // Prepare new member data
-    const newMember: Omit<FamilyMember, '_id'> = {
-      ...formData,
-      name: formData.name.trim(),
-      fatherId: formData.fatherId === 'none' ? undefined : formData.fatherId,
-      motherId: formData.motherId === 'none' ? undefined : formData.motherId,
-      spouseId: formData.spouseId === 'none' ? undefined : formData.spouseId,
-      childrenIds: [],
-      generation: formData.generation,
-    };
+    if (photo) {
+      // Build FormData if photo exists
+      const formDataToSend = new FormData();
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("gender", formData.gender);
+      formDataToSend.append("generation", formData.generation.toString());
+      formDataToSend.append("isAlive", String(formData.isAlive));
+      if (formData.dateOfBirth) formDataToSend.append("dateOfBirth", formData.dateOfBirth);
+      if (formData.dateOfDeath) formDataToSend.append("dateOfDeath", formData.dateOfDeath);
+      if (formData.fatherId) formDataToSend.append("fatherId", formData.fatherId);
+      if (formData.motherId) formDataToSend.append("motherId", formData.motherId);
+      if (formData.spouseId) formDataToSend.append("spouseId", formData.spouseId);
+      if (formData.email) formDataToSend.append("email", formData.email);
+      if (formData.phone) formDataToSend.append("phone", formData.phone);
+      if (formData.address) formDataToSend.append("address", formData.address);
+      if (formData.notes) formDataToSend.append("notes", formData.notes);
 
-    try {
-      const res = await memberServices.addMember(newMember);
-      console.log('Member added', res);
-      alert("Member added successfully!");
-    } catch (err) {
-      console.error("Error saving member: ", err);
-      alert("Something went worng while saving!")
+      // Append file
+      formDataToSend.append("photo", photo);
+
+      await memberServices.addMember(formDataToSend, true);
+    } else {
+      // Send as JSON if no photo
+      await memberServices.addMember(formData);
     }
 
-     // Reset form after submitted
-    setFormData({
-    name: "",
-     _id: "",
-    age: 0,
-    gender: 'unknown',
-    fatherId: "",
-    motherId: "",
-    spouseId: "",
-    dateOfBirth: "",
-    dateOfDeath: "",
-    generation: 0,
-    side: 'current',
-    email: "",
-    phone: "",
-    address: "",
-    photo: "",
-    childrenIds: [],
-    isAlive: true,
-    notes:""
-  });
+    alert("Member added successfully!");
 
-  }
+    //reset form after submission
+    setFormData({
+      name: "",
+      _id: "",
+      age: 0,
+      gender: "unknown",
+      fatherId: "",
+      motherId: "",
+      spouseId: "",
+      dateOfBirth: "",
+      dateOfDeath: "",
+      generation: 0,
+      side: "current",
+      email: "",
+      phone: "",
+      address: "",
+      photo: "",
+      childrenIds: [],
+      isAlive: true,
+      notes: "",
+    });
+    setPhoto(null);
+    setPreview(null);
+
+  };
+
 
 
   // function to get first letter of name and cast
@@ -158,18 +183,6 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
   //   name.split(' ').map((n) => n[0]).join('').toUpperCase();
   // }
 
-
-  // for photo upload feature
-  const [photo, setPhoto] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if(file) {
-      setPhoto(file)
-      setPreview(URL.createObjectURL(file));  // preview file
-    }
-  }
 
 
   return (
@@ -191,22 +204,31 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
           {/* Profile Section */}
           <div className="space-y-4">
             <h3 className="text-lg text-left font-semibold border-b border-muted-foreground pb-2">Profile Information</h3>
-            
+
             <div className="flex items-start space-x-6">
 
               {/* profile section-left */}
               <div className="flex flex-col items-center space-y-2">
                 <Avatar className="w-20 h-20">
-                  <AvatarFallback onChange={handleFileChange}>
-                  <AvatarImage src={formData.photo} alt={formData.name} />
-                  <AvatarFallback /> 
-                    {formData?.name[0] ?? <UserPlus className="w-8 h-8" />}
+                  <AvatarImage src={preview || formData.photo} alt={formData.name} />
+                  <AvatarFallback>
+                    {formData?.name ? formData.name[0].toUpperCase() : <UserPlus className="w-8 h-8" />}
                   </AvatarFallback>
                 </Avatar>
-                <Button type="button" variant="outline" size="sm" className="flex items-center space-x-1">
+                {/* file input- hidden */}
+                <input
+                  type='file'
+                  accept='image/*'
+                  onChange={handleFileChange}
+                  className='hidden'
+                  id='photoUpload'
+                />
+                <label htmlFor="photoUpload">
+                  <Button type="button" variant="outline" size="sm" className="flex items-center space-x-1" onClick={() => document.getElementById("photoUpload")?.click()}>
                   <Upload className="w-3 h-3" />
                   <span>Upload Photo</span>
                 </Button>
+                </label>
               </div>
 
               {/* profile section-right */}
@@ -253,18 +275,18 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
                   <div className="flex items-center space-x-2">
                     <Label htmlFor='isAlive'>Is Alive</Label>
                     <Switch
-                    className='border-muted-foreground'
-                    id="isAlive"
-                    checked={formData.isAlive}
-                    onCheckedChange={(checked) => handleInputChange('isAlive', checked)}
+                      className='border-muted-foreground'
+                      id="isAlive"
+                      checked={formData.isAlive}
+                      onCheckedChange={(checked) => handleInputChange('isAlive', checked)}
                     />
                   </div>
                   {!formData.isAlive && (
-                    <Input 
-                    type='date'
-                    value={formData.dateOfDeath}
-                    onChange={(e) => handleInputChange('dateOfDeath', e.target.value)}
-                    placeholder='Date of Death'
+                    <Input
+                      type='date'
+                      value={formData.dateOfDeath}
+                      onChange={(e) => handleInputChange('dateOfDeath', e.target.value)}
+                      placeholder='Date of Death'
                     />
                   )}
                 </div>
@@ -297,7 +319,7 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
                 <Label htmlFor="phone" className="flex items-center space-x-1">
                   <Phone className="w-4 h-4" />
                   <span>Phone</span>
-                </Label>           
+                </Label>
                 <Input
                   id="phone"
                   value={formData.phone}
@@ -310,7 +332,7 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
                 <Label htmlFor="occupation" className="flex items-center space-x-1">
                   <Briefcase className="w-4 h-4" />
                   <span>Occupation</span>
-                </Label>                
+                </Label>
                 <Input
                   id="occupation"
                   value={formData.occupation}
@@ -323,7 +345,7 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
                 <Label htmlFor="address" className="flex items-center space-x-1">
                   <MapPin className="w-4 h-4" />
                   <span>Location</span>
-                </Label>                
+                </Label>
                 <Input
                   id="address"
                   value={formData.address}
@@ -379,7 +401,7 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
                     <SelectValue placeholder="Select father" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value= "none">No father selected</SelectItem>
+                    <SelectItem value="none">No father selected</SelectItem>
                     {availableFathers.map((father) => (
                       <SelectItem key={father._id} value={father._id}>
                         {father.name}
@@ -432,7 +454,7 @@ const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() 
           {/* Notes */}
           <div className="space-y-4">
             <h3 className="text-lg text-left font-semibold border-b border-muted-foreground pb-2">Additional Information</h3>
-            
+
             <div className="space-y-2">
               <Label htmlFor="notes" className="flex items-center space-x-1">
                 <FileText className="w-4 h-4" />

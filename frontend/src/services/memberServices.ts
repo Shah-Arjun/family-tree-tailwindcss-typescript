@@ -26,10 +26,19 @@ const cleanMemberPayload = (member: Partial<FamilyMember>) => {
 
 export const memberServices = {
   // Add a new member
-  addMember: async (member: Partial<FamilyMember>): Promise<FamilyMember> => {
-    const payload = cleanMemberPayload(member);
-    const res = await axios.post(API_URL, payload);
-    return transformFamilyMember(res.data); // ensure consistent frontend type
+  addMember: async (data: FormData | Omit<FamilyMember, "_id">, isFormData = false) => {
+    let res;
+    if(isFormData){
+      //send as FormData (for photo upload)
+      res = await axios.post(API_URL, data, {
+        headers: {"Accept": 'application/json'},   //dont set content-type
+      });
+    } else {
+      //send as json
+      const payload = cleanMemberPayload(data as Omit<FamilyMember, "_id">);
+      res = await axios.post(API_URL, payload);
+    }
+    return transformFamilyMember(res.data); // normalixe for feontend
   },
 
   // Get all members
