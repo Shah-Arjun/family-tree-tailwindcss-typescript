@@ -2,7 +2,7 @@
 
 
 // Import the Express library
-const express = require('express');
+import express from "express";
 
 // Create a new router object from Express
 // This router will hold all the routes for "family members"
@@ -11,10 +11,21 @@ const router = express.Router();
 
 // Import all controller functions from 'familyController.js'
 // These functions contain the logic for handling each API request
-const { addMember, getMembers, getMemberById, updateMember, deleteMember } = require('../controllers/familyController');
+import { addMember, getMembers, getMemberById, updateMember, deleteMember } from '../controllers/familyController.js';
+
+//for photo
+import multer from "multer";
+
+//configure multer
+const storage = multer.diskStorage({
+    destination: (req, res, cb) => {
+        cb(null, "uploads/"); //save files in backend/uploads
+    },
+});
+const upload = multer({storage})
 
 
-//API endpoints
+//API endpoints/ routes
 
 // Define a POST route for '/' (root of this router)
 // When a POST request is made to '/', the addMember controller runs
@@ -28,6 +39,11 @@ router.put('/:id', updateMember);
 
 router.delete('/:id', deleteMember);
 
+router.post("/", upload.single("photo"), addMember);
+
+router.put("/:id", upload.single("photo"), updateMember);
 
 
-module.exports = router;
+
+
+export default router;

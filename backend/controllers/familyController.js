@@ -1,13 +1,17 @@
 //all API's logic based on familyMember model goes here
 
 // importing model
-const { error } = require('console');
-const FamilyMember = require('../model/familyMember');
+import { error } from 'console';
+import FamilyMember from '../model/familyMember.js';
 
 // API logic to add family member
-exports.addMember = async (req, res) => {
+export const addMember = async (req, res) => {
     try {
-        const member = new FamilyMember(req.body);  //frontend bata aako data member(document/ mongoDB object) banayr tesma ma rakh, req.body = the data sent from frontend (JSON form data)
+        const data = req.body;
+        if(req.file){
+            data.photo = `/uploads/${req.file.filename}`;   // store file path
+        }
+        const member = new FamilyMember(data);  //frontend bata aako data member(document/ mongoDB object) banayr tesma ma rakh, req.body = the data sent from frontend (JSON form data)
         const saved = await member.save();                   // Save the new member to MongoDB
         res.status(200).json(saved)                          // Send response back to frontend with saved data
 
@@ -18,7 +22,7 @@ exports.addMember = async (req, res) => {
 
 
 //API logic to get all members
-exports.getMembers = async (req, res) => {
+export const getMembers = async (req, res) => {
     try {
         const members = await FamilyMember.find().sort({createdAt: -1});   // Find all & sort newest first
         res.json(members);    //return JSON array
@@ -29,7 +33,7 @@ exports.getMembers = async (req, res) => {
 
 
 //API logic to get single member by ID
-exports.getMemberById = async (req, res) => {
+export const getMemberById = async (req, res) => {
     try {
         const member = await FamilyMember.findById(req.params.id);
         if(!member) return res.status(404).json({error: 'Not found'});
@@ -41,7 +45,7 @@ exports.getMemberById = async (req, res) => {
 
 
 // Update member by id
-exports.updateMember = async (req,res) => {
+export const updateMember = async (req,res) => {
     try {
         const updated = await FamilyMember.findByIdAndUpdate(
             req.params.id,     // find by requested id
@@ -56,7 +60,7 @@ exports.updateMember = async (req,res) => {
 
 
 // delete member by id
-exports.deleteMember = async (req, res) => {
+export const deleteMember = async (req, res) => {
     try {
         const deleted = await FamilyMember.findByIdAndDelete(req.params.id);
         res.json({message: 'Deleted'})

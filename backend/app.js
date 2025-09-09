@@ -1,9 +1,18 @@
-const express = require('express');           // Import the Express library
-const cors = require("cors");
-const { connectDatabase } = require("./database/db");
-require("dotenv").config();               // Load environment variables from .env
+import express from "express";           // Import the Express library
+import cors from "cors";
+import {connectDatabase} from "./database/db.js"
+import dotenv from "dotenv";               // Load environment variables from .env
+import path from "path";                // for photo
+import { fileURLToPath } from "url";    // needed for __dirname
 
+
+dotenv.config();
 const app = express();           // create express app
+
+
+//setup for dirname in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename)
 
 
 //middleware
@@ -15,10 +24,13 @@ app.use(express.json());    // parse incoming JSON body
 // app.use(cors({ origin: "http://localhost:5173" }));
 
 
+//server uploaded images
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
 
 
 // import routes   , mounting the routes/api's
-const familyRoutes = require('./routes/familyRoutes');
+import familyRoutes from './routes/familyRoutes.js';
 app.use('/api/family', familyRoutes);   //base route for all other routes
 
 
