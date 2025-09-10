@@ -131,9 +131,16 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
       formDataToSend.append("isAlive", String(formData.isAlive));
       if (formData.dateOfBirth) formDataToSend.append("dateOfBirth", formData.dateOfBirth);
       if (formData.dateOfDeath) formDataToSend.append("dateOfDeath", formData.dateOfDeath);
-      if (formData.fatherId) formDataToSend.append("fatherId", formData.fatherId);
-      if (formData.motherId) formDataToSend.append("motherId", formData.motherId);
-      if (formData.spouseId) formDataToSend.append("spouseId", formData.spouseId);
+if (formData.fatherId && formData.fatherId !== "none") {
+  formDataToSend.append("fatherId", formData.fatherId);
+}
+if (formData.motherId && formData.motherId !== "none") {
+    formDataToSend.append("motherId", formData.motherId);
+}
+if (formData.spouseId && formData.spouseId !== "none") {
+      formDataToSend.append("spouseId", formData.spouseId);
+}
+
       if (formData.email) formDataToSend.append("email", formData.email);
       if (formData.phone) formDataToSend.append("phone", formData.phone);
       if (formData.address) formDataToSend.append("address", formData.address);
