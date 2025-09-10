@@ -73,7 +73,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
           <div className="flex items-center space-x-3">
             <div className="relative">
               <Avatar className="border-1 border-muted-foreground w-12 h-12">
-                <AvatarImage src={member.photo} alt={member.name} />
+                <AvatarImage src={`http://localhost:5000${member.photo}`} alt={member.name} />
                 <AvatarFallback className={getGenderColor(member.gender)}>
                   {getInitials(member.name)}
                 </AvatarFallback>
