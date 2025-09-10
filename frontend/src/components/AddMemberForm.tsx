@@ -129,6 +129,7 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
       formDataToSend.append("gender", formData.gender);
       formDataToSend.append("generation", formData.generation.toString());
       formDataToSend.append("isAlive", String(formData.isAlive));
+      formDataToSend.append("side", formData.side);
       if (formData.dateOfBirth) formDataToSend.append("dateOfBirth", formData.dateOfBirth);
       if (formData.dateOfDeath) formDataToSend.append("dateOfDeath", formData.dateOfDeath);
 if (formData.fatherId && formData.fatherId !== "none") {
