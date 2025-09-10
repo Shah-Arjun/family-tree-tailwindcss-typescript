@@ -25,7 +25,7 @@ app.use(express.json());    // parse incoming JSON body
 
 
 //server uploaded images
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));  // to display photo in frontend
 
 
 

@@ -19,7 +19,7 @@ import multer from "multer";
 //configure multer
 const storage = multer.diskStorage({
     destination: (req, res, cb) => {
-        cb(null, "uploads/"); //save files in backend/uploads
+        cb(null, "uploads/"); //this tells multer to save files(photo) into backend/uploads that is comint from frontend
     },
 });
 const upload = multer({storage})
