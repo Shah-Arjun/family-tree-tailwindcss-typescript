@@ -29,19 +29,16 @@ const upload = multer({storage})
 
 // Define a POST route for '/' (root of this router)
 // When a POST request is made to '/', the addMember controller runs
-router.post('/', addMember);      // These are relative to /api/family (from app.js)
+router.post("/", upload.single("photo"), addMember);     // These are relative to /api/family (from app.js), for file upload version
 
 router.get('/', getMembers);
 
 router.get("/:id", getMemberById);
 
-router.put('/:id', updateMember);
+router.put("/:id", upload.single("photo"), updateMember);
 
 router.delete('/:id', deleteMember);
 
-router.post("/", upload.single("photo"), addMember);
-
-router.put("/:id", upload.single("photo"), updateMember);
 
 
 
