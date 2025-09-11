@@ -1,6 +1,7 @@
 import {v2 as cloudinary} from "cloudinary";
 import fs from "fs";      //fs--> nodejs file system for file operation
 
+
 // from cloudinary images
  // Configuration
     cloudinary.config({ 
@@ -22,9 +23,10 @@ import fs from "fs";      //fs--> nodejs file system for file operation
             console.log("File uploaded to cloudinary: ", res.url);
             return res;
         } catch (error) {
+            console.log("❌ Cloudinary upload failed:", error.message)
             fs.unlinkSync(localFilePath)  //unlink/ delete / remove the locally saved temporary file as the upload operation got failed
             return null;
         }
     }
 
-    export default cloudinary;
+    export default {cloudinary, uploadOnCloudinary};
