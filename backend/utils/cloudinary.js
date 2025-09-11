@@ -27,6 +27,4 @@ import fs from "fs";      //fs--> nodejs file system for file operation
         }
     }
 
-
-
     export default cloudinary;
