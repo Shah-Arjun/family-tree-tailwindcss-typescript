@@ -1,22 +1,24 @@
 //all API's logic based on FamilyMember model goes here
 
 // importing model
-import { error } from "console";
 import FamilyMember from "../model/familyMember.js";
 import {  uploadOnCloudinary } from "../utils/cloudinary.js";
 
 // API logic to add family member
 export const addMember = async (req, res) => {
   try {
-    const data = req.body;
-    if (req.file) {
-      const uploaded = await uploadOnCloudinary(req.file.path); // upload to cloudinary
+    const data = req.body;               // store JSON data received from frontend to data
+
+    if (req.file) {               //check if a file exist--handled by multer
+      const uploaded = await uploadOnCloudinary(req.file.buffer); // upload to cloudinary, and response send by cloudinary is saved to uploaded variable
       if (uploaded) {
-        data.photo = uploaded.secure_url;
+        data.photo = uploaded.secure_url;    // cloudinary bata aako photo ko url data.photo ma hal
       }
     }
+
     const member = new FamilyMember(data); //frontend bata aako data member(document/ mongoDB object) banayr tesma ma rakh, req.body = the data sent from frontend (JSON form data)
     const saved = await member.save(); // Save the new member to MongoDB
+
     res.status(200).json(saved); // Send response back to frontend with saved data
   } catch (err) {
     // If something goes wrong, return error response with status 400 (Bad Request)
@@ -51,7 +53,7 @@ export const updateMember = async (req, res) => {
     const data = req.body; 
 
     if (req.file) {
-      const uploaded = await uploadOnCloudinary(req.file.path);
+      const uploaded = await uploadOnCloudinary(req.file.buffer);
       if (uploaded) {
         data.photo = uploaded.secure_url;
       }
