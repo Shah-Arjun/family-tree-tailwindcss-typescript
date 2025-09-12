@@ -63,7 +63,7 @@ export const FamilyTreeNode: React.FC<FamilyTreeNodeProps> = ({
             {/* for avatar */}
             <div className="relative">
               <Avatar className="w-12 h-12 border-2 border-muted-foreground">   {/*for pic or initials */}
-                <AvatarImage src={`http://localhost:5000${nodeDatum.photo}`} alt={nodeDatum.name} />    {/*if photo exist then show photo */}
+                <AvatarImage src={nodeDatum.photo} alt={nodeDatum.name} />    {/*if photo exist then show photo */}
                 <AvatarFallback className={getGenderColor(nodeDatum.gender)}>  {/*else  show initials */}
                   {getInitials(nodeDatum.name)}
                 </AvatarFallback>
