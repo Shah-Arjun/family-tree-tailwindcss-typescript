@@ -8,7 +8,7 @@ import express from "express";
 // This router will hold all the routes for "family members"
 const router = express.Router();
 
-import { upload } from "../utils/multer.cloudinary.js";
+import { upload } from "../middleware/multer.cloudinary.js";
 
 
 // Import all controller functions from 'familyController.js'

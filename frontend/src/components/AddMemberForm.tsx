@@ -122,43 +122,43 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
       return;
     }
 
-    
-      // Build FormData if photo exists
-      const formDataToSend = new FormData();
-      formDataToSend.append("name", formData.name);
-      formDataToSend.append("gender", formData.gender);
-      formDataToSend.append("generation", formData.generation.toString());
-      formDataToSend.append("isAlive", String(formData.isAlive));
-      formDataToSend.append("side", formData.side);
-      if (formData.dateOfBirth) formDataToSend.append("dateOfBirth", formData.dateOfBirth);
-      if (formData.dateOfDeath) formDataToSend.append("dateOfDeath", formData.dateOfDeath);
-if (formData.fatherId && formData.fatherId !== "none") {
-  formDataToSend.append("fatherId", formData.fatherId);
-}
-if (formData.motherId && formData.motherId !== "none") {
-    formDataToSend.append("motherId", formData.motherId);
-}
-if (formData.spouseId && formData.spouseId !== "none") {
+
+    // Build FormData if photo exists
+    const formDataToSend = new FormData();
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("gender", formData.gender);
+    formDataToSend.append("generation", formData.generation.toString());
+    formDataToSend.append("isAlive", String(formData.isAlive));
+    formDataToSend.append("side", formData.side);
+    if (formData.dateOfBirth) formDataToSend.append("dateOfBirth", formData.dateOfBirth);
+    if (formData.dateOfDeath) formDataToSend.append("dateOfDeath", formData.dateOfDeath);
+    if (formData.fatherId && formData.fatherId !== "none") {
+      formDataToSend.append("fatherId", formData.fatherId);
+    }
+    if (formData.motherId && formData.motherId !== "none") {
+      formDataToSend.append("motherId", formData.motherId);
+    }
+    if (formData.spouseId && formData.spouseId !== "none") {
       formDataToSend.append("spouseId", formData.spouseId);
-}
+    }
 
-      if (formData.email) formDataToSend.append("email", formData.email);
-      if (formData.phone) formDataToSend.append("phone", formData.phone);
-      if (formData.address) formDataToSend.append("address", formData.address);
-      if (formData.notes) formDataToSend.append("notes", formData.notes);
+    if (formData.email) formDataToSend.append("email", formData.email);
+    if (formData.phone) formDataToSend.append("phone", formData.phone);
+    if (formData.address) formDataToSend.append("address", formData.address);
+    if (formData.notes) formDataToSend.append("notes", formData.notes);
 
-      // Append file
-     if(photo) formDataToSend.append("photo", photo);
+    // Append file
+    if (photo) formDataToSend.append("photo", photo);
 
-   try{
-    await memberServices.addMember(formDataToSend, true)
-        alert("Member added successfully!");
+    try {
+      await memberServices.addMember(formDataToSend, true);
+      alert("Member added successfully!");
+    } catch (err: any) {
+      console.error("❌ Error adding member:", err.response?.data || err.message);
+      alert("Error adding member: " + (err.response?.data?.error || err.message));
+      return;
+    }
 
-   }catch(err){
-    console.error(err)
-    alert("Error adding member.")
-    return
-   }
 
 
     //reset form after submission

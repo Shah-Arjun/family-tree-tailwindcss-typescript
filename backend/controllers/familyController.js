@@ -1,9 +1,9 @@
-//all API's logic based on familyMember model goes here
+//all API's logic based on FamilyMember model goes here
 
 // importing model
 import { error } from "console";
 import FamilyMember from "../model/familyMember.js";
-import uploadOnCloudinary from "../utils/cloudinary.js";
+import {  uploadOnCloudinary } from "../utils/cloudinary.js";
 
 // API logic to add family member
 export const addMember = async (req, res) => {

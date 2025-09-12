@@ -4,9 +4,6 @@ import { transformFamilyMember } from "../utils/transform";
 
 const API_URL = "http://localhost:5000/api/family/";
 
-
-
-
 // Helper: removes empty strings and _id before sending to backend
 const cleanMemberPayload = (member: Partial<FamilyMember>) => {
   const payload: any = { ...member };
@@ -29,31 +26,35 @@ const cleanMemberPayload = (member: Partial<FamilyMember>) => {
   return payload;
 };
 
-
-
-
 export const memberServices = {
-
   // Add a new member
   addMember: async (
     data: FormData | Omit<FamilyMember, "_id">,
     isFormData = false
   ) => {
-    let res;
-    if (isFormData) {
-      //send as FormData (for photo upload)
-      res = await axios.post(API_URL, data, {
-        headers: { Accept: "application/json" }, //dont set content-type
-      });
-    } else {
-      //send as json
-      const payload = cleanMemberPayload(data as Omit<FamilyMember, "_id">);
-      res = await axios.post(API_URL, payload);
+    try {
+      let res;
+
+      if (isFormData) {
+        res = await axios.post(API_URL, data);
+      } else {
+        const payload = cleanMemberPayload(data as Omit<FamilyMember, "_id">);
+        res = await axios.post(API_URL, payload, {
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
+      // ✅ Guard against backend errors
+      if (res.data?.error) {
+        throw new Error(res.data.error);
+      }
+
+      return transformFamilyMember(res.data);
+    } catch (err: any) {
+      console.error("❌ addMember failed:", err.response?.data || err.message);
+      throw err; // rethrow so caller can handle in handleSubmit
     }
-    return transformFamilyMember(res.data); // normalixe for feontend
   },
-
-
 
   // Get all members
   getMembers: async (): Promise<FamilyMember[]> => {
@@ -61,15 +62,11 @@ export const memberServices = {
     return res.data.map(transformFamilyMember);
   },
 
-
-
   // Get single member by ID
   getMemberById: async (id: string): Promise<FamilyMember> => {
     const res = await axios.get(`${API_URL}${id}`);
     return transformFamilyMember(res.data);
   },
-
-
 
   // Update a member
   updateMember: async (
@@ -80,8 +77,6 @@ export const memberServices = {
     const res = await axios.put(`${API_URL}${id}`, payload);
     return transformFamilyMember(res.data);
   },
-
-
 
   // Delete a member
   deleteMember: async (id: string): Promise<{ message: string }> => {
