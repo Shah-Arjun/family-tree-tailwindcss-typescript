@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { memberServices } from '@/services/memberServices';
 
 import {
-  TreePine,
+  Trees,
   Users,
   UserPlus,
   Settings,
@@ -47,7 +47,7 @@ export const Navigation: React.FC<NavigationProps> = ({
     {
       id: 'tree',
       label: 'Family Tree',
-      icon: TreePine,
+      icon: Trees,
       description: 'Interactive family tree visualization'
     },
     {
@@ -73,7 +73,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           {/* tree logo */}
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-family rounded-lg flex items-center justify-center">
-              <TreePine className="w-6 h-6 text-white" />
+              <Trees className="w-6 h-6 text-white" />
             </div>
             <div>
               <h1 className="text-xl font-bold text-foreground">FamilyTree</h1>

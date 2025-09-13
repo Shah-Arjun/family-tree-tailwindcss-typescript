@@ -1,7 +1,7 @@
 import '../App.css';
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
-import { Users, TreePine, Heart, Shield, Search, Plus } from "lucide-react";
+import { Users, Trees, Heart, Shield, Search, Plus } from "lucide-react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +12,7 @@ export default function LandingPage() {
 
     const features = [
         {
-            icon: <TreePine className="w-8 h-8" />,
+            icon: <Trees className="w-8 h-8" />,
             title: "Interactive Family Tree",
             description: "Visualize your family connections with our beautiful, interactive tree diagram."
         },
@@ -137,7 +137,7 @@ export default function LandingPage() {
             <footer className="bg-background border-t border-border py-12">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <div className="flex items-center justify-center mb-4">
-                        <TreePine className="w-8 h-8 text-primary mr-2" />
+                        <Trees className="w-8 h-8 text-primary mr-2" />
                         <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                             FamilyTree
                         </span>
