@@ -4,14 +4,17 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 // import AuthPage from "./pages/AuthPage";
 import FamilyTreeApp from "./pages/FamilyTreeApp";
-import AuthClerk from "./pages/AuthClerk";          // clerk auth page
+import AuthClerk from "./pages/AuthClerk";          
 
 
 // components
 import MembersList from "./components/MembersList";
 import AddMemberForm from "./components/AddMemberForm";
+;
 
+//from clerk
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
+
 
 const App = () => {
   return (

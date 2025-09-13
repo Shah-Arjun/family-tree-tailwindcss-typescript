@@ -8,7 +8,6 @@ import { SignIn, SignUp } from "@clerk/clerk-react";
 
 
 
-
 const AuthClerk = () => {
 
     const [mode, setMode] = useState<"signin" | "signup">('signin');
@@ -17,7 +16,7 @@ const AuthClerk = () => {
 
     //if user is already logged in, redirects to family-tree
     useEffect(() => {
-        if(isSignedIn){
+        if (isSignedIn) {
             navigate("/family-tree");
         }
     }, [isSignedIn, navigate]);
