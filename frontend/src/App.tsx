@@ -1,27 +1,36 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // pages
 import LandingPage from "./pages/LandingPage";
 // import AuthPage from "./pages/AuthPage";
 import FamilyTreeApp from "./pages/FamilyTreeApp";
+import AuthClerk from "./pages/AuthClerk";          // clerk auth page
+
 
 // components
 import MembersList from "./components/MembersList";
 import AddMemberForm from "./components/AddMemberForm";
 
-// clerk auth page
-import AuthClerk from "./pages/AuthClerk";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+
+        {/* public */}
         <Route path="/" element={<LandingPage />} />
         {/* <Route path="/auth" element={<AuthPage />} /> */}
-        <Route path="/auth" element={<AuthClerk />} />
-        <Route path="/family-tree" element={<FamilyTreeApp />} />
-        <Route path="/memberslist" element={<MembersList members={[]} />} />
-        <Route path="/add-member" element={<AddMemberForm />} />
+        <Route path="/auth" element={<SignedOut><AuthClerk /></SignedOut>} />
+
+        {/* protected */}
+        <Route path="/family-tree" element={<SignedIn><FamilyTreeApp /></SignedIn>} />
+        <Route path="/memberslist" element={<SignedIn><MembersList members={[]} /></SignedIn>} />
+        <Route path="/add-member" element={<SignedIn><AddMemberForm /></SignedIn>} />
+
+        {/* fallback */}
+        <Route path="*" element={<Navigate to="/" />} />
+
       </Routes>
     </BrowserRouter>
   );
