@@ -10,7 +10,7 @@ import AuthClerk from "./pages/AuthClerk";
 // components
 import MembersList from "./components/MembersList";
 import AddMemberForm from "./components/AddMemberForm";
-import Navigation from "./components/Navigation";
+import Navbar from "./components/Navbar";
 
 //from clerk
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
@@ -24,7 +24,7 @@ const App = () => {
     <BrowserRouter>
       <div className="App">
 
-        <Navigation isLoggidIn={isLoggedIn} />
+        <Navbar isLoggedIn={isLoggedIn} />
 
         <Routes>
           {/* public */}

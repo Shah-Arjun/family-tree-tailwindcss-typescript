@@ -66,7 +66,7 @@ export default function LandingPage() {
                                 size="lg"
                                 onClick={() => navigate("/auth")}
                                 className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white px-8 py-6 text-lg shadow-lg rounded-2xl">
-                                Get Started
+                                Start Building Your Tree
                             </Button>
                             <Button
                                 variant="outline"
