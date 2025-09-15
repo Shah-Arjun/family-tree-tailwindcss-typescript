@@ -97,7 +97,7 @@ export default function LandingPage() {
                             <Card
                                 key={index}
                                 className="group hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-border bg-card rounded-2xl">
-                                <CardHeader className="text-center pb-4">
+                                <CardHeader className="text-center">
                                     <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300 shadow-md">
                                         {feature.icon}
                                     </div>
