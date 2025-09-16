@@ -3,11 +3,8 @@ import { Trees, Menu, X } from 'lucide-react'
 import { useState } from "react"
 
 
-
-export default function Navbar() {
+export default function LandingPageNavbar() {
     const [isOpen, setIsOpen] = useState(false)
-
-
 
 
     return (
