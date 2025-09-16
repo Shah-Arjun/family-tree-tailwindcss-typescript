@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import DarkModeToggleButton from '@/components/ui/toggle';
+import Navbar from '@/components/Navbar';
 
 export default function LandingPage() {
     const navigate = useNavigate();
@@ -47,6 +48,8 @@ export default function LandingPage() {
         <div className="bg-background text-foreground">
             {/* toggle button for dark/ehite mode */}
             <DarkModeToggleButton />
+
+            <Navbar />
 
             {/* Hero Section */}
             <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-accent/5 to-background">
