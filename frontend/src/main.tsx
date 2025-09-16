@@ -70,23 +70,14 @@
 
 
 
-import { StrictMode } from 'react'
+
+import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import { ClerkProvider } from '@clerk/clerk-react';
-
-//importing clerk key/Publishable key
-const clerk_key = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-
-if(!clerk_key){
-  throw new Error('Add your Clerk Publishable Key to the .env file')
-}
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <ClerkProvider publishableKey={clerk_key} >
-      <App />
-    </ClerkProvider>
-  </StrictMode>
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 );
