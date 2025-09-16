@@ -5,35 +5,72 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { TreePine, ArrowLeft, Mail, Lock, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import DarkModeToggleButton from '@/components/ui/toggle';
+// import DarkModeToggleButton from '@/components/ui/toggle';
 
 
 const AuthPage = () => {
+
+  // Keeps track of email & password input values.
   const [isLogin, setIsLogin] = useState(true);
-  const [formData, setFormData] = useState({
+  const [credentials, setredentials] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: ''
   });
+
+  // Controls the error/success notification message
+  const [toast, setToast] = useState({ show: false, message: "", type: "danger" });
+
+
   const navigate = useNavigate();
 
+
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({
+    setredentials(prev => ({
       ...prev,
       [e.target.name]: e.target.value
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // For demo purposes, navigate directly to the family tree
+
+    const response = await fetch("http://localhost:5000/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: credentials.email,
+        password: credentials.password,
+      })
+    });
+
+    const json = await response.json();   // parse the backend response as json
+
+    //if login fails-->show a toast with an error message
+    if (!json.success) {
+      setToast({ show: true, message: json.error || "Invalid Credentials", type: "danger" })
+      return;
+    }
+
+    //session--- store user email and auth€Token so they saty logged in even after refresh
+    localStorage.setItem("userEmail", credentials.email)
+    localStorage.setItem("authToken", json.authToken)
+
+    //navigate to the family-tree page after login 
     navigate('/family-tree');
   };
 
+
+
+
+
   return (
     <>
-      <DarkModeToggleButton />
+      {/* <DarkModeToggleButton /> */}
 
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-accent/10 p-6 relative">
         {/* Background Glow */}
@@ -81,7 +118,7 @@ const AuthPage = () => {
                         name="name"
                         type="text"
                         placeholder="Enter your full name"
-                        value={formData.name}
+                        value={credentials.name}
                         onChange={handleInputChange}
                         required={!isLogin}
                         className="pl-10 bg-background/70 border-primary/30 focus:border-primary rounded-xl"
@@ -99,7 +136,7 @@ const AuthPage = () => {
                       name="email"
                       type="email"
                       placeholder="Enter your email"
-                      value={formData.email}
+                      value={credentials.email}
                       onChange={handleInputChange}
                       required
                       className="pl-10 bg-background/70 border-primary/30 focus:border-primary rounded-xl"
@@ -116,7 +153,7 @@ const AuthPage = () => {
                       name="password"
                       type="password"
                       placeholder="Enter your password"
-                      value={formData.password}
+                      value={credentials.password}
                       onChange={handleInputChange}
                       required
                       className="pl-10 bg-background/70 border-primary/30 focus:border-primary rounded-xl"
@@ -134,7 +171,7 @@ const AuthPage = () => {
                         name="confirmPassword"
                         type="password"
                         placeholder="Confirm your password"
-                        value={formData.confirmPassword}
+                        value={credentials.confirmPassword}
                         onChange={handleInputChange}
                         required={!isLogin}
                         className="pl-10 bg-background/70 border-primary/30 focus:border-primary rounded-xl"
@@ -165,6 +202,37 @@ const AuthPage = () => {
               </div>
             </CardContent>
           </Card>
+
+
+
+          {/* Toast notification  shows if toast.show:true */}
+          {toast.show && (
+            <div className="space-y-3 fixed bottom-4 right-4">
+              <div className="max-w-xs bg-white border border-gray-200 rounded-xl shadow-lg dark:bg-neutral-800 dark:border-neutral-700" role="alert" aria-labelledby="hs-toast-normal-example-label">
+                <div className="flex p-4">
+                  <div className="shrink-0">
+                    <svg className="shrink-0 size-4 text-blue-500 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                      <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"></path>
+                    </svg>
+                  </div>
+                  <div className="ms-3 flex-1">
+                    <p id="hs-toast-normal-example-label" className="text-sm text-gray-700 dark:text-neutral-400 pr-5">
+                      {toast.message}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setToast({ ...toast, show: false })}
+                    className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+
+
 
           <div className="mt-6 text-center">
             <p className="text-xs text-muted-foreground">

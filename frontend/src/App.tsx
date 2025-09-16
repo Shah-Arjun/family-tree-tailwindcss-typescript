@@ -97,7 +97,7 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/family-tree" element={<FamilyTreeApp />} />
-        <Route path="/memberslist" element={<MembersList />} />
+        <Route path="/memberslist" element={<MembersList members={[]} />} />
         <Route path="/add-member" element={<AddMemberForm />} />
       </Routes>
     </BrowserRouter>
