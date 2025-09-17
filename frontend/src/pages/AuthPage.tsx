@@ -12,7 +12,7 @@ const AuthPage = () => {
 
   // Keeps track of email & password input values.
   const [isLogin, setIsLogin] = useState(true);
-  const [credentials, setredentials] = useState({
+  const [form, setForm] = useState({                    //all values are null initially
     name: '',
     email: '',
     password: '',
@@ -28,40 +28,56 @@ const AuthPage = () => {
 
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setredentials(prev => ({
+    setForm(prev => ({
       ...prev,
       [e.target.name]: e.target.value
     }));
   };
 
 
-
+// function to handle form submit to backend
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:5000/auth", {
+    const endpoints = isLogin ? "loginuser" : "createuser";
+
+    const response = await fetch(`http://localhost:5000/api/${endpoints}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: credentials.email,
-        password: credentials.password,
-      })
+      body: JSON.stringify(form)
     });
 
-    const json = await response.json();   // parse the backend response as json
+    const data = await response.json();   // parse the backend response to json
+    console.log(data);
 
     //if login fails-->show a toast with an error message
-    if (!json.success) {
-      setToast({ show: true, message: json.error || "Invalid Credentials", type: "danger" })
-      return;
+    // if (!data.success) {
+    //   setToast({ show: true, message: data.error || "Invalid form", type: "danger" })
+    //   return;
+    // }
+
+
+    if(data.success && isLogin) {                // if login successful the store the token in browser localstorage
+            navigate('/family-tree');
+
+      localStorage.setItem("userEmail", form.email)
+      localStorage.setItem("token", data.authToken)
+      alert("Login Successful!");
+    }
+    else if(data.success) {                    // if login successful the store the token in browser localstorage
+      setIsLogin(true);
+      localStorage.setItem("token", data.authToken);
+      navigate('/family-tree');
+      alert("Sign Up Successful!");
+    }
+    else {
+      alert(data.message || " Something went worng");
+      return
     }
 
     //session--- store user email and auth€Token so they saty logged in even after refresh
-    localStorage.setItem("userEmail", credentials.email)
-    localStorage.setItem("authToken", json.authToken)
-
-    //navigate to the family-tree page after login 
-    navigate('/family-tree');
+    // localStorage.setItem("userEmail", form.email)
+    // localStorage.setItem("authToken", data.authToken)
   };
 
 
@@ -72,6 +88,7 @@ const AuthPage = () => {
     <>
       {/* <DarkModeToggleButton /> */}
 
+      {/* back arrow button */}
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-accent/10 p-6 relative">
         {/* Background Glow */}
         <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-accent/5 blur-3xl opacity-60"></div>
@@ -87,6 +104,7 @@ const AuthPage = () => {
             Back to Home
           </Button>
 
+        {/* main login or signup toggle card */}
           <Card className="w-full bg-background/70 backdrop-blur-xl border border-primary/20 shadow-xl rounded-2xl">
             <CardHeader className="text-center space-y-4">
               <div className="flex items-center justify-center">
@@ -118,7 +136,7 @@ const AuthPage = () => {
                         name="name"
                         type="text"
                         placeholder="Enter your full name"
-                        value={credentials.name}
+                        value={form.name}
                         onChange={handleInputChange}
                         required={!isLogin}
                         className="pl-10 bg-background/70 border-primary/30 focus:border-primary rounded-xl"
@@ -136,7 +154,7 @@ const AuthPage = () => {
                       name="email"
                       type="email"
                       placeholder="Enter your email"
-                      value={credentials.email}
+                      value={form.email}
                       onChange={handleInputChange}
                       required
                       className="pl-10 bg-background/70 border-primary/30 focus:border-primary rounded-xl"
@@ -153,7 +171,7 @@ const AuthPage = () => {
                       name="password"
                       type="password"
                       placeholder="Enter your password"
-                      value={credentials.password}
+                      value={form.password}
                       onChange={handleInputChange}
                       required
                       className="pl-10 bg-background/70 border-primary/30 focus:border-primary rounded-xl"
@@ -171,7 +189,7 @@ const AuthPage = () => {
                         name="confirmPassword"
                         type="password"
                         placeholder="Confirm your password"
-                        value={credentials.confirmPassword}
+                        value={form.confirmPassword}
                         onChange={handleInputChange}
                         required={!isLogin}
                         className="pl-10 bg-background/70 border-primary/30 focus:border-primary rounded-xl"
@@ -194,7 +212,7 @@ const AuthPage = () => {
                   <Button
                     variant="link"
                     onClick={() => setIsLogin(!isLogin)}
-                    className="ml-1 text-primary hover:text-accent font-semibold"
+                    className="ml-1 pl-0 text-primary hover:text-accent font-semibold"
                   >
                     {isLogin ? 'Sign up' : 'Sign in'}
                   </Button>
