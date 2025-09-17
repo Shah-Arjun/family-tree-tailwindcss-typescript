@@ -8,6 +8,14 @@ import { useNavigate } from 'react-router-dom';
 // import DarkModeToggleButton from '@/components/ui/toggle';
 
 
+type StrengthRules = {
+  length: boolean;
+  uppercase: boolean;
+  lowercase: boolean;
+  number: boolean;
+};
+
+
 const AuthPage = () => {
 
   // Keeps track of email & password input values.
@@ -18,6 +26,15 @@ const AuthPage = () => {
     password: '',
     confirmPassword: ''
   });
+  const [errors, setErrors] = useState({})    //for password strength check, for pw validation,,, // A validation function runs and populates the 'errors' object
+  const [password, setPassword] = useState<string>("")
+const [strength, setStrength] = useState<number>(0);
+  const [rules, setRules] = useState<StrengthRules>({
+    length: false,
+    uppercase: false,
+    lowercase: false,
+    number: false,
+  })
 
   // Controls the error/success notification message
   const [toast, setToast] = useState({ show: false, message: "", type: "danger" });
@@ -26,18 +43,26 @@ const AuthPage = () => {
   const navigate = useNavigate();
 
 
-
+  // to trace change in input field of form
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm(prev => ({
       ...prev,
       [e.target.name]: e.target.value
     }));
+
+    if (form.name === "password") {               // if password is name then validate it
+      setErrors(getPasswordStrength(form.password));
+    }
   };
 
 
-// function to handle form submit to backend
+  // function to handle form submit to backend
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (Object.keys(errors).length > 0) {    // if pw validation fails ie. if error occures due to pw not validated
+      alert("Please fix issues before signing up.")
+    }
 
     const endpoints = isLogin ? "loginuser" : "createuser";
 
@@ -57,14 +82,14 @@ const AuthPage = () => {
     // }
 
 
-    if(data.success && isLogin) {                // if login successful the store the token in browser localstorage
-            navigate('/family-tree');
+    if (data.success && isLogin) {                // if login successful the store the token in browser localstorage
+      navigate('/family-tree');
 
       localStorage.setItem("userEmail", form.email)
       localStorage.setItem("token", data.authToken)
       alert("Login Successful!");
     }
-    else if(data.success) {                    // if login successful the store the token in browser localstorage
+    else if (data.success) {                    // if login successful the store the token in browser localstorage
       setIsLogin(true);
       localStorage.setItem("token", data.authToken);
       navigate('/family-tree');
@@ -81,8 +106,45 @@ const AuthPage = () => {
   };
 
 
+  //function to validate pw when new user is to be created
+  const getPasswordStrength = (password: string): number => {
+    let score = 0
+
+    const newRules: StrengthRules = {
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      number: /[0-9]/.test(password),
+    };
+
+    if (newRules.length) score++;
+    if (newRules.uppercase) score++;
+    if (newRules.lowercase) score++;
+    if (newRules.number) score++;
+
+    setRules(newRules);
+    return score;
+  }
 
 
+  // make sure labels are typed as string[]
+  const strengthLabels: string[] = [
+    "Very Weak",
+    "Weak",
+    "Fair",
+    "Good",
+    "Strong",
+    "Very Strong",
+  ];
+
+  const strengthColors: string[] = [
+    "bg-red-500",
+    "bg-orange-500",
+    "bg-yellow-500",
+    "bg-blue-500",
+    "bg-green-500",
+    "bg-emerald-600",
+  ];
 
   return (
     <>
@@ -104,7 +166,7 @@ const AuthPage = () => {
             Back to Home
           </Button>
 
-        {/* main login or signup toggle card */}
+          {/* main login or signup toggle card */}
           <Card className="w-full bg-background/70 backdrop-blur-xl border border-primary/20 shadow-xl rounded-2xl">
             <CardHeader className="text-center space-y-4">
               <div className="flex items-center justify-center">
@@ -179,6 +241,7 @@ const AuthPage = () => {
                   </div>
                 </div>
 
+
                 {!isLogin && (
                   <div className="space-y-2 text-start">
                     <Label htmlFor="confirmPassword" className="text-sm font-medium">Confirm Password</Label>
@@ -195,6 +258,39 @@ const AuthPage = () => {
                         className="pl-10 bg-background/70 border-primary/30 focus:border-primary rounded-xl"
                       />
                     </div>
+                  </div>
+                )}
+
+
+                {/* show live validation errors */}
+
+                {password && (
+                  <div className="mt-2">
+                    <div className="w-full bg-gray-200 rounded h-2 mb-1">
+                      <div
+                        className={`h-2 rounded ${strengthColors[strength]}`}
+                        style={{ width: `${(strength / 4) * 100}%` }}
+                      />
+                    </div>
+                    <p className="text-sm text-gray-700">
+                      Strength: <span>{strengthLabels[strength]}</span>
+                    </p>
+
+                    {/* rules */}
+                    <ul className="text-xs text-gray-600 mt-2 space-y-1">
+                      <li className={rules.length ? "text-green-600" : ""}>
+                        ✔ At least 8 characters
+                      </li>
+                      <li className={rules.uppercase ? "text-green-600" : ""}>
+                        ✔ One uppercase letter
+                      </li>
+                      <li className={rules.lowercase ? "text-green-600" : ""}>
+                        ✔ One lowercase letter
+                      </li>
+                      <li className={rules.number ? "text-green-600" : ""}>
+                        ✔ One number
+                      </li>
+                    </ul>
                   </div>
                 )}
 
