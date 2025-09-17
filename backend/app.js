@@ -35,7 +35,10 @@ app.use(express.urlencoded({ extended: true }));
 import familyRoutes from './routes/familyRoutes.js';
 app.use('/api/family', familyRoutes);   //base route for all other routes
 
-
+import createUser from './routes/createUser.js'
+import login from './routes/login.js'
+app.use('/api', createUser)
+app.use('/api', login)
 
 
 //DB connection function called from database/db.js

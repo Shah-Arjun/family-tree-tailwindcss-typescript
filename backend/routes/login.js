@@ -1,6 +1,6 @@
 import express from "express";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken"
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import User from "../model/user.js";
 import { body, validationResult } from "express-validator"
 import dotenv from 'dotenv'
@@ -8,6 +8,8 @@ import dotenv from 'dotenv'
 dotenv.config();
 
 const router = express.Router();
+
+const jwtSecret = process.env.JWT_SECRET;
 
 //route to login user
 router.post(
@@ -30,7 +32,7 @@ router.post(
     console.log("User found:", userData)
 
     if (!userData) {
-      return res.json({ success: false, error: "Invalid credentials" });
+      return res.status(401).json({ success: false, message: "Invalid credentials" });
     }
 
     //compare provided pw with hashed password in db
@@ -44,14 +46,14 @@ router.post(
     // for authtoken after login
     const payload = {
       user: {
-        id: userData.id,
+        id: userData._id,
       },
     }
 
-    const authToken = JsonWebTokenError.sign(payload, jwtSecret, { expiresIn: "1h"})
+    const authToken = jwt.sign(payload, jwtSecret, { expiresIn: "1h"})
 
     //successful login
-    res.json({ success: true, authToken });
+    res.json({ success: true, authToken, message: "Logged in Successfully" });
 
   } catch (err) {
     console.error("Login error:", err);

@@ -51,6 +51,4 @@ router.delete('/:id', deleteMember);
 
 
 
-
-
 export default router;
