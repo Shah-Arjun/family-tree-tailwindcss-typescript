@@ -61,12 +61,12 @@ const AuthPage = () => {
     e.preventDefault();
 
     //only validate on signup
-    if (!isLogin){
-      if(strength < 3) {   // require at least goot password
+    if (!isLogin) {
+      if (strength < 3) {   // require at least goot password
         alert("Please choose a stronger password before signing up.")
         return
       }
-      if(form.password !== form.confirmPassword){
+      if (form.password !== form.confirmPassword) {
         alert("Confirm password and password field should be same.");
         return
       }
@@ -176,7 +176,7 @@ const AuthPage = () => {
 
           {/* main login or signup toggle card */}
           <Card className="w-full bg-background/70 backdrop-blur-xl border border-primary/20 shadow-xl rounded-2xl">
-            <CardHeader className="text-center space-y-4">
+            <CardHeader className="text-center space-y-2">
               <div className="flex items-center justify-center">
                 <div className="w-14 h-14 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center shadow-md">
                   <TreePine className="w-7 h-7 text-white" />
@@ -195,7 +195,7 @@ const AuthPage = () => {
             </CardHeader>
 
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-3">
                 {!isLogin && (
                   <div className="space-y-2 text-start">
                     <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
@@ -266,44 +266,44 @@ const AuthPage = () => {
                         className="pl-10 bg-background/70 border-primary/30 focus:border-primary rounded-xl"
                       />
                     </div>
+
+                    {/* live pw strngth show */}
+                    {form.password && (
+                      <div className="mt-4">
+                        <div className="w-full bg-gray-200 rounded h-2 mb-1">
+                          <div
+                            className={`h-2 rounded ${strengthColors[strength]}`}
+                            style={{ width: `${(strength / 4) * 100}%` }}
+                          />
+                        </div>
+                        <p className="text-sm text-gray-700">
+                          Strength: <span>{strengthLabels[strength]}</span>
+                        </p>
+
+                        {/* rules */}
+                        <ul className="flex flex-col items-start mx-auto w-fit text-xs text-gray-600 mt-2 space-y-1">
+                          <li className={rules.length ? "text-green-600" : ""}>
+                            {rules.length ? "✔" : ""} At least 8 characters
+                          </li>
+                          <li className={rules.uppercase ? "text-green-600" : ""}>
+                            {rules.uppercase ? "✔" : ""} One uppercase letter
+                          </li>
+                          <li className={rules.lowercase ? "text-green-600" : ""}>
+                            {rules.lowercase ? "✔" : ""} One lowercase letter
+                          </li>
+                          <li className={rules.number ? "text-green-600" : ""}>
+                            {rules.number ? "✔" : ""} One number
+                          </li>
+                        </ul>
+                      </div>
+                    )}
                   </div>
-                )}
 
-
-                {/* show validation errors */}
-                {form.password && (
-                  <div className="mt-2">
-                    <div className="w-full bg-gray-200 rounded h-2 mb-1">
-                      <div
-                        className={`h-2 rounded ${strengthColors[strength]}`}
-                        style={{ width: `${(strength / 4) * 100}%` }}
-                      />
-                    </div>
-                    <p className="text-sm text-gray-700">
-                      Strength: <span>{strengthLabels[strength]}</span>
-                    </p>
-
-                    {/* rules */}
-                    <ul className="text-xs text-gray-600 mt-2 space-y-1">
-                      <li className={rules.length ? "text-green-600" : ""}>
-                        ✔ At least 8 characters
-                      </li>
-                      <li className={rules.uppercase ? "text-green-600" : ""}>
-                        ✔ One uppercase letter
-                      </li>
-                      <li className={rules.lowercase ? "text-green-600" : ""}>
-                        ✔ One lowercase letter
-                      </li>
-                      <li className={rules.number ? "text-green-600" : ""}>
-                        ✔ One number
-                      </li>
-                    </ul>
-                  </div>
                 )}
 
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-6 mt-6 rounded-xl shadow-lg"
+                  className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-6 mt-4 rounded-xl shadow-lg"
                 >
                   {isLogin ? 'Sign In' : 'Create Account'}
                 </Button>
