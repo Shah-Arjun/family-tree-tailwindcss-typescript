@@ -6,6 +6,8 @@ import { transformFamilyMember } from "../utils/transform";
 
 const API_URL = "http://localhost:5000/api/family/";
 
+const token = localStorage.getItem("token");
+
 // Helper: removes empty strings and _id before sending to backend
 const cleanMemberPayload = (member: Partial<FamilyMember>) => {
   const payload: any = { ...member };
@@ -60,7 +62,11 @@ export const memberServices = {
 
   // Get all members
   getMembers: async (): Promise<FamilyMember[]> => {
-    const res = await axios.get(API_URL);
+    const res = await axios.get(API_URL, {
+      headers: {
+        "auth-token": token || "",       //attach jwt
+      }
+    });
     return res.data.map(transformFamilyMember);
   },
 

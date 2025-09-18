@@ -45,7 +45,7 @@ const upload = multer({
 // When a POST request is made to '/', the addMember controller runs
 router.post("/", upload.single("photo"), addMember);     // These are relative to /api/family (from app.js), for file upload version
 
-router.get('/', getMembers);   
+router.get('/', fetchUser, getMembers);   
 
 router.get("/:id", getMemberById);
 
