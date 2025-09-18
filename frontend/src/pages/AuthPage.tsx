@@ -26,9 +26,9 @@ const AuthPage = () => {
     password: '',
     confirmPassword: ''
   });
-  const [errors, setErrors] = useState({})    //for password strength check, for pw validation,,, // A validation function runs and populates the 'errors' object
-  const [password, setPassword] = useState<string>("")
-const [strength, setStrength] = useState<number>(0);
+  // const [errors, setErrors] = useState({})    //for password strength check, for pw validation,,, // A validation function runs and populates the 'errors' object
+  // const [password, setPassword] = useState<string>("")
+  const [strength, setStrength] = useState<number>(0);
   const [rules, setRules] = useState<StrengthRules>({
     length: false,
     uppercase: false,
@@ -50,8 +50,8 @@ const [strength, setStrength] = useState<number>(0);
       [e.target.name]: e.target.value
     }));
 
-    if (form.name === "password") {               // if password is name then validate it
-      setErrors(getPasswordStrength(form.password));
+    if (e.target.name === "password") {               // if name then validate it
+      setStrength(getPasswordStrength(e.target.value));
     }
   };
 
@@ -60,8 +60,16 @@ const [strength, setStrength] = useState<number>(0);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (Object.keys(errors).length > 0) {    // if pw validation fails ie. if error occures due to pw not validated
-      alert("Please fix issues before signing up.")
+    //only validate on signup
+    if (!isLogin){
+      if(strength < 3) {   // require at least goot password
+        alert("Please choose a stronger password before signing up.")
+        return
+      }
+      if(form.password !== form.confirmPassword){
+        alert("Confirm password and password field should be same.");
+        return
+      }
     }
 
     const endpoints = isLogin ? "loginuser" : "createuser";
@@ -123,7 +131,7 @@ const [strength, setStrength] = useState<number>(0);
     if (newRules.number) score++;
 
     setRules(newRules);
-    return score;
+    return score;        //returns 0-4
   }
 
 
@@ -160,7 +168,7 @@ const [strength, setStrength] = useState<number>(0);
           <Button
             variant="ghost"
             onClick={() => navigate('/')}
-            className="mb-6 text-muted-foreground hover:text-foreground flex justify-start"
+            className="mb-4 text-muted-foreground hover:text-foreground flex justify-start"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Home
@@ -262,9 +270,8 @@ const [strength, setStrength] = useState<number>(0);
                 )}
 
 
-                {/* show live validation errors */}
-
-                {password && (
+                {/* show validation errors */}
+                {form.password && (
                   <div className="mt-2">
                     <div className="w-full bg-gray-200 rounded h-2 mb-1">
                       <div
