@@ -12,6 +12,10 @@ const router = express.Router();
 // import path from 'path';     // for resolving file paths.
 import multer from "multer";
 
+//middleware that verifys the user to acess protected routes
+import fetchUser from "../middleware/fetchUser.js";
+
+import User from "../model/user.js";
 
 
 // Import all controller functions from 'familyController.js'
@@ -41,7 +45,7 @@ const upload = multer({
 // When a POST request is made to '/', the addMember controller runs
 router.post("/", upload.single("photo"), addMember);     // These are relative to /api/family (from app.js), for file upload version
 
-router.get('/', getMembers);
+router.get('/', getMembers);   
 
 router.get("/:id", getMemberById);
 
@@ -49,6 +53,18 @@ router.put("/:id", upload.single("photo"), updateMember);
 
 router.delete('/:id', deleteMember);
 
+
+
+//protected route-- only logged in user can access it
+router.get('/', fetchUser, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password")    //remove password
+    res.json({ success: true, user });
+  } catch (err) {
+    console.error("Error fetching family data:", err)
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+})
 
 
 export default router;
