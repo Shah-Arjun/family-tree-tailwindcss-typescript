@@ -89,24 +89,26 @@ const AuthPage = () => {
     //   return;
     // }
 
-
-    if (data.success && isLogin) {                // if login successful the store the token in browser localstorage
-      navigate('/family-tree');
-
-      localStorage.setItem("userEmail", form.email)
-      localStorage.setItem("token", data.authToken)
-      alert("Login Successful!");
-    }
-    else if (data.success) {                    // if login successful the store the token in browser localstorage
-      setIsLogin(true);
+    if (data.success) {
+      // ✅ Save token always
       localStorage.setItem("token", data.authToken);
-      navigate('/family-tree');
-      alert("Sign Up Successful!");
+      console.log("Token saved:", data.authToken);
+
+      // ✅ Save user email (optional)
+      localStorage.setItem("userEmail", form.email);
+
+      if (isLogin) {
+        navigate("/family-tree");
+        alert("Login Successful!");
+      } else {
+        setIsLogin(true);
+        navigate("/family-tree");
+        alert("Sign Up Successful!");
+      }
+    } else {
+      alert(data.message || "Something went wrong");
     }
-    else {
-      alert(data.message || " Something went worng");
-      return
-    }
+
 
     //session--- store user email and auth€Token so they saty logged in even after refresh
     // localStorage.setItem("userEmail", form.email)

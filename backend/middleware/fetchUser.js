@@ -25,9 +25,9 @@ const fetchUser = (req, res, next) => {
 
     try {
         //verify token that if the token is signed using same secret
-        const decoded = req.verify(token, jwtSecret)
+        const decoded = jwt.verify(token, jwtSecret)
 
-        req.user = req.decoded       // attach user info to request
+        req.user = decoded       // attach user info to request
         next();                     // go to next middleware or route
 
     } catch (err) {
