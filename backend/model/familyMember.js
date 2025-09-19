@@ -64,6 +64,14 @@ const familyMemberSchema = new mongoose.Schema(
     //additional info
     notes: { type: String },
     isAlive: { type: Boolean, default: true},
+
+
+    //connection to user
+    userID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: User,   //refrences to user model 
+      required: true,
+    }
   },
   {
     timestamps: true,
