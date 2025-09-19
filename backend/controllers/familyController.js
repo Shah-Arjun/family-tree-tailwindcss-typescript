@@ -3,11 +3,28 @@
 // importing model
 import FamilyMember from "../model/familyMember.js";
 import {  uploadOnCloudinary } from "../utils/cloudinary.js";
+import jwt from 'jsonwebtoken'
+
+
+
 
 // API logic to add family member
 export const addMember = async (req, res) => {
   try {
-    const data = req.body;               // store JSON data received from frontend to data
+
+    // immediately invoked function expression (IIFE)
+    const allowedFields = (({ name, gender, dateOfBirth, dateOfDeath, photo, email, phone, occupation, address, fatherId, motherId, generation, side, isAlive, notes }) => 
+      ({ name, gender, dateOfBirth, dateOfDeath, photo, email, phone, occupation, address, fatherId, motherId, generation, side, isAlive, notes }))(req.body)
+
+
+    // create a new user with requested data and append logged-in user id from jwt payload
+    const member = new FamilyMember({
+      ...allowedFields,
+      userID: req.user.id,   // comes from jwt payload
+    })
+
+
+    //const data = req.body;               // store JSON data received from frontend to data
 
     if (req.file) {               //check if a file exist--handled by multer
       const uploaded = await uploadOnCloudinary(req.file.buffer); // upload to cloudinary, and response send by cloudinary is saved to uploaded variable
@@ -16,7 +33,7 @@ export const addMember = async (req, res) => {
       }
     }
 
-    const member = new FamilyMember(data); //frontend bata aako data member(document/ mongoDB object) banayr tesma ma rakh, req.body = the data sent from frontend (JSON form data)
+    //const member = new FamilyMember(data); //frontend bata aako data member(document/ mongoDB object) banayr tesma ma rakh, req.body = the data sent from frontend (JSON form data)
     const saved = await member.save(); // Save the new member to MongoDB
 
     res.status(200).json(saved); // Send response back to frontend with saved data
@@ -25,6 +42,9 @@ export const addMember = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
+
+
 
 //API logic to get all members
 export const getMembers = async (req, res) => {
@@ -36,6 +56,10 @@ export const getMembers = async (req, res) => {
   }
 };
 
+
+
+
+
 //API logic to get single member by ID
 export const getMemberById = async (req, res) => {
   try {
@@ -46,6 +70,9 @@ export const getMemberById = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+
 
 // Update member by id
 export const updateMember = async (req, res) => {
@@ -70,6 +97,10 @@ export const updateMember = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
+
+
+
 
 // delete member by id
 export const deleteMember = async (req, res) => {

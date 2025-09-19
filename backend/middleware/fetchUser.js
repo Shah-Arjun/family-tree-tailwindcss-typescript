@@ -3,6 +3,7 @@
 // and attaches the decoded user info to req.user. Blocks access if missing,
 // invalid, or expired.
 
+//middleware to verify the token
 
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
