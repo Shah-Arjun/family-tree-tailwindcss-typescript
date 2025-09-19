@@ -56,7 +56,7 @@ router.delete('/:id', deleteMember);
 
 
 //protected route-- only logged in user can access it
-router.get('/', fetchUser, async (req, res) => {
+router.get('/user/profile', fetchUser, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password")    //remove password
     res.json({ success: true, user });

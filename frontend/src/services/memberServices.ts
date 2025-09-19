@@ -37,14 +37,23 @@ export const memberServices = {
     isFormData = false
   ) => {
     try {
+      const token = localStorage.getItem('token')   // fetch the token saved after login
+
       let res;
 
       if (isFormData) {
-        res = await axios.post(API_URL, data);
+        res = await axios.post(API_URL, data, {
+          headers: {
+            "auth-token": token,
+          }
+        });
       } else {
         const payload = cleanMemberPayload(data as Omit<FamilyMember, "_id">);
         res = await axios.post(API_URL, payload, {
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            "auth-token": token,
+          },
         });
       }
 

@@ -2,34 +2,60 @@
 
 // importing model
 import FamilyMember from "../model/familyMember.js";
-import {  uploadOnCloudinary } from "../utils/cloudinary.js";
-import jwt from 'jsonwebtoken'
-
-
-
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import jwt from "jsonwebtoken";
 
 // API logic to add family member
 export const addMember = async (req, res) => {
   try {
-
     // immediately invoked function expression (IIFE)
-    const allowedFields = (({ name, gender, dateOfBirth, dateOfDeath, photo, email, phone, occupation, address, fatherId, motherId, generation, side, isAlive, notes }) => 
-      ({ name, gender, dateOfBirth, dateOfDeath, photo, email, phone, occupation, address, fatherId, motherId, generation, side, isAlive, notes }))(req.body)
-
+    const allowedFields = (({
+      name,
+      gender,
+      dateOfBirth,
+      dateOfDeath,
+      photo,
+      email,
+      phone,
+      occupation,
+      address,
+      fatherId,
+      motherId,
+      generation,
+      side,
+      isAlive,
+      notes,
+    }) => ({
+      name,
+      gender,
+      dateOfBirth,
+      dateOfDeath,
+      photo,
+      email,
+      phone,
+      occupation,
+      address,
+      fatherId,
+      motherId,
+      generation,
+      side,
+      isAlive,
+      notes,
+    }))(req.body);
 
     // create a new user with requested data and append logged-in user id from jwt payload
     const member = new FamilyMember({
       ...allowedFields,
-      userID: req.user.id,   // comes from jwt payload
-    })
-
+      userID: req.user.id, // comes from jwt payload
+    });
 
     //const data = req.body;               // store JSON data received from frontend to data
 
-    if (req.file) {               //check if a file exist--handled by multer
+    if (req.file) {
+      //check if a file exist--handled by multer
       const uploaded = await uploadOnCloudinary(req.file.buffer); // upload to cloudinary, and response send by cloudinary is saved to uploaded variable
       if (uploaded) {
-        data.photo = uploaded.secure_url;    // cloudinary bata aako photo ko url data.photo ma hal
+        member.photo = uploaded.secure_url; // cloudinary bata aako photo ko url data.photo ma hal
       }
     }
 
@@ -39,26 +65,26 @@ export const addMember = async (req, res) => {
     res.status(200).json(saved); // Send response back to frontend with saved data
   } catch (err) {
     // If something goes wrong, return error response with status 400 (Bad Request)
-    res.status(400).json({ error: err.message });
+    console.error("Error in addMember:", err);
+    res.status(400).json({ error: err.message || "Invalid request" });
   }
 };
 
 
 
-
-//API logic to get all members
+//API logic for loggined user to get all members
 export const getMembers = async (req, res) => {
   try {
-    const members = await FamilyMember.find().sort({ createdAt: -1 }); // Find all & sort newest first
-    res.json(members); //return JSON array
+    const members = await FamilyMember.find({ userID: req.user.id }).populate(
+      "fatherId motherId spouseId childrenIds"
+    );
+
+    res.json({ success: true, members }); //return JSON array
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Get members error:", err.message);
+    res.status(500).json({ seccess: false, message: "Server error" });
   }
 };
-
-
-
-
 
 //API logic to get single member by ID
 export const getMemberById = async (req, res) => {
@@ -73,11 +99,10 @@ export const getMemberById = async (req, res) => {
 
 
 
-
 // Update member by id
 export const updateMember = async (req, res) => {
   try {
-    const data = req.body; 
+    const data = req.body;
 
     if (req.file) {
       const uploaded = await uploadOnCloudinary(req.file.buffer);
@@ -97,8 +122,6 @@ export const updateMember = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
-
-
 
 
 
