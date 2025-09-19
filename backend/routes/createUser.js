@@ -45,7 +45,7 @@ router.post(
 
       //return token after signup
       const payload = { user: { id: newUser._id } };
-      const authToken = jwt.sign(payload, jwtSecret, { expiresIn: "5h" });
+      const authToken = jwt.sign(payload, jwtSecret, { expiresIn: "1h" });
 
       res.json({ success: true, authToken, message: "User created" });
     } catch (error) {
