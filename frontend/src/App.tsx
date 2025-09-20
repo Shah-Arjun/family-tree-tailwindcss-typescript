@@ -42,7 +42,7 @@
 
 // import { Button } from "@/components/ui/button"
 // import DarkModeToggleButton from './components/ui/toggle';
- 
+
 // // function App() {
 // //   return (
 // //     <div className="flex min-h-svh flex-col items-center justify-center">
@@ -66,7 +66,7 @@
 //     <Toaster position="top-right" richColors expand />
 
 //       </div>
-      
+
 //     </div>
 // </>
 
@@ -74,12 +74,12 @@
 //   );
 // }
 
- 
+
 // export default App
 
 
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 
 // pages
 import LandingPage from "./pages/LandingPage";
@@ -88,20 +88,41 @@ import FamilyTreeApp from "./pages/FamilyTreeApp";
 
 // components
 import MembersList from "./components/MembersList";
-import AddMemberForm from "./components/AddMemberForm";
+import { AddMemberForm } from "./components/AddMemberForm";
+import type { FamilyMember } from "./types/family";
+import { memberServices } from "./services/memberServices";
+
+const AppRoutes = () => {
+
+  const navigate = useNavigate()
+
+  const handleAddMember = async (newMember: Omit<FamilyMember, "_id">) => {
+    try {
+      await memberServices.addMember(newMember);
+      navigate("/memberslist")    //go back to member list after adding
+    } catch (err) {
+      console.error("Failed to add member:", err)
+    }
+  }
+
+
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/auth" element={<AuthPage />} />
+      <Route path="/family-tree" element={<FamilyTreeApp />} />
+      <Route path="/memberslist" element={<MembersList />} />
+      <Route path="/add-member" element={<AddMemberForm onAddMember={handleAddMember} onCancel={() => navigate(-1)} />} />
+    </Routes>
+  );
+};
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/family-tree" element={<FamilyTreeApp />} />
-        <Route path="/memberslist" element={<MembersList members={[]} />} />
-        <Route path="/add-member" element={<AddMemberForm />} />
-      </Routes>
+      <AppRoutes />
     </BrowserRouter>
-  );
-};
+  )
+}
 
 export default App;

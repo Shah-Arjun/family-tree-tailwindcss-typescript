@@ -55,10 +55,10 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({ treeData, onNodeClick })
 
   // Custom node rendering, renders each member calling FamilyTreeNode
   const renderCustomNode = useCallback((rd3tProps: any) => {
-      <FamilyTreeNode
+     return (<FamilyTreeNode
         nodeDatum={rd3tProps.nodeDatum}   // data passed to FamilyTreeNode
         onNodeClick={onNodeClick}
-      />
+      />)
   }, [onNodeClick]);
 
 
@@ -104,7 +104,7 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({ treeData, onNodeClick })
 
 
   if(!treeData) return <p>No family data available</p>
-  
+
 
   return (
     <Card className="w-full h-full pb-0 border-0 shadow-[gray]">    {/*outer card */}

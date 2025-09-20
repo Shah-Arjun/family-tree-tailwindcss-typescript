@@ -17,7 +17,7 @@ import { MemberCard } from '@/components/MemberCard'
 
 //member cars props
 interface MembersListProps {
-  members: FamilyMember[];
+  members?: FamilyMember[];
   onEdit?: (member: FamilyMember) => void;
   onDelete?: (memberId: string) => void;
   onAddMember?: () => void;
@@ -26,12 +26,12 @@ interface MembersListProps {
 
 
 export const MembersList: React.FC<MembersListProps> = ({
-  members: initialMembers,
+  members: initialMembers = [],
   onEdit,
   onDelete,
   onAddMember
 }) => {
-  const [members, setMembers] = useState<FamilyMember[]>(initialMembers);
+  const [members, setMembers] = useState<FamilyMember[]>(initialMembers || []);
   const [loading, setLoading] = useState(true);
 
   //hook for search functionality
@@ -51,8 +51,7 @@ export const MembersList: React.FC<MembersListProps> = ({
         (member.address || '').toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase());
 
       const matchesSide = sideFilter === 'all' || member.side === sideFilter;
-      const matchesGender = genderFilter === 'all' || member.gender === genderFilter;
-      const matchesStatus = statusFilter === 'all' ||
+      const matchesGender = genderFilter === 'all' || (genderFilter === 'unknown' && !member.gender) || member.gender === genderFilter; const matchesStatus = statusFilter === 'all' ||
         (statusFilter === 'alive' && member.isAlive) ||
         (statusFilter === 'deceased' && !member.isAlive);
 
@@ -103,6 +102,8 @@ export const MembersList: React.FC<MembersListProps> = ({
     const fetchMembers = async () => {
       try {
         const data = await memberServices.getMembers(); // axios service
+              console.log("Fetched members:", data); // <-- check what comes back
+
         setMembers(data);
       } catch (err) {
         console.error("Error fetching members:", err);
@@ -176,7 +177,7 @@ export const MembersList: React.FC<MembersListProps> = ({
 
             <Badge variant='outline' className='text-green-600 border-gray-600'>
               <UserPlus className="w-3 h-3 mr-1" />
-              Avtive: {stats.alive}
+              Aliive: {stats.alive}
             </Badge>
 
             <Badge variant='outline' className='text-red-600 border-gray-600'>
@@ -265,33 +266,33 @@ export const MembersList: React.FC<MembersListProps> = ({
           </h3>
         </div>
 
-       {loading ? 'Lodaing members...' :
-        filteredAndSortedMembers.length === 0 ?
-          (
-            <Card>
-              <CardContent className='text-center py-12'>
-                <Users className='w-12 h-12 text-muted-foreground mx-auto mg-4' />
-                <h3 className='text-lg font-semibold text-muted-foreground mb-2'>
-                  No members found
-                </h3>
-                <p className='text-muted-foreground'>
-                  Try adjusting your search criteria or filters.
-                </p>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {filteredAndSortedMembers.map((member) => (
-                <MemberCard
-                  key={member._id}
-                  member={member}
-                  onEdit={onEdit}
-                  onDelete={onDelete}
-                  compact                     //or compact={true}
-                ></MemberCard>
-              ))}
-            </div>
-          )
+        {loading ? 'Loading members...' :
+          filteredAndSortedMembers.length === 0 ?
+            (
+              <Card>
+                <CardContent className='text-center py-12'>
+                  <Users className='w-12 h-12 text-muted-foreground mx-auto mg-4' />
+                  <h3 className='text-lg font-semibold text-muted-foreground mb-2'>
+                    No members found
+                  </h3>
+                  <p className='text-muted-foreground'>
+                    Try adjusting your search criteria or filters.
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {filteredAndSortedMembers.map((member) => (
+                  <MemberCard
+                    key={member._id}
+                    member={member}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                    compact                     //or compact={true}
+                  ></MemberCard>
+                ))}
+              </div>
+            )
         }
 
       </div>

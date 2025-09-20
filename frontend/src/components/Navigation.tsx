@@ -16,8 +16,9 @@ import {
 
 // TypeScript interface for props that Navigation will receive
 interface NavigationProps {
-  activeTab: string;
-  onTabChange: (tab: string) => void;
+  activeTab: 'tree' | 'members' | 'add';
+  onTabChange: (tab: "tree" | "members" | "add") => void;
+  memberCount?: number;
 }
 
 
@@ -91,7 +92,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 <Button
                   key={item.id}
                   variant={isActive ? "default" : "ghost"}
-                  onClick={() => onTabChange(item.id)}
+                  onClick={() => onTabChange(item.id as 'tree' | 'members' | 'add')}
                   className="relative flex items-center space-x-2 px-4 py-2"
                   title={item.description}
                 >

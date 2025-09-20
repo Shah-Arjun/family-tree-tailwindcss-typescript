@@ -23,13 +23,13 @@ import { memberServices } from "@/services/memberServices";
 //typescript interface for type validation
 interface AddMemberFormProps {
   // members: FamilyMember[];
-  // onAddMember: (member: Omit<FamilyMember, 'id'>) => void;
+  onAddMember: (member: Omit<FamilyMember, 'id'>) => void;
   onCancel?: () => void;
 }
 
 export const AddMemberForm: React.FC<AddMemberFormProps> = ({
-  // members, 
-  // onAddMember, 
+  //members, 
+  onAddMember,
   onCancel
 }) => {
 
@@ -48,6 +48,7 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
     email: "",
     phone: "",
     address: "",
+    occupation: "",
     photo: "",
     childrenIds: [],
     isAlive: true,
@@ -70,6 +71,7 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
   // for photo upload feature
   const [photo, setPhoto] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -153,42 +155,39 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
     try {
       await memberServices.addMember(formDataToSend, true);
       alert("Member added successfully!");
+
+
+      //onAddMember(formData)
+
+      //reset form after submission
+      setFormData({
+        name: "",
+        _id: "",
+        age: 0,
+        gender: "unknown",
+        fatherId: "",
+        motherId: "",
+        spouseId: "",
+        dateOfBirth: "",
+        dateOfDeath: "",
+        generation: 0,
+        side: "current",
+        email: "",
+        phone: "",
+        address: "",
+        photo: "",
+        childrenIds: [],
+        isAlive: true,
+        notes: "",
+      });
+      setPhoto(null);
+      setPreview(null);
     } catch (err: any) {
       console.error("❌ Error adding member:", err.response?.data || err.message);
       alert("Error adding member: " + (err.response?.data?.error || err.message));
       return;
     }
-
-
-
-    //reset form after submission
-    setFormData({
-      name: "",
-      _id: "",
-      age: 0,
-      gender: "unknown",
-      fatherId: "",
-      motherId: "",
-      spouseId: "",
-      dateOfBirth: "",
-      dateOfDeath: "",
-      generation: 0,
-      side: "current",
-      email: "",
-      phone: "",
-      address: "",
-      photo: "",
-      childrenIds: [],
-      isAlive: true,
-      notes: "",
-    });
-    setPhoto(null);
-    setPreview(null);
-
-  };
-
-
-
+  }
   // function to get first letter of name and cast
   // const getInitials = (name: String) => {
   //   name.split(' ').map((n) => n[0]).join('').toUpperCase();
@@ -236,9 +235,9 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
                 />
                 <label htmlFor="photoUpload">
                   <Button type="button" variant="outline" size="sm" className="flex items-center space-x-1" onClick={() => document.getElementById("photoUpload")?.click()}>
-                  <Upload className="w-3 h-3" />
-                  <span>Upload Photo</span>
-                </Button>
+                    <Upload className="w-3 h-3" />
+                    <span>Upload Photo</span>
+                  </Button>
                 </label>
               </div>
 

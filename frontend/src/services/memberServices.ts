@@ -80,10 +80,10 @@ export const memberServices = {
     }
     const res = await axios.get(API_URL, {
       headers: {
-        "auth-token": token || "",       //attach jwt token
+        "auth-token": token,       //attach jwt token
       }
     });
-    return res.data.map(transformFamilyMember);
+    return res.data.members || res.data
   },
 
 
