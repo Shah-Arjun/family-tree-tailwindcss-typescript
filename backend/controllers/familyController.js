@@ -89,7 +89,7 @@ export const getMembers = async (req, res) => {
     res.json({ success: true, members }); //return JSON array
   } catch (err) {
     console.error("Get members error:", err.message);
-    res.status(500).json({ seccess: false, message: "Server error" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 

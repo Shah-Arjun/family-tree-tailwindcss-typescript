@@ -16,7 +16,7 @@ const jwtSecret = process.env.JWT_SECRET;
 // middleware to verify jwt requested from frontend
 const fetchUser = (req, res, next) => {
     //get token from req header
-    const token = req.header('auth-token');
+    const token = req.header("auth-token");
 
     if(!token) {
         return res
