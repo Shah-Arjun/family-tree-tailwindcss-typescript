@@ -5,6 +5,10 @@ import FamilyMember from "../model/familyMember.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import jwt from "jsonwebtoken";
 
+
+
+
+
 // API logic to add family member
 export const addMember = async (req, res) => {
   try {
@@ -72,12 +76,15 @@ export const addMember = async (req, res) => {
 
 
 
+
 //API logic for loggined user to get all members
 export const getMembers = async (req, res) => {
   try {
-    const members = await FamilyMember.find({ userID: req.user.id }).populate(
-      "fatherId motherId spouseId childrenIds"
-    );
+    const members = await FamilyMember.find({ userID: req.user.id })
+      .populate("fatherId")
+      .populate("motherId")
+      .populate("spouseId")
+      .populate("childernsIds");
 
     res.json({ success: true, members }); //return JSON array
   } catch (err) {
@@ -85,6 +92,10 @@ export const getMembers = async (req, res) => {
     res.status(500).json({ seccess: false, message: "Server error" });
   }
 };
+
+
+
+
 
 //API logic to get single member by ID
 export const getMemberById = async (req, res) => {
@@ -96,6 +107,8 @@ export const getMemberById = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
 
 
 
@@ -122,6 +135,7 @@ export const updateMember = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
 
 
 

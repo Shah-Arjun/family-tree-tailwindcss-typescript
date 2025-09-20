@@ -37,7 +37,8 @@ export const FamilyTreeNode: React.FC<FamilyTreeNodeProps> = ({
 
 
   //fucntion to get initials letter of name
-  const getInitials = (name: string) => {
+  const getInitials = (name?: string) => {
+    if(!name) return "?";
     return name.split(' ')                  // splits into array of words based on spaces -->   ["John", "Doe", "Smith"]
       .map(n => n[0])                         // goes through each word in an array and takes the 1st char---> ["J", "D", "S"]
       .join('')                               // Joins the array of initials into a single string, with no spaces ---> "JDS"
@@ -48,14 +49,20 @@ export const FamilyTreeNode: React.FC<FamilyTreeNodeProps> = ({
   // function to extract the year from full date string ,  "1990-05-12" → "1990".
   const formatDate = (dateString?: string) => {
     if (!dateString) return '';
-    return new Date(dateString).getFullYear().toString();
+    const date = new Date(dateString)
+    return isNaN(date.getTime()) ? "" : date.getFullYear().toString();
   };
+
+
+
 
   return (
 
     //foreignObject--built-in SVG element
       <foreignObject width="200" height="140" x="-100" y="-70">
         <Card
+          title={nodeDatum.name}
+          aria-label={`Family member ${nodeDatum.name}`}
           className={`w-full h-full cursor-pointer hover:shadow-tree-node transition-all duration-200 border-2 ${getSideColor(nodeDatum.side)}`}
           onClick={() => onNodeClick?.(nodeDatum)}
         >
@@ -71,7 +78,7 @@ export const FamilyTreeNode: React.FC<FamilyTreeNodeProps> = ({
 
               {/*  shows red dot at top-right if member is deceased */}
               {!nodeDatum.isAlive && (
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-destructive rounded-full border-2 border-background" />
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-destructive rounded-full border-dashed border-background" />
               )}
             </div>
 

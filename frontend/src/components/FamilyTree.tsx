@@ -8,60 +8,57 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';   //RotateCcw icon for reset
 // import { Maximize2 } from 'lucide-react';
-import { memberServices } from '@/services/memberServices';
-import { buildFamilyTree } from '@/utils/transform';
+// import { memberServices } from '@/services/memberServices';
+// import { buildFamilyTree } from '@/utils/transform';
 
 
 // pops interface for what the FamilyTree component receives
 interface FamilyTreeProps {
-  treeData: FamilyTreeData;
+  treeData: FamilyTreeData | null;
   onNodeClick?: (nodeData: FamilyTreeData) => void;           //optional, fired when a node is clicked(pass this down to FamilyTreeNode)
 }
 
 
 
-export const FamilyTree: React.FC<FamilyTreeProps> = ({
-  //  treeData, 
-  onNodeClick
-}) => {
+export const FamilyTree: React.FC<FamilyTreeProps> = ({ treeData, onNodeClick }) => {
   const [translate, setTranslate] = useState({ x: 0, y: 0 });             //to change the position of tree
   const [zoom, setZoom] = useState(0.8);    // initially 80%                              // starting = 0.8 = 80% 
   const [treeRef, setTreeRef] = useState<HTMLDivElement | null>(null);    // Stores a reference to the container DOM element (the div that holds the tree).
-  const [treeData, setTreeData] = useState<FamilyTreeData | null>(null);
-  const [loading, setLoading] = useState(true);
+  // const [treeData, setTreeData] = useState<FamilyTreeData | null>(null);
+  // const [loading, setLoading] = useState(true);
+
+
 
   // fetch data feom backend
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const members = await memberServices.getMembers();  //API call
-      const tree = buildFamilyTree(members);     //build tree
-             if (tree.length > 0) {
-        setTreeData(tree[0]);
-      } else {
-        setTreeData(null);
-      }
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const members = await memberServices.getMembers();  //API call
+  //     const tree = buildFamilyTree(members);     //build tree
+  //            if (tree.length > 0) {
+  //       setTreeData(tree[0]);
+  //     } else {
+  //       setTreeData(null);
+  //     }
 
-      } catch (err) {
-        console.error("Error fetching family tree:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+  //     } catch (err) {
+  //       console.error("Error fetching family tree:", err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
 
 
   // Custom node rendering, renders each member calling FamilyTreeNode
   const renderCustomNode = useCallback((rd3tProps: any) => {
-    return (
       <FamilyTreeNode
         nodeDatum={rd3tProps.nodeDatum}   // data passed to FamilyTreeNode
         onNodeClick={onNodeClick}
       />
-    );
   }, [onNodeClick]);
 
 
@@ -78,6 +75,8 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({
   }, [treeRef]);
 
 
+
+
   // zoom control
   const handleZoomIn = () => {
     setZoom(prev => Math.min(prev + 0.1, 2));    // zoomOut by 0.1, but upto max 2(200%)
@@ -86,6 +85,8 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({
   const handleZoomOut = () => {
     setZoom(prev => Math.max(prev - 0.1, 0.3));  // zoomIn by 0.1, but upto min 0.3(30%)
   };
+
+
 
 
   // handles reset when reset icon is clicked
@@ -101,8 +102,9 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({
   };
 
 
-  if(loading) return  <p>Loading family tree...</p>;
+
   if(!treeData) return <p>No family data available</p>
+  
 
   return (
     <Card className="w-full h-full pb-0 border-0 shadow-[gray]">    {/*outer card */}

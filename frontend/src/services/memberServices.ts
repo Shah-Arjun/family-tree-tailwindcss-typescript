@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import type { FamilyMember } from "@/types/family";
-import { transformFamilyMember } from "../utils/transform";
+import { transformFamilyMember } from "../utils/buildFamilyTree";
 
 const API_URL = "http://localhost:5000/api/family/";
 
