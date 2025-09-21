@@ -6,7 +6,6 @@ import { transformFamilyMember } from "../utils/buildFamilyTree";
 
 const API_URL = "http://localhost:5000/api/family/";
 
-
 // Helper: removes empty strings and _id before sending to backend
 const cleanMemberPayload = (member: Partial<FamilyMember>) => {
   const payload: any = { ...member };
@@ -29,15 +28,30 @@ const cleanMemberPayload = (member: Partial<FamilyMember>) => {
   return payload;
 };
 
+//to handle error
+const handleError = (err: any) => {
+  const message =
+    err.response?.data?.error ||
+    err.response?.data?.message ||
+    err.message ||
+    "Unknown error";
+  return new Error(message);
+};
+
+
+
+
+
 export const memberServices = {
-  
+
+
   // Add a new member
   addMember: async (
     data: FormData | Omit<FamilyMember, "_id">,
     isFormData = false
   ) => {
     try {
-      const token = localStorage.getItem('token')   // fetch the token saved after login
+      const token = localStorage.getItem("token"); // fetch the token saved after login
 
       let res;
 
@@ -45,12 +59,12 @@ export const memberServices = {
         res = await axios.post(API_URL, data, {
           headers: {
             "auth-token": token,
-          }
+          },
         });
       } else {
         const payload = cleanMemberPayload(data as Omit<FamilyMember, "_id">);
         res = await axios.post(API_URL, payload, {
-          headers: { 
+          headers: {
             "Content-Type": "application/json",
             "auth-token": token,
           },
@@ -63,28 +77,27 @@ export const memberServices = {
       }
 
       return transformFamilyMember(res.data);
-    } catch (err: any) {
-      console.error("❌ addMember failed:", err.response?.data || err.message);
-      throw err; // rethrow so caller can handle in handleSubmit
+    } catch (err) {
+      throw handleError(err);
     }
   },
 
 
 
-  // Get all members
-  getMembers: async (): Promise<FamilyMember[]> => {
-    const token = localStorage.getItem("token");
-    if(!token) {
-      console.error("No token found in localStorage")
-      throw new Error("Unauthorized: No token")
-    }
-    const res = await axios.get(API_URL, {
-      headers: {
-        "auth-token": token,       //attach jwt token
-      }
-    });
-    return res.data.members || res.data
-  },
+  // // Get all members
+  // getMembers: async (): Promise<FamilyMember[]> => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     console.error("No token found in localStorage");
+  //     throw new Error("Unauthorized: No token");
+  //   }
+  //   const res = await axios.get(API_URL, {
+  //     headers: {
+  //       "auth-token": token, //attach jwt token
+  //     },
+  //   });
+  //   return res.data.members || res.data;
+  // },
 
 
 
@@ -94,19 +107,53 @@ export const memberServices = {
     return transformFamilyMember(res.data);
   },
 
+
+
+
   // Update a member
-  updateMember: async (
-    id: string,
-    member: Partial<FamilyMember>
-  ): Promise<FamilyMember> => {
-    const payload = cleanMemberPayload(member);
-    const res = await axios.put(`${API_URL}${id}`, payload);
-    return transformFamilyMember(res.data);
+  updateMember: async (id: string, member: Partial<FamilyMember>): Promise<FamilyMember> => {
+    try {
+      const payload = cleanMemberPayload(member);
+      const res = await axios.put(`${API_URL}${id}`, payload);
+      if (res.data?.error) throw new Error(res.data.error);
+
+      return transformFamilyMember(res.data);
+    } catch (err) {
+      throw handleError(err);
+    }
   },
+
+
+
 
   // Delete a member
   deleteMember: async (id: string): Promise<{ message: string }> => {
-    const res = await axios.delete(`${API_URL}${id}`);
-    return res.data;
+    try {
+      const res = await axios.delete(`${API_URL}${id}`);
+      if (res.data?.error) throw new Error(res.data.error);
+
+      return res.data;
+    } catch (err) {
+      throw handleError(err);
+    }
   },
+
+
+  // fetch members for logged user
+getMembersByUser: async (): Promise<FamilyMember[]> => {
+  const token = localStorage.getItem("token");   //jwt from login
+    if (!token) throw new Error("No token found");
+
+  // const userId = localStorage.getItem("userId");
+  // if (!token || !userId) throw new Error("Unauthorized");
+
+  const res = await axios.get(API_URL, {
+    headers: {
+      "auth-token": token,
+    },
+  });
+
+  return res.data.members || res.data;
+},
+
 };

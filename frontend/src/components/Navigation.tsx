@@ -33,10 +33,10 @@ export const Navigation: React.FC<NavigationProps> = ({
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const members = await memberServices.getMembers();
+        const members = await memberServices.getMembersByUser();
         setMemberCount(members.length);
-      } catch (error) {
-        console.log("Failed  to fetch members:", error)
+      } catch (err) {
+        console.error("Failed  to fetch members:", err)
       }
     };
     fetchMembers();

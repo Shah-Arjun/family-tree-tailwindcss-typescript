@@ -1,6 +1,8 @@
 import type { FamilyMember, FamilyTreeData } from "../types/family";
 
-// your existing function stays the same
+/**
+ * Normalize raw API data into a FamilyMember
+ */
 export const transformFamilyMember = (data: any): FamilyMember => ({
   _id: data._id,
   name: data.name,
@@ -28,16 +30,14 @@ export const transformFamilyMember = (data: any): FamilyMember => ({
   isAlive: data.isAlive,
 });
 
-
-
 /**
- * Builds a nested FamilyTreeData structure from flat FamilyMember[]
+ * Build a nested FamilyTreeData structure from flat FamilyMember[]
  */
 export const buildFamilyTree = (members: FamilyMember[]): FamilyTreeData[] => {
   const memberMap: Record<string, FamilyTreeData> = {};
 
-  // Step 1: Convert all FamilyMember to FamilyTreeData
-  members.forEach(m => {
+  // Step 1: Convert FamilyMember → FamilyTreeData
+  members.forEach((m) => {
     memberMap[m._id] = {
       _id: m._id,
       name: m.name,
@@ -48,43 +48,69 @@ export const buildFamilyTree = (members: FamilyMember[]): FamilyTreeData[] => {
       dateOfBirth: m.dateOfBirth,
       dateOfDeath: m.dateOfDeath,
       isAlive: m.isAlive,
-      children: []
+      children: [],
     };
   });
 
   const roots: FamilyTreeData[] = [];
 
   // Step 2: Link children to parents
-  members.forEach(m => {
-    let attachedToParent = false;
+  members.forEach((m) => {
+    let hasParent = false;
 
-    // Attach to father if available
+    // Attach to father
     if (m.fatherId && memberMap[m.fatherId]) {
-      memberMap[m.fatherId].children!.push(memberMap[m._id]);
-      attachedToParent = true;
+      const parent = memberMap[m.fatherId];
+      if (!parent.children.some((c) => c._id === m._id)) {
+        parent.children.push(memberMap[m._id]);
+      }
+      hasParent = true;
     }
 
-    // Attach to mother if available
+    // Attach to mother
     if (m.motherId && memberMap[m.motherId]) {
-      memberMap[m.motherId].children!.push(memberMap[m._id]);
-      attachedToParent = true;
+      const parent = memberMap[m.motherId];
+      if (!parent.children.some((c) => c._id === m._id)) {
+        parent.children.push(memberMap[m._id]);
+      }
+      hasParent = true;
     }
 
-    // If parent missing but childrenIds exist, attach children manually
+    // Attach children if explicitly listed
     if (m.childrenIds?.length > 0) {
-      m.childrenIds.forEach(cid => {
+      m.childrenIds.forEach((cid) => {
         if (memberMap[cid]) {
-          memberMap[m._id].children!.push(memberMap[cid]);
-          attachedToParent = true;
+          const parent = memberMap[m._id];
+          if (!parent.children.some((c) => c._id === cid)) {
+            parent.children.push(memberMap[cid]);
+          }
         }
       });
     }
 
-    // If not attached anywhere → treat as root
-    if (!attachedToParent) {
+    // Step 3: If no parents → treat as root
+    if (!hasParent) {
       roots.push(memberMap[m._id]);
     }
   });
+
+  // Step 4: Handle multiple roots (wrap in a virtual root if needed)
+  if (roots.length > 1) {
+    return [
+      {
+        _id: "root",
+        name: "Family Roots",
+        gender: "unknown",      // ✅ required by FamilyTreeData
+        generation: 0,          // ✅ root level
+        side: "current",        // ✅ neutral side
+        photo: undefined,
+        dateOfBirth: undefined,
+        dateOfDeath: undefined,
+        isAlive: true,
+        children: roots,
+      },
+    ];
+  }
 
   return roots;
 };

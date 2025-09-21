@@ -59,7 +59,7 @@ const AuthPage = () => {
   // function to handle form submit to backend
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     //only validate on signup
     if (!isLogin) {
       if (strength < 3) {   // require at least goot password
@@ -94,8 +94,11 @@ const AuthPage = () => {
       localStorage.setItem("token", data.authToken);
       console.log("Token saved:", data.authToken);
 
+      localStorage.setItem("userId", data.userId)
+      console.log("User id saved to localsotrage", data.userId)
+
       // ✅ Save user email (optional)
-      localStorage.setItem("userEmail", form.email);
+      // localStorage.setItem("userEmail", form.email);
 
       if (isLogin) {
         navigate("/family-tree");
@@ -106,7 +109,7 @@ const AuthPage = () => {
         alert("Sign Up Successful!");
       }
     } else {
-      alert(data.message || "Something went wrong");
+      alert(data.error || "Invalid credentials, please try again.");
     }
 
 
