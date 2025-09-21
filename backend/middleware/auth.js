@@ -10,11 +10,9 @@ import dotenv from 'dotenv'
 
 dotenv.config();
 
-const jwtSecret = process.env.JWT_SECRET;
-
 
 // middleware to verify jwt requested from frontend
-const fetchUser = (req, res, next) => {
+const verifyToken = (req, res, next) => {
     //get token from req header
     const token = req.header("auth-token");
 
@@ -25,10 +23,12 @@ const fetchUser = (req, res, next) => {
     }
 
     try {
-        //verify token that if the token is signed using same secret
-        const decoded = jwt.verify(token, jwtSecret)
+        const jwtSecret = process.env.JWT_SECRET;
 
-        req.user = decoded.user       // attach user info to request
+        //verify token that if the token is signed using same secret
+        const verified = jwt.verify(token, jwtSecret)
+
+        req.user = verified.user      // attach user id to request
         next();                     // go to next middleware or route
 
     } catch (err) {
@@ -39,4 +39,4 @@ const fetchUser = (req, res, next) => {
     }
 };
 
-export default fetchUser;
+export default verifyToken;

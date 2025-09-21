@@ -13,7 +13,7 @@ const router = express.Router();
 import multer from "multer";
 
 //middleware that verifys the user to acess protected routes
-import fetchUser from "../middleware/fetchUser.js";
+import verifyToken from "../middleware/auth.js";
 
 import User from "../model/user.js";
 
@@ -43,11 +43,11 @@ const upload = multer({
 
 // Define a POST route for '/' (root of this router)
 // When a POST request is made to '/', the addMember controller runs
-router.post("/",fetchUser, upload.single("photo"), addMember);     // These are relative to /api/family (from app.js), for file upload version
+router.post("/",verifyToken, upload.single("photo"), addMember);     // These are relative to /api/family (from app.js), for file upload version
 
-router.get('/', fetchUser, getMembers);   
+router.get('/', verifyToken, getMembers);   
 
-router.get("/:id",fetchUser, getMemberById);
+router.get("/:id",verifyToken, getMemberById);
 
 router.put("/:id", upload.single("photo"), updateMember);
 
@@ -56,7 +56,7 @@ router.delete('/:id', deleteMember);
 
 
 //protected route-- only logged in user can access it
-router.get('/user/profile', fetchUser, async (req, res) => {
+router.get('/user/profile', verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password")    //remove password
     res.json({ success: true, user });

@@ -4,7 +4,7 @@
 import FamilyMember from "../model/familyMember.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import jwt from "jsonwebtoken";
-
+import verifyToken from "../middleware/auth.js";
 
 
 
@@ -77,14 +77,14 @@ export const addMember = async (req, res) => {
 
 
 
-//API logic for loggined user to get all members
+//API logic to fetch only logged-in user members
 export const getMembers = async (req, res) => {
   try {
-    const members = await FamilyMember.find({ userID: req.user.id })
-      .populate("fatherId")
-      .populate("motherId")
-      .populate("spouseId")
-      .populate("childernsIds");
+    const userId = req.user.id
+    if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+    const members = await FamilyMember.find({ userID: userId })
+
 
     res.json({ success: true, members }); //return JSON array
   } catch (err) {

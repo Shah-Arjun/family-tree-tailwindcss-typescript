@@ -57,7 +57,7 @@ router.post(
 
   } catch (err) {
     console.error("Login error:", err);
-    res.status(500).json({ success: false, message: "Server error" });
+    res.status(500).json({ success: false, userId: user._id });
   }
 });
 
