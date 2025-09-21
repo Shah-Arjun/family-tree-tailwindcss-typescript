@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { TreePine, ArrowLeft, Mail, Lock, User } from 'lucide-react';
+import { Trees, ArrowLeft, Mail, Lock, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 // import DarkModeToggleButton from '@/components/ui/toggle';
 
@@ -184,7 +184,7 @@ const AuthPage = () => {
             <CardHeader className="text-center space-y-2">
               <div className="flex items-center justify-center">
                 <div className="w-14 h-14 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center shadow-md">
-                  <TreePine className="w-7 h-7 text-white" />
+                  <Trees className="w-7 h-7 text-white" />
                 </div>
               </div>
               <div>
