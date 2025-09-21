@@ -3,50 +3,50 @@ import { jwtDecode } from "jwt-decode"
 import { useNavigate } from "react-router-dom"
 
 interface JwtPayload {
-  user: {
-    id: string,
-    email: string,
-    name?: string,
-  };
-  exp: number;
+    user: {
+        id: string,
+        email: string,
+        name?: string,
+    };
+    exp: number;
 }
 
 export const useAuth = () => {
-  const [user, setUser] = useState<JwtPayload['user'] | null>(null)
-  const navigate = useNavigate()
+    const [user, setUser] = useState<JwtPayload['user'] | null>(null)
+    const navigate = useNavigate()
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    console.log("token found", token)
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        console.log("token found", token)
 
-    if(!token) return setUser(null);
+        if (!token) return setUser(null);
 
-    try {
-      const decoded = jwtDecode<JwtPayload>(token)
+        try {
+            const decoded = jwtDecode<JwtPayload>(token)
+console.log(decoded)
+            //check if token is expired
+            if (decoded.exp * 1000 < Date.now()) {          // second*1000 > millisecond
+                localStorage.removeItem("token");
+                return setUser(null);
+            }
+            console.log("email;", decoded.user)
+            setUser(decoded.user)
+        } catch (err) {
+            console.error("Invalid token:", err)
+            localStorage.removeItem("token");
+            setUser(null)
+        }
+    }, []);
 
-      //check if token is expired
-      if(decoded.exp * 1000 < Date.now()){          // second*1000 > millisecond
-        localStorage.removeItem("token");
-        return setUser(null);
-      }
+    const logout = () => {
+        localStorage.removeItem("token")
+        setUser(null);
+        navigate("/auth")
 
-      setUser(decoded.user)
-    } catch (err) {
-      console.error("Invalid token:", err)
-      localStorage.removeItem("token");
-      setUser(null)
     }
-  }, []);
 
-  const logout = () => {
-    localStorage.removeItem("token")
-    setUser(null);
-    navigate("/")
-    
-  }
-
-  return (
-    { user, logout }
-  )
+    return (
+        { user, logout }
+    )
 }
 
