@@ -101,7 +101,7 @@ export const MembersList: React.FC<MembersListProps> = ({
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const data = await memberServices.getMembers(); // axios service
+        const data = await memberServices.getMembersByUser(); // axios service
               console.log("Fetched members:", data); // <-- check what comes back
 
         setMembers(data);

@@ -38,13 +38,7 @@ const handleError = (err: any) => {
   return new Error(message);
 };
 
-
-
-
-
 export const memberServices = {
-
-
   // Add a new member
   addMember: async (
     data: FormData | Omit<FamilyMember, "_id">,
@@ -82,8 +76,6 @@ export const memberServices = {
     }
   },
 
-
-
   // // Get all members
   // getMembers: async (): Promise<FamilyMember[]> => {
   //   const token = localStorage.getItem("token");
@@ -99,19 +91,17 @@ export const memberServices = {
   //   return res.data.members || res.data;
   // },
 
-
-
   // Get single member by ID
   getMemberById: async (id: string): Promise<FamilyMember> => {
     const res = await axios.get(`${API_URL}${id}`);
     return transformFamilyMember(res.data);
   },
 
-
-
-
   // Update a member
-  updateMember: async (id: string, member: Partial<FamilyMember>): Promise<FamilyMember> => {
+  updateMember: async (
+    id: string,
+    member: Partial<FamilyMember>
+  ): Promise<FamilyMember> => {
     try {
       const payload = cleanMemberPayload(member);
       const res = await axios.put(`${API_URL}${id}`, payload);
@@ -122,9 +112,6 @@ export const memberServices = {
       throw handleError(err);
     }
   },
-
-
-
 
   // Delete a member
   deleteMember: async (id: string): Promise<{ message: string }> => {
@@ -139,21 +126,21 @@ export const memberServices = {
   },
 
 
+
+
   // fetch members for logged user
-getMembersByUser: async (): Promise<FamilyMember[]> => {
-  const token = localStorage.getItem("token");   //jwt from login
+  getMembersByUser: async (): Promise<FamilyMember[]> => {
+    const token = localStorage.getItem("token"); //jwt from login
     if (!token) throw new Error("No token found");
 
-  // const userId = localStorage.getItem("userId");
-  // if (!token || !userId) throw new Error("Unauthorized");
+    // const userId = localStorage.getItem("userId");
+    // if (!token || !userId) throw new Error("Unauthorized");
 
-  const res = await axios.get(API_URL, {
-    headers: {
-      "auth-token": token,
-    },
-  });
-
-  return res.data.members || res.data;
-},
-
+    const res = await axios.get(API_URL, {
+      headers: {
+        "auth-token": token,
+      },
+    });
+    return res.data.members || res.data;
+  },
 };
