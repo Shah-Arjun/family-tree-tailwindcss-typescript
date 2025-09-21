@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useAuth } from '@/hooks/useAuth';
 
 //components from shadcn
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -84,11 +85,18 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
 
   //to fetch members from backend  
   const [fetchedMembers, setFetchedMembers] = useState<FamilyMember[]>([]);
+  const { user } = useAuth()
 
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const res = await memberServices.getMembers(); // axios call
+        if(!user){
+          console.log("No user found")
+          return
+        }
+
+
+        const res = await memberServices.getMembersByUser(); // axios call
 
         console.log('members fetched:', res)  //for test
         setFetchedMembers(res);

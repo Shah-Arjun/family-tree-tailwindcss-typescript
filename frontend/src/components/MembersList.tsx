@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import type { FamilyMember } from "@/types/family";
 import { memberServices } from "@/services/memberServices";
 import { MemberCard } from '@/components/MemberCard'
+import { useAuth } from "@/hooks/useAuth";
 
 //member cars props
 interface MembersListProps {
@@ -33,6 +34,7 @@ export const MembersList: React.FC<MembersListProps> = ({
 }) => {
   const [members, setMembers] = useState<FamilyMember[]>(initialMembers || []);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth()
 
   //hook for search functionality
   const [searchTerm, setSearchTerm] = useState('');
@@ -101,8 +103,13 @@ export const MembersList: React.FC<MembersListProps> = ({
   useEffect(() => {
     const fetchMembers = async () => {
       try {
+        if(!user) {
+          setLoading(false);
+          console.log("no user found")
+          return
+        }
         const data = await memberServices.getMembersByUser(); // axios service
-              console.log("Fetched members:", data); // <-- check what comes back
+        console.log("Fetched members:", data); // <-- check what comes back
 
         setMembers(data);
       } catch (err) {

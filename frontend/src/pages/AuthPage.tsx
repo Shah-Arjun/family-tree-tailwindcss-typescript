@@ -7,6 +7,9 @@ import { Trees, ArrowLeft, Mail, Lock, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 // import DarkModeToggleButton from '@/components/ui/toggle';
 
+import { jwtDecode } from "jwt-decode";
+
+
 
 type StrengthRules = {
   length: boolean;
@@ -94,8 +97,29 @@ const AuthPage = () => {
       localStorage.setItem("token", data.authToken);
       console.log("Token saved:", data.authToken);
 
-      localStorage.setItem("userId", data.userId)
-      console.log("User id saved to localsotrage", data.userId)
+      try {
+        const token = localStorage.getItem("token")
+        console.log("token found:", token)
+
+  // 🔑 Decode the token to extract user id
+    const decoded: any = jwtDecode(data.authToken);
+    const userId = decoded?.user?.id;
+
+  if (userId) {
+      localStorage.setItem("userId", userId);
+      console.log("User id saved to localStorage:", userId);
+    } else {
+      console.warn("No userId found in token payload");
+    }
+
+      } catch (err) {
+        console.error("failed to fetch member",err)
+      }
+
+
+
+
+
 
       // ✅ Save user email (optional)
       // localStorage.setItem("userEmail", form.email);

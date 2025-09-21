@@ -131,6 +131,7 @@ export const memberServices = {
   // fetch members for logged user
   getMembersByUser: async (): Promise<FamilyMember[]> => {
     const token = localStorage.getItem("token"); //jwt from login
+    console.log(token)
     if (!token) throw new Error("No token found");
 
     // const userId = localStorage.getItem("userId");

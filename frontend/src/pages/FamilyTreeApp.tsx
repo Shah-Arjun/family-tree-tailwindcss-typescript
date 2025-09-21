@@ -6,17 +6,24 @@ import { MembersList } from '@/components/MembersList';
 import { AddMemberForm } from '@/components/AddMemberForm';
 import { memberServices } from '@/services/memberServices';
 import { buildFamilyTree } from '@/utils/buildFamilyTree';
+import { useAuth } from '@/hooks/useAuth';
 
 const FamilyTreeApp = () => {
   const [activeTab, setActiveTab] = useState<'tree' | 'members' | 'add'>('tree');
   const [members, setMembers] = useState<FamilyMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [treeData, setTreeData] = useState<FamilyTreeData | null>(null);
+  const { user } =useAuth()
 
   // Fetch members from backend + build tree on mount
   useEffect(() => {
     const fetchData = async () => {
-      try {
+      
+        if(!user) {
+          console.log("No user found")
+          return;
+        }
+      try { 
         const data = await memberServices.getMembersByUser();
         setMembers(data);
 
@@ -29,7 +36,7 @@ const FamilyTreeApp = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [user]);
 
   // Add member and update tree + members list
   const handleAddMember = async (newMember: Omit<FamilyMember, '_id'>) => {

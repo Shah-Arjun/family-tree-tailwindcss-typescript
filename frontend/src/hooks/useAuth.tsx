@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { jwtDecode } from "jwt-decode"
+import { useNavigate } from "react-router-dom"
 
 interface JwtPayload {
   user: {
@@ -12,9 +13,11 @@ interface JwtPayload {
 
 export const useAuth = () => {
   const [user, setUser] = useState<JwtPayload['user'] | null>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    console.log("token found", token)
 
     if(!token) return setUser(null);
 
@@ -22,7 +25,7 @@ export const useAuth = () => {
       const decoded = jwtDecode<JwtPayload>(token)
 
       //check if token is expired
-      if(decoded.exp * 1000 > Date.now()){          // second*1000 > millisecond
+      if(decoded.exp * 1000 < Date.now()){          // second*1000 > millisecond
         localStorage.removeItem("token");
         return setUser(null);
       }
@@ -38,6 +41,8 @@ export const useAuth = () => {
   const logout = () => {
     localStorage.removeItem("token")
     setUser(null);
+    navigate("/")
+    
   }
 
   return (
