@@ -44,7 +44,7 @@ export const Navigation: React.FC<NavigationProps> = ({
       }
     };
     fetchMembers();
-  }, [])
+  }, [user])
 
 
   // nav-items / menu as an object
@@ -60,7 +60,6 @@ export const Navigation: React.FC<NavigationProps> = ({
       label: 'Members',
       icon: Users,
       description: 'Browse all family members',
-      badge: memberCount
     },
     {
       id: 'add',
@@ -102,7 +101,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 >
                   <Icon className="w-4 h-4" />
                   <span className="hidden sm:inline">{item.label}</span>
-                  {item.badge && (
+                  {item.id === 'members' && (
                     <Badge variant="secondary" className="ml-0 text-xs">
                       {memberCount}
                     </Badge>
@@ -116,12 +115,13 @@ export const Navigation: React.FC<NavigationProps> = ({
           <div className="flex items-center space-x-2">
             <Button variant="ghost" size="sm" className="flex items-center space-x-2">
               <User className="w-4 h-4" />
+                          {user && ( <span className="hidden sm:inline">{user.id}</span> )}
+
             </Button>
-            {user && ( <span className="hidden sm:inline">{user.id}</span> )}
             <Button variant="ghost" size="sm">
               <Settings className="w-4 h-4" />
             </Button>
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" onClick={logout}>
               <LogOut className="w-4 h-4" />
             </Button>
           </div>
