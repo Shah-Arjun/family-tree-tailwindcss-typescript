@@ -81,8 +81,8 @@ export const Navigation: React.FC<NavigationProps> = ({
               <Trees className="w-10 h-10 text-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground">FamilyTree</h1>
-              <p className="text-sm text-muted-foreground">Manage your heritage</p>
+              <h1 className="hidden text-xl font-bold text-foreground">FamilyTree</h1>
+              <p className="hidden text-sm text-muted-foreground">Manage your heritage</p>
             </div>
           </div>
 
@@ -127,19 +127,20 @@ export const Navigation: React.FC<NavigationProps> = ({
             <div className='md:hidden'>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className='p-2 rounded-full hover:bg-muted-foreground'>
                     <User className='w-4 h-4' />
                   </Button>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent align='end' className='w-40'>
-                  <DropdownMenuItem className='flex items-center space-x-2' onClick={() => console.log("Setting Clicked")}>
-                    <Settings className='w-4 h-4' />
-                    <span>Settings</span>
+                <DropdownMenuContent align='end' className=' flex flex-col justify-end w-44 bg-white shadow-lg rounded-lg border border-gray-200'>
+                  <DropdownMenuItem className='flex items-center space-x-2 px-4 py-2 hover:bg-primary/15 rounded-md transition-colors' onClick={() => console.log("Setting Clicked")}>
+                    <Settings className='w-4 h-4 text-primary' />
+                    <span className='text-sm'>Settings</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className='flex items-center space-x-2' onClick={logout}>
-                    <LogOut className='w-4 h-4' />
-                    <span>Logout</span>
+
+                  <DropdownMenuItem className='flex items-center space-x-2 px-4 py-2 hover:bg-red-50 hover:text-red-600 rounded-md transition-colors' onClick={logout}>
+                    <LogOut className='w-4 h-4 text-red-500' />
+                    <span className='text-sm'>Logout</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
 
