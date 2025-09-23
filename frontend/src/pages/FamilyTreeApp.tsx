@@ -21,6 +21,9 @@ const FamilyTreeApp = () => {
       
         if(!user) {
           console.log("No user found")
+          setMembers([])
+          setTreeData(null)
+          setLoading(false)
           return;
         }
       try { 

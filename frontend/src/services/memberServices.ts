@@ -142,6 +142,12 @@ export const memberServices = {
         Authorization: `Bearer ${token}`,
       },
     });
-    return res.data.members || res.data;
+  const data = res.data;
+
+  // normalize response
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data.members)) return data.members;
+
+  return []; // fallback
   },
 };
