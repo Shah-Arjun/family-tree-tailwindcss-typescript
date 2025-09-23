@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 
 //to show the bumber fo mombers in db
-import { Badge } from '@/components/ui/badge';  
+import { Badge } from '@/components/ui/badge';
 import { memberServices } from '@/services/memberServices';
 
 import {
@@ -35,7 +35,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        if(!user) return;
+        if (!user) return;
 
         const members = await memberServices.getMembersByUser();
         setMemberCount(members.length);
@@ -77,7 +77,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           {/* tree logo */}
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-family rounded-lg flex items-center justify-center">
-              <Trees className="w-6 h-6 text-white" />
+              <Trees className="w-10 h-10 text-foreground" />
             </div>
             <div>
               <h1 className="text-xl font-bold text-foreground">FamilyTree</h1>
@@ -96,7 +96,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                   key={item.id}
                   variant={isActive ? "default" : "ghost"}
                   onClick={() => onTabChange(item.id as 'tree' | 'members' | 'add')}
-                  className="relative flex items-center space-x-2 px-4 py-2"
+                  className="relative flex items-center space-x-2 px-4 py-2 shadow-muted-foreground shadow"
                   title={item.description}
                 >
                   <Icon className="w-4 h-4" />
@@ -115,8 +115,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           <div className="flex items-center space-x-2">
             <Button variant="ghost" size="sm" className="flex items-center space-x-2">
               <User className="w-4 h-4" />
-                          {user && ( <span className="hidden sm:inline">{user?.name || user?.email}</span> )}
-
+              {user && (<span className="hidden sm:inline">{user?.name || user?.email}</span>)}
             </Button>
             <Button variant="ghost" size="sm">
               <Settings className="w-4 h-4" />

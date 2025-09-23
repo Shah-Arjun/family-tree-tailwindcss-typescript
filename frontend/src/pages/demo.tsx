@@ -26,7 +26,7 @@
 //     setMembers(prev => prev.filter(m => m._id !== memberId));
 //   };
 
-  
+
 //   const renderContent = () => {
 //     switch (activeTab) {
 //       case 'tree':
@@ -62,7 +62,7 @@
 //         onTabChange={setActiveTab}
 //         // memberCount={members.length}
 //       />
-      
+
 //       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 //         {renderContent()}
 //       </main>
@@ -71,3 +71,15 @@
 // };
 
 // export default FamilyTreeApp;
+
+
+
+import { Trees } from 'lucide-react'
+export default function demo() {
+    return (
+        <div className='flex flex-col justify-center items-center'>
+            <Trees className='w-10 h-10 text-foreground' />
+            <div>Comming Soon...</div>
+        </div>
+    )
+}
