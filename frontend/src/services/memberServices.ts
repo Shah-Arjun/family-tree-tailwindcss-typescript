@@ -28,6 +28,9 @@ const cleanMemberPayload = (member: Partial<FamilyMember>) => {
   return payload;
 };
 
+
+
+
 //to handle error
 const handleError = (err: any) => {
   const message =
@@ -37,6 +40,10 @@ const handleError = (err: any) => {
     "Unknown error";
   return new Error(message);
 };
+
+
+
+
 
 export const memberServices = {
   // Add a new member
@@ -52,15 +59,16 @@ export const memberServices = {
       if (isFormData) {
         res = await axios.post(API_URL, data, {
           headers: {
-            "auth-token": token,
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
           },
         });
       } else {
         const payload = cleanMemberPayload(data as Omit<FamilyMember, "_id">);
         res = await axios.post(API_URL, payload, {
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
-            "auth-token": token,
           },
         });
       }
@@ -91,11 +99,31 @@ export const memberServices = {
   //   return res.data.members || res.data;
   // },
 
+
+
+
   // Get single member by ID
   getMemberById: async (id: string): Promise<FamilyMember> => {
-    const res = await axios.get(`${API_URL}${id}`);
-    return transformFamilyMember(res.data);
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) throw new Error("Unauthorized: No token");
+
+      const res = await axios.get(`${API_URL}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return transformFamilyMember(res.data);
+    } catch (err) {
+      throw handleError(err)
+    }
   },
+
+
+
+
 
   // Update a member
   updateMember: async (
@@ -103,8 +131,18 @@ export const memberServices = {
     member: Partial<FamilyMember>
   ): Promise<FamilyMember> => {
     try {
+      const token = localStorage.getItem("token")
+      if(!token) throw new Error("Unauthorized: No token")
+
       const payload = cleanMemberPayload(member);
-      const res = await axios.put(`${API_URL}${id}`, payload);
+
+      const res = await axios.put(`${API_URL}/${id}`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
       if (res.data?.error) throw new Error(res.data.error);
 
       return transformFamilyMember(res.data);
@@ -113,10 +151,22 @@ export const memberServices = {
     }
   },
 
+
+
+
+
+
+
   // Delete a member
   deleteMember: async (id: string): Promise<{ message: string }> => {
     try {
-      const res = await axios.delete(`${API_URL}${id}`);
+          const token = localStorage.getItem("token")
+      if(!token) throw new Error("Unauthorized: No token")
+
+      const res = await axios.delete(`${API_URL}/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      
       if (res.data?.error) throw new Error(res.data.error);
 
       return res.data;
@@ -128,10 +178,12 @@ export const memberServices = {
 
 
 
+
+
   // fetch members for logged user
   getMembersByUser: async (): Promise<FamilyMember[]> => {
     const token = localStorage.getItem("token"); //jwt from login
-    console.log(token)
+    console.log(token);
     if (!token) throw new Error("No token found");
 
     // const userId = localStorage.getItem("userId");
@@ -142,12 +194,12 @@ export const memberServices = {
         Authorization: `Bearer ${token}`,
       },
     });
-  const data = res.data;
+    const data = res.data;
 
-  // normalize response
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data.members)) return data.members;
+    // normalize response
+    if (Array.isArray(data)) return data;
+    if (Array.isArray(data.members)) return data.members;
 
-  return []; // fallback
+    return []; // fallback
   },
 };
