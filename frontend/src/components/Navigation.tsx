@@ -115,7 +115,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           <div className="flex items-center space-x-2">
             <Button variant="ghost" size="sm" className="flex items-center space-x-2">
               <User className="w-4 h-4" />
-                          {user && ( <span className="hidden sm:inline">{user.id}</span> )}
+                          {user && ( <span className="hidden sm:inline">{user?.name}</span> )}
 
             </Button>
             <Button variant="ghost" size="sm">

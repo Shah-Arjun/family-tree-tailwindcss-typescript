@@ -139,7 +139,7 @@ export const memberServices = {
 
     const res = await axios.get(API_URL, {
       headers: {
-        "auth-token": token,
+        Authorization: `Bearer ${token}`,
       },
     });
     return res.data.members || res.data;
