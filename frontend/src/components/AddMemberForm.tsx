@@ -30,7 +30,7 @@ interface AddMemberFormProps {
 
 export const AddMemberForm: React.FC<AddMemberFormProps> = ({
   //members, 
-  onAddMember,
+  //onAddMember,
   onCancel
 }) => {
 

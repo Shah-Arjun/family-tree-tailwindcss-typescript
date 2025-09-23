@@ -39,8 +39,10 @@ export const useAuth = () => {
           return setUser(null);
         }
 
+        const API_URL = import.meta.env.VITE_API_URL
+
         // Get user from backend
-        const res = await fetch("http://localhost:5000/api/user/me", {
+        const res = await fetch(`${API_URL}/api/user/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -343,7 +343,7 @@ export const transformToTreeData = (members: FamilyMember[]): FamilyTreeData => 
       dateOfBirth: member.dateOfBirth,
       dateOfDeath: member.dateOfDeath,
       isAlive: member.isAlive,
-      children: children.length > 0 ? children : undefined
+      children: children.length > 0 ? children : []
     };
   };
 
