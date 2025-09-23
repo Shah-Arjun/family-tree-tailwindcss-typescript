@@ -4,7 +4,7 @@ import axios from "axios";
 import type { FamilyMember } from "@/types/family";
 import { transformFamilyMember } from "../utils/buildFamilyTree";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = `${import.meta.env.VITE_API_URL}/api/family`;
 
 // Helper: removes empty strings and _id before sending to backend
 const cleanMemberPayload = (member: Partial<FamilyMember>) => {
