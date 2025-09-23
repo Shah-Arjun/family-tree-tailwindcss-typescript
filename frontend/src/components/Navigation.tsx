@@ -81,8 +81,8 @@ export const Navigation: React.FC<NavigationProps> = ({
               <Trees className="w-10 h-10 text-foreground" />
             </div>
             <div>
-              <h1 className="hidden text-xl font-bold text-foreground">FamilyTree</h1>
-              <p className="hidden text-sm text-muted-foreground">Manage your heritage</p>
+              <h1 className="hidden sm:block text-xl font-bold text-foreground">FamilyTree</h1>
+              <p className="hidden sm:block text-sm text-muted-foreground">Manage your heritage</p>
             </div>
           </div>
 
@@ -132,13 +132,13 @@ export const Navigation: React.FC<NavigationProps> = ({
                   </Button>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent align='end' className=' flex flex-col justify-end w-44 bg-white shadow-lg rounded-lg border border-gray-200'>
-                  <DropdownMenuItem className='flex items-center space-x-2 px-4 py-2 hover:bg-primary/15 rounded-md transition-colors' onClick={() => console.log("Setting Clicked")}>
+                <DropdownMenuContent align='end' sideOffset={5} className=' flex flex-col p-1 justify-end w-40 bg-white shadow-lg rounded-lg border border-gray-200'>
+                  <DropdownMenuItem className='flex items-center space-x-2 px-4 py-2 mt-2 hover:bg-primary/20 rounded-md transition-colors' onClick={() => console.log("Setting Clicked")}>
                     <Settings className='w-4 h-4 text-primary' />
                     <span className='text-sm'>Settings</span>
                   </DropdownMenuItem>
 
-                  <DropdownMenuItem className='flex items-center space-x-2 px-4 py-2 hover:bg-red-50 hover:text-red-600 rounded-md transition-colors' onClick={logout}>
+                  <DropdownMenuItem className='flex items-center space-x-2 px-4 py-2 mb-2 rounded-md hover:bg-red-100 hover:text-red-600 transition-colors' onClick={logout}>
                     <LogOut className='w-4 h-4 text-red-500' />
                     <span className='text-sm'>Logout</span>
                   </DropdownMenuItem>
