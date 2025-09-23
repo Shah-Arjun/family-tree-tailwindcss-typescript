@@ -16,7 +16,7 @@ const app = express();           // create express app
 
 
 //middleware
-app.use(cors());            // allow forntend to call backend, allow all origin
+app.use(cors({ origin: "https://family-tree-tailwindcss-typescript-ten.vercel.app" }));            // allow forntend to call backend, allow all origin
 app.use(express.json());    // parse incoming JSON body
 
 app.use(express.urlencoded({ extended: true }));
