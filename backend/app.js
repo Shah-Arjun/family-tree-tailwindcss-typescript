@@ -40,6 +40,8 @@ import login from './routes/login.js'
 app.use('/api', createUser)
 app.use('/api', login)
 
+import userRoutes from './routes/userRoutes.js'
+app.use("/api/user", userRoutes)
 
 //DB connection function called from database/db.js
 connectDatabase();

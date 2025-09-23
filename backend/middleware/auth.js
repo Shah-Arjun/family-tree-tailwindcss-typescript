@@ -14,13 +14,15 @@ dotenv.config();
 // middleware to verify jwt requested from frontend
 const verifyToken = (req, res, next) => {
     //get token from req header
-    const token = req.header("auth-token");
+    const authHeader = req.headers["authorization"]
 
-    if(!token) {
+    if(!authHeader || !authHeader.startsWith("Bearer ")) {
         return res
             .status(401)
             .json({ success: false, message: "Access denied. NO token provided." });
     }
+
+       const token = authHeader.split(" ")[1]; // remove "Bearer"
 
     try {
         const jwtSecret = process.env.JWT_SECRET;
@@ -28,7 +30,7 @@ const verifyToken = (req, res, next) => {
         //verify token that if the token is signed using same secret
         const verified = jwt.verify(token, jwtSecret)
 
-        req.user = verified.user      // attach user id to request
+        req.user = verified.user      // attach user id, email to request
         next();                     // go to next middleware or route
 
     } catch (err) {

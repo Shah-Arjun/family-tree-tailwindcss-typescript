@@ -1,16 +1,19 @@
-import User from '../model/user'
+import User from "../model/user.js";
 
-
-// get user details (logged in user details only) api function/logic
+// get user details (logged in user details only)
 export const getUser = async (req, res) => {
-    try {
-        const user = await User.findById(req.User.id).select("-password")
-        if(!user) {
-            console.log("user not found in db")
-            return
-        }
-        return res.json(user)
-    } catch (err) {
-        console.error("User not found in db:", err)
+  try {
+    // Corrected: use req.user, not req.User
+    const user = await User.findById(req.user.id).select("-password");
+    
+    if (!user) {
+      console.log("User not found in db");
+      return res.status(404).json({ message: "User not found" });
     }
-}
+
+    res.json(user);
+  } catch (err) {
+    console.error("Error fetching user from db:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};

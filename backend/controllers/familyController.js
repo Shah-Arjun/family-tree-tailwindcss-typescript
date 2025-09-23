@@ -86,7 +86,7 @@ export const getMembers = async (req, res) => {
     const members = await FamilyMember.find({ userID: userId })
 
 
-    res.json({ success: true, members }); //return JSON array
+    res.json( members ); //return JSON array
   } catch (err) {
     console.error("Get members error:", err.message);
     res.status(500).json({ success: false, message: "Server error" });
