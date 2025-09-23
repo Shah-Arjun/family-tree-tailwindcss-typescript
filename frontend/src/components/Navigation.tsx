@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 
 //to show the bumber fo mombers in db
 import { Badge } from '@/components/ui/badge';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 import { memberServices } from '@/services/memberServices';
 
 import {
@@ -12,7 +13,7 @@ import {
   UserPlus,
   Settings,
   User,
-  LogOut
+  LogOut,
 } from 'lucide-react';
 
 // TypeScript interface for props that Navigation will receive
@@ -113,17 +114,42 @@ export const Navigation: React.FC<NavigationProps> = ({
 
           {/* User menu */}
           <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="sm" className="flex items-center space-x-2">
+            {/* desktop view */}
+            <div className='hidden md:flex items-center space-x-2'>
               <User className="w-4 h-4" />
-              {user && (<span className="hidden sm:inline">{user?.name || user?.email}</span>)}
-            </Button>
-            <Button variant="ghost" size="sm">
-              <Settings className="w-4 h-4" />
-            </Button>
-            <Button variant="ghost" size="sm" onClick={logout}>
-              <LogOut className="w-4 h-4" />
-            </Button>
-          </div>
+              <span>{user?.name || user?.email}</span>
+              <Button variant="ghost" size="sm" onClick={logout}>
+                <LogOut className='w-4 h-4' />
+              </Button>
+            </div>
+
+            {/* mobile view */}
+            <div className='md:hidden'>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm">
+                    <User className='w-4 h-4' />
+                  </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent align='end' className='w-40'>
+                  <DropdownMenuItem className='flex items-center space-x-2' onClick={() => console.log("Setting Clicked")}>
+                    <Settings className='w-4 h-4' />
+                    <span>Settings</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className='flex items-center space-x-2' onClick={logout}>
+                    <LogOut className='w-4 h-4' />
+                    <span>Logout</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+
+              </DropdownMenu>
+            </div>
+
+
+          </div>    {/*user menu ends here */}
+
+
         </div>
       </div>
     </div>
