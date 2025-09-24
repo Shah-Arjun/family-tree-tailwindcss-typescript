@@ -6,9 +6,6 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import jwt from "jsonwebtoken";
 import verifyToken from "../middleware/auth.js";
 
-
-
-
 // API logic to add family member
 export const addMember = async (req, res) => {
   try {
@@ -76,17 +73,15 @@ export const addMember = async (req, res) => {
 
 
 
-
 //API logic to fetch only logged-in user members
 export const getMembers = async (req, res) => {
   try {
-    const userId = req.user.id
+    const userId = req.user.id;
     if (!userId) return res.status(401).json({ error: "Unauthorized" });
 
-    const members = await FamilyMember.find({ userID: userId })
+    const members = await FamilyMember.find({ userID: userId });
 
-
-    res.json( members ); //return JSON array
+    res.json(members); //return JSON array
   } catch (err) {
     console.error("Get members error:", err.message);
     res.status(500).json({ success: false, message: "Server error" });
@@ -94,6 +89,20 @@ export const getMembers = async (req, res) => {
 };
 
 
+
+// to get member's count for logged-in user---->    /api/members/count
+export const getMembersCountByUser = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+    const count = await FamilyMember.countDocuments({ userID: userId })
+    res.json({count})
+  } catch (err) {
+    console.error("Failed to fetch member count", err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
 
 
 
@@ -107,8 +116,6 @@ export const getMemberById = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-
 
 
 
@@ -135,7 +142,6 @@ export const updateMember = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
-
 
 
 

@@ -20,7 +20,7 @@ import User from "../model/user.js";
 
 // Import all controller functions from 'familyController.js'
 // These functions contain the logic for handling each API request
-import { addMember, getMembers, getMemberById, updateMember, deleteMember } from '../controllers/familyController.js';
+import { addMember, getMembers, getMemberById, updateMember, deleteMember, getMembersCountByUser } from '../controllers/familyController.js';
 
 
 // import { fileURLToPath } from 'url';
@@ -45,7 +45,9 @@ const upload = multer({
 // When a POST request is made to '/', the addMember controller runs
 router.post("/",verifyToken, upload.single("photo"), addMember);     // These are relative to /api/family (from app.js), for file upload version
 
-router.get('/', verifyToken, getMembers);   
+router.get('/', verifyToken, getMembers);  
+
+router.get('/count', verifyToken, getMembersCountByUser)
 
 router.get("/:id",verifyToken, getMemberById);
 
