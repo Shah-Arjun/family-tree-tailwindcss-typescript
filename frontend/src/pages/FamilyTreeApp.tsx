@@ -8,6 +8,8 @@ import { memberServices } from '@/services/memberServices';
 import { buildFamilyTree } from '@/utils/buildFamilyTree';
 import { useAuth } from '@/hooks/useAuth';
 
+
+
 const FamilyTreeApp = () => {
   const [activeTab, setActiveTab] = useState<'tree' | 'members' | 'add'>('tree');
   const [members, setMembers] = useState<FamilyMember[]>([]);
@@ -25,6 +27,7 @@ const FamilyTreeApp = () => {
           setMembers([])
           setTreeData(null)
           setLoading(false)
+          setMemberCount(0)
           return;
         }
       try { 
@@ -33,8 +36,11 @@ const FamilyTreeApp = () => {
 
         const tree = buildFamilyTree(data);
         setTreeData(tree.length > 0 ? tree[0] : null);
+
+        setMemberCount(data.length)
       } catch (err) {
         console.error("Failed to fetch members", err);
+        setMemberCount(0)
       } finally {
         setLoading(false);
       }
