@@ -47,7 +47,7 @@ router.post("/",verifyToken, upload.single("photo"), addMember);     // These ar
 
 router.get('/', verifyToken, getMembers);  
 
-router.get('/count', verifyToken, getMembersCountByUser)
+router.get('/members/count', verifyToken, getMembersCountByUser)
 
 router.get("/:id",verifyToken, getMemberById);
 
