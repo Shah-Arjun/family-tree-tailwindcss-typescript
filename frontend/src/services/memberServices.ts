@@ -202,4 +202,28 @@ export const memberServices = {
 
     return []; // fallback
   },
+
+
+
+  getMembersCountByUser: async (): Promise<number> => {
+        const token = localStorage.getItem("token"); //jwt from login
+    console.log(token);
+    if (!token) throw new Error("No token found");
+
+ const res = await axios.get(`${API_URL}/members/count`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data.count
+  }
+
+
+
+
+
+
+
 };
+
+

@@ -16,12 +16,15 @@ import {
   LogOut,
 } from 'lucide-react';
 
+
 // TypeScript interface for props that Navigation will receive
 interface NavigationProps {
   activeTab: 'tree' | 'members' | 'add';
   onTabChange: (tab: "tree" | "members" | "add") => void;
   memberCount?: number;
 }
+
+
 
 
 // uses the NavigationProps interface for strong typing/validation.
@@ -33,19 +36,23 @@ export const Navigation: React.FC<NavigationProps> = ({
   const [memberCount, setMemberCount] = useState<number>(0);
   const { user, logout } = useAuth()
 
+
+
   useEffect(() => {
-    const fetchMembers = async () => {
+    const fetchCount = async () => {
       try {
         if (!user) return;
 
-        const members = await memberServices.getMembersByUser();
-        setMemberCount(members.length);
+        const count = await memberServices.getMembersCountByUser();
+        setMemberCount(count);
       } catch (err) {
         console.error("Failed  to fetch members:", err)
       }
     };
-    fetchMembers();
+    fetchCount();
   }, [user])
+
+
 
 
   // nav-items / menu as an object
