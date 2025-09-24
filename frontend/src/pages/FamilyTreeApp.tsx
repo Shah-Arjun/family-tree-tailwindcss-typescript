@@ -48,10 +48,11 @@ const FamilyTreeApp = () => {
       // const saved = await memberServices.addMember(newMember);
       setMembers(prev => {
         const updated = [...prev, saved];
-        setMemberCount(prev => prev + 1)
         setTreeData(buildFamilyTree(updated)[0] || null);
         return updated;
       });
+              setMemberCount(prev => prev + 1)
+
       setActiveTab('members');
     } catch (err) {
       console.error("Failed update member:", err);

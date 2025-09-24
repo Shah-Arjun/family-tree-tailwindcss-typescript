@@ -21,7 +21,7 @@ import {
 interface NavigationProps {
   activeTab: 'tree' | 'members' | 'add';
   onTabChange: (tab: "tree" | "members" | "add") => void;
-  memberCount?: number;
+  memberCount: number;
 }
 
 
@@ -31,28 +31,10 @@ interface NavigationProps {
 export const Navigation: React.FC<NavigationProps> = ({
   activeTab,
   onTabChange,
+  memberCount,
 }) => {
   // to fetch member and count its number
-  const [memberCount, setMemberCount] = useState<number>(0);
   const { user, logout } = useAuth()
-
-
-
-  useEffect(() => {
-    const fetchCount = async () => {
-      try {
-        if (!user) return;
-
-        const count = await memberServices.getMembersCountByUser();
-        setMemberCount(count);
-      } catch (err) {
-        console.error("Failed  to fetch members:", err)
-      }
-    };
-    fetchCount();
-  }, [user])
-
-
 
 
   // nav-items / menu as an object
