@@ -30,7 +30,7 @@ interface AddMemberFormProps {
 
 export const AddMemberForm: React.FC<AddMemberFormProps> = ({
   //members, 
-  //onAddMember,
+  onAddMember,
   onCancel
 }) => {
 
@@ -161,11 +161,13 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
     if (photo) formDataToSend.append("photo", photo);
 
     try {
-      await memberServices.addMember(formDataToSend, true);
+      const savedMember = await memberServices.addMember(formDataToSend, true);
       alert("Member added successfully!");
 
 
-      //onAddMember(formData)
+      if(onAddMember) {
+        onAddMember(savedMember)
+      }
 
       //reset form after submission
       setFormData({

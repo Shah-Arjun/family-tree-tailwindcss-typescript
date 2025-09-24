@@ -42,9 +42,9 @@ const FamilyTreeApp = () => {
   }, [user]);
 
   // Add member and update tree + members list
-  const handleAddMember = async (newMember: Omit<FamilyMember, '_id'>) => {
+  const handleAddMember = async (saved: FamilyMember) => {
     try {
-      const saved = await memberServices.addMember(newMember);
+      // const saved = await memberServices.addMember(newMember);
       setMembers(prev => {
         const updated = [...prev, saved];
         setTreeData(buildFamilyTree(updated)[0] || null);
@@ -52,14 +52,16 @@ const FamilyTreeApp = () => {
       });
       setActiveTab('members');
     } catch (err) {
-      console.error("Failed to add member:", err);
+      console.error("Failed update member:", err);
     }
   };
+
 
   const handleEditMember = (member: FamilyMember) => {
     // TODO: Implement edit functionality (e.g. open modal form)
     console.log('Edit member:', member);
   };
+
 
   // Delete member and update tree + members list
   const handleDeleteMember = async (memberId: string) => {
