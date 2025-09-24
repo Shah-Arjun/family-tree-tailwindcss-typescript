@@ -13,6 +13,7 @@ const FamilyTreeApp = () => {
   const [members, setMembers] = useState<FamilyMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [treeData, setTreeData] = useState<FamilyTreeData | null>(null);
+  const [memberCount, setMemberCount] = useState(0)
   const { user } =useAuth()
 
   // Fetch members from backend + build tree on mount
@@ -47,6 +48,7 @@ const FamilyTreeApp = () => {
       // const saved = await memberServices.addMember(newMember);
       setMembers(prev => {
         const updated = [...prev, saved];
+        setMemberCount(prev => prev + 1)
         setTreeData(buildFamilyTree(updated)[0] || null);
         return updated;
       });
@@ -114,7 +116,7 @@ const FamilyTreeApp = () => {
       <Navigation
         activeTab={activeTab}
         onTabChange={setActiveTab}
-        memberCount={members.length}
+        memberCount={memberCount}
       />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {renderContent()}
