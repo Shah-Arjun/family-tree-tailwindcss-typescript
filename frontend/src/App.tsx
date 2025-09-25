@@ -85,7 +85,7 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import AuthPage from "./pages/AuthPage";
 import FamilyTreeApp from "./pages/FamilyTreeApp";
-import Demo from './pages/Demo'
+import Demo from './pages/Demo.tsx'
 
 // components
 import MembersList from "./components/MembersList";
