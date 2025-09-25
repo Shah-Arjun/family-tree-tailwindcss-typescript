@@ -7,6 +7,7 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import DarkModeToggleButton from '@/components/ui/toggle';
 import LandingPageNavbar from '@/components/LandingPageNavbar';
+// import Demo from './Demo.tsx'
 
 export default function LandingPage() {
     const navigate = useNavigate();

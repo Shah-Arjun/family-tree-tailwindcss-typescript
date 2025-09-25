@@ -85,6 +85,7 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import AuthPage from "./pages/AuthPage";
 import FamilyTreeApp from "./pages/FamilyTreeApp";
+import Demo from './pages/Demo'
 
 // components
 import MembersList from "./components/MembersList";
@@ -109,6 +110,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
+      <Route path="/demo" element={<Demo />} />
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/family-tree" element={<FamilyTreeApp />} />
       <Route path="/memberslist" element={<MembersList />} />
