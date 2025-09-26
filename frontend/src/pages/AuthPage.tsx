@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 // import DarkModeToggleButton from '@/components/ui/toggle';
 
 import { jwtDecode } from "jwt-decode";
-import { resolve } from 'path';
 
 
 
@@ -61,13 +60,11 @@ const AuthPage = () => {
   };
 
 
+
   // function to handle login/create account btn loading effect
   const handleLoginSignup = async () => {
     setLoading(true)
-
-
     await new Promise((resolve) => setTimeout(resolve, 5000))
-
   }
 
 
