@@ -338,7 +338,11 @@ const AuthPage = () => {
                     onClick={() => setIsLogin(!isLogin)}
                     className="ml-1 pl-0 text-primary hover:text-accent font-semibold"
                   >
-                    {isLogin ? 'Sign up' : 'Sign in'}
+                    {loading 
+                      ? (isLogin ? "Loggin in..." : "Creating Account...")
+                      : (isLogin ? "Login" : "Create Account")
+                    }
+                    
                   </Button>
                 </p>
               </div>
