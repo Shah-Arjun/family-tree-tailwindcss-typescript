@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 // import DarkModeToggleButton from '@/components/ui/toggle';
 
 import { jwtDecode } from "jwt-decode";
+import { resolve } from 'path';
 
 
 
@@ -23,6 +24,7 @@ const AuthPage = () => {
 
   // Keeps track of email & password input values.
   const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({                    //all values are null initially
     name: '',
     email: '',
@@ -59,10 +61,20 @@ const AuthPage = () => {
   };
 
 
+  // function to handle login/create account btn loading effect
+  const handleLoginSignup = async () => {
+    setLoading(true)
+
+
+    await new Promise((resolve) => setTimeout(resolve, 5000))
+
+  }
+
+
   // function to handle form submit to backend
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     //only validate on signup
     if (!isLogin) {
       if (strength < 3) {   // require at least goot password
@@ -103,24 +115,20 @@ const AuthPage = () => {
         const token = localStorage.getItem("token")
         console.log("token found:", token)
 
-  // 🔑 Decode the token to extract user id
-    const decoded: any = jwtDecode(data.authToken);
-    const userId = decoded?.user?.id;
+        // 🔑 Decode the token to extract user id
+        const decoded: any = jwtDecode(data.authToken);
+        const userId = decoded?.user?.id;
 
-  if (userId) {
-      localStorage.setItem("userId", userId);
-      console.log("User id saved to localStorage:", userId);
-    } else {
-      console.warn("No userId found in token payload");
-    }
+        if (userId) {
+          localStorage.setItem("userId", userId);
+          console.log("User id saved to localStorage:", userId);
+        } else {
+          console.warn("No userId found in token payload");
+        }
 
       } catch (err) {
-        console.error("failed to fetch member",err)
+        console.error("failed to fetch member", err)
       }
-
-
-
-
 
 
       // ✅ Save user email (optional)
@@ -334,9 +342,13 @@ const AuthPage = () => {
 
                 <Button
                   type="submit"
+                  onClick={handleLoginSignup}
+                  disabled={loading}
                   className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-6 mt-4 rounded-xl shadow-lg"
                 >
-                  {isLogin ? 'Sign In' : 'Create Account'}
+                  {loading
+                    ? (isLogin ? "Signing in..." : "Creating Account...")
+                    : (isLogin ? "Sign In" : "Create Account")}
                 </Button>
               </form>
 
