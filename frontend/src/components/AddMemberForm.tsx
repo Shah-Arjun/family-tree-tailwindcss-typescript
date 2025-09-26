@@ -171,6 +171,9 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
 const updatedMembers = await memberServices.getMembersByUser();
 setFetchedMembers(updatedMembers);
 
+setFetchedMembers((prev) => [...prev, savedMember]);
+
+
 
       if(onAddMember) {
         onAddMember(savedMember)
