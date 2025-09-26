@@ -66,7 +66,7 @@ const AuthPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true)
-    
+
     //only validate on signup
     if (!isLogin) {
       if (strength < 3) {   // require at least goot password
@@ -101,19 +101,19 @@ const AuthPage = () => {
         const token = localStorage.getItem("token")
         console.log("token found:", token)
 
-  // 🔑 Decode the token to extract user id
-    const decoded: any = jwtDecode(data.authToken);
-    const userId = decoded?.user?.id;
+        // 🔑 Decode the token to extract user id
+        const decoded: any = jwtDecode(data.authToken);
+        const userId = decoded?.user?.id;
 
-  if (userId) {
-      localStorage.setItem("userId", userId);
-      console.log("User id saved to localStorage:", userId);
-    } else {
-      console.warn("No userId found in token payload");
-    }
+        if (userId) {
+          localStorage.setItem("userId", userId);
+          console.log("User id saved to localStorage:", userId);
+        } else {
+          console.warn("No userId found in token payload");
+        }
 
       } catch (err) {
-        console.error("failed to fetch member",err)
+        console.error("failed to fetch member", err)
       } finally {
         setLoading(false)
       }
@@ -326,8 +326,10 @@ const AuthPage = () => {
                   disabled={loading}
                   className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-6 mt-4 rounded-xl shadow-lg"
                 >
-                  {isLogin ? 'Sign In' : 'Create Account'}
-                </Button>
+                  {loading
+                    ? (isLogin ? "Loggin in..." : "Creating Account...")
+                    : (isLogin ? "Login" : "Create Account")
+                  }                </Button>
               </form>
 
               <div className="mt-6 text-center">
@@ -338,11 +340,7 @@ const AuthPage = () => {
                     onClick={() => setIsLogin(!isLogin)}
                     className="ml-1 pl-0 text-primary hover:text-accent font-semibold"
                   >
-                    {loading 
-                      ? (isLogin ? "Loggin in..." : "Creating Account...")
-                      : (isLogin ? "Login" : "Create Account")
-                    }
-                    
+                    {isLogin ? 'Sign up' : 'Sign in'}
                   </Button>
                 </p>
               </div>
