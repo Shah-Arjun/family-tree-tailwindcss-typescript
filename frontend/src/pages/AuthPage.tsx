@@ -329,7 +329,8 @@ const AuthPage = () => {
                   {loading
                     ? (isLogin ? "Loggin in..." : "Creating Account...")
                     : (isLogin ? "Login" : "Create Account")
-                  }                </Button>
+                  }
+                </Button>
               </form>
 
               <div className="mt-6 text-center">

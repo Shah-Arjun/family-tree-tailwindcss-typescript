@@ -7,9 +7,6 @@ import { FamilyTreeNode } from './FamilyTreeNode';          //card/node for each
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';   //RotateCcw icon for reset
-// import { Maximize2 } from 'lucide-react';
-// import { memberServices } from '@/services/memberServices';
-// import { buildFamilyTree } from '@/utils/transform';
 
 
 // pops interface for what the FamilyTree component receives
@@ -24,33 +21,6 @@ export const FamilyTree: React.FC<FamilyTreeProps> = ({ treeData, onNodeClick })
   const [translate, setTranslate] = useState({ x: 0, y: 0 });             //to change the position of tree
   const [zoom, setZoom] = useState(0.8);    // initially 80%                              // starting = 0.8 = 80% 
   const [treeRef, setTreeRef] = useState<HTMLDivElement | null>(null);    // Stores a reference to the container DOM element (the div that holds the tree).
-  // const [treeData, setTreeData] = useState<FamilyTreeData | null>(null);
-  // const [loading, setLoading] = useState(true);
-
-
-
-  // fetch data feom backend
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const members = await memberServices.getMembers();  //API call
-  //     const tree = buildFamilyTree(members);     //build tree
-  //            if (tree.length > 0) {
-  //       setTreeData(tree[0]);
-  //     } else {
-  //       setTreeData(null);
-  //     }
-
-  //     } catch (err) {
-  //       console.error("Error fetching family tree:", err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
 
 
   // Custom node rendering, renders each member calling FamilyTreeNode

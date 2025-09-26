@@ -119,7 +119,9 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
 
   const availableSpouses = fetchedMembers.filter(m =>
     m.generation === formData.generation &&
-    !m.spouseId
+    !m.spouseId &&
+
+    m.gender !== formData.gender
   );
 
 
