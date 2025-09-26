@@ -118,7 +118,7 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
   const availableMothers = availableParents.filter((m) => m.gender?.toLowerCase() === "female");
 
   const availableSpouses = fetchedMembers.filter(m =>
-    m.generation === formData.generation &&
+    
     !m.spouseId &&
 
     m.gender !== formData.gender
@@ -165,6 +165,11 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
     try {
       const savedMember = await memberServices.addMember(formDataToSend, true);
       alert("Member added successfully!");
+
+
+      // re-fetch members so dropdown updates
+const updatedMembers = await memberServices.getMembersByUser();
+setFetchedMembers(updatedMembers);
 
 
       if(onAddMember) {
@@ -457,12 +462,15 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
                     <SelectValue placeholder="Select spouse" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">No spouse selected</SelectItem>
-                    {availableSpouses.map((spouse) => (
+                  {availableSpouses.length === 0 ? (
+                    <SelectItem value='nane'>No available spouses</SelectItem>
+                  ) : (
+                    availableSpouses.map((spouse) => (
                       <SelectItem key={spouse._id} value={spouse._id}>
                         {spouse.name}
                       </SelectItem>
-                    ))}
+                    ))
+                  )}
                   </SelectContent>
                 </Select>
               </div>
