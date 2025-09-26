@@ -61,17 +61,12 @@ const AuthPage = () => {
 
 
 
-  // function to handle login/create account btn loading effect
-  const handleLoginSignup = async () => {
-    setLoading(true)
-    await new Promise((resolve) => setTimeout(resolve, 5000))
-  }
-
 
   // function to handle form submit to backend
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setLoading(true)
+    
     //only validate on signup
     if (!isLogin) {
       if (strength < 3) {   // require at least goot password
@@ -97,12 +92,6 @@ const AuthPage = () => {
     const data = await response.json();   // parse the backend response to json
     console.log(data);
 
-    //if login fails-->show a toast with an error message
-    // if (!data.success) {
-    //   setToast({ show: true, message: data.error || "Invalid form", type: "danger" })
-    //   return;
-    // }
-
     if (data.success) {
       // ✅ Save token always
       localStorage.setItem("token", data.authToken);
@@ -112,24 +101,22 @@ const AuthPage = () => {
         const token = localStorage.getItem("token")
         console.log("token found:", token)
 
-        // 🔑 Decode the token to extract user id
-        const decoded: any = jwtDecode(data.authToken);
-        const userId = decoded?.user?.id;
+  // 🔑 Decode the token to extract user id
+    const decoded: any = jwtDecode(data.authToken);
+    const userId = decoded?.user?.id;
 
-        if (userId) {
-          localStorage.setItem("userId", userId);
-          console.log("User id saved to localStorage:", userId);
-        } else {
-          console.warn("No userId found in token payload");
-        }
+  if (userId) {
+      localStorage.setItem("userId", userId);
+      console.log("User id saved to localStorage:", userId);
+    } else {
+      console.warn("No userId found in token payload");
+    }
 
       } catch (err) {
-        console.error("failed to fetch member", err)
+        console.error("failed to fetch member",err)
+      } finally {
+        setLoading(false)
       }
-
-
-      // ✅ Save user email (optional)
-      // localStorage.setItem("userEmail", form.email);
 
       if (isLogin) {
         navigate("/family-tree");
@@ -142,12 +129,9 @@ const AuthPage = () => {
     } else {
       alert(data.error || "Invalid credentials, please try again.");
     }
-
-
-    //session--- store user email and auth€Token so they saty logged in even after refresh
-    // localStorage.setItem("userEmail", form.email)
-    // localStorage.setItem("authToken", data.authToken)
   };
+
+
 
 
   //function to validate pw when new user is to be created
@@ -339,13 +323,10 @@ const AuthPage = () => {
 
                 <Button
                   type="submit"
-                  onClick={handleLoginSignup}
                   disabled={loading}
                   className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-6 mt-4 rounded-xl shadow-lg"
                 >
-                  {loading
-                    ? (isLogin ? "Signing in..." : "Creating Account...")
-                    : (isLogin ? "Sign In" : "Create Account")}
+                  {isLogin ? 'Sign In' : 'Create Account'}
                 </Button>
               </form>
 
