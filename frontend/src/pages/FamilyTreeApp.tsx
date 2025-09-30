@@ -78,7 +78,8 @@ const FamilyTreeApp = () => {
       await memberServices.deleteMember(memberId);
       setMembers(prev => {
         const updated = prev.filter(m => m._id !== memberId);
-        setTreeData(buildFamilyTree(updated)[0] || null);
+        setTreeData(buildFamilyTree(updated)[0] || null);  //update member tree immediately after member deleted -- no refresh of page needed
+        setMemberCount(updated.length)  //update the member count immediately after the deletion of member -- no refresh of page needed
         return updated;
       });
     } catch (err) {
