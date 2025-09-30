@@ -168,10 +168,9 @@ export const AddMemberForm: React.FC<AddMemberFormProps> = ({
 
 
       // re-fetch members so dropdown updates
-const updatedMembers = await memberServices.getMembersByUser();
-setFetchedMembers(updatedMembers);
-
-setFetchedMembers((prev) => [...prev, savedMember]);
+  const updatedMembers = await memberServices.getMembersByUser();
+  setFetchedMembers(updatedMembers);
+// setFetchedMembers((prev) => [...prev, savedMember]);
 
 
 
@@ -466,7 +465,7 @@ setFetchedMembers((prev) => [...prev, savedMember]);
                   </SelectTrigger>
                   <SelectContent>
                   {availableSpouses.length === 0 ? (
-                    <SelectItem value='nane'>No available spouses</SelectItem>
+                    <SelectItem value='none'>No available spouses</SelectItem>
                   ) : (
                     availableSpouses.map((spouse) => (
                       <SelectItem key={spouse._id} value={spouse._id}>
