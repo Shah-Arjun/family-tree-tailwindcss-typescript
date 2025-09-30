@@ -147,9 +147,14 @@ export const updateMember = async (req, res) => {
 
 // delete member by id
 export const deleteMember = async (req, res) => {
+  const {id} =req.params
   try {
-    const deleted = await FamilyMember.findByIdAndDelete(req.params.id);
-    res.status(200).json({ message: "Deleted" });
+    const deleted = await FamilyMember.findByIdAndDelete();
+    
+    if(!deleted){
+      res.status(404).json({ message: "Member not found" });
+    }
+    res.status(200).json({ message: "Member Deleted"})
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
