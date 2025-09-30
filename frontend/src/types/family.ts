@@ -5,52 +5,57 @@ export type FamilyMember = {
   dateOfBirth?: string;
   dateOfDeath?: string;
   age: number;
-  gender: 'male' | 'female' | 'unknown';
+  gender: "male" | "female" | "unknown";
   photo?: string;
   email?: string;
   phone?: string;
   occupation?: string;
   address?: string;
-  
+
   // Relationships
   fatherId?: string;
   motherId?: string;
   spouseId?: string;
-  childrenIds: string[];   // ✅ fix: not []
+  childrenIds: string[];
 
   // Family tree positioning
   generation: number;
-  side: 'paternal' | 'maternal' | 'current';
-  
+  side: "paternal" | "maternal" | "current";
+
   // Additional info
   notes?: string;
   isAlive: boolean;
-}
+};
 
 // Represents a node in a tree structure for visualizing the family tree.
 export interface TreeNodeData {
   _id: string;
   name: string;
-  gender: 'male' | 'female' | 'unknown';
+  gender: "male" | "female" | "unknown";
   generation: number;
-  side: 'paternal' | 'maternal' | 'current';
+  side: "paternal" | "maternal" | "current";
   photo?: string;
   dateOfBirth?: string;
   dateOfDeath?: string;
   isAlive: boolean;
-  children: FamilyTreeData[]; // ✅ always defined
+  children: FamilyTreeData[];
 }
 
 // FamilyTreeData: recursive structure for the tree
 export interface FamilyTreeData {
   _id: string;
   name: string;
-  gender: 'male' | 'female' | 'unknown';
+  gender: "male" | "female" | "unknown";
   generation: number;
-  side: 'paternal' | 'maternal' | 'current';
+  side: "paternal" | "maternal" | "current";
   photo?: string;
   dateOfBirth?: string;
   dateOfDeath?: string;
   isAlive: boolean;
-  children: FamilyTreeData[]; // ✅ not optional
+
+  children: FamilyTreeData[];
+
+  /** ✅ Extra fields for spouse pairs */
+  isSpousePair?: boolean;
+  spouses?: FamilyTreeData[]; // contains the two spouse nodes if this is a pair
 }

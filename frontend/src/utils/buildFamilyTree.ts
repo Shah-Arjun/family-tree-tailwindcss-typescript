@@ -36,7 +36,7 @@ export const transformFamilyMember = (data: any): FamilyMember => ({
 export const buildFamilyTree = (members: FamilyMember[]): FamilyTreeData[] => {
   const memberMap: Record<string, FamilyTreeData> = {};
 
-  // Step 1: Convert FamilyMember → FamilyTreeData
+  // Step 1: Convert FamilyMember → FamilyTreeData (without relations)
   members.forEach((m) => {
     memberMap[m._id] = {
       _id: m._id,
@@ -54,63 +54,34 @@ export const buildFamilyTree = (members: FamilyMember[]): FamilyTreeData[] => {
 
   const roots: FamilyTreeData[] = [];
 
-  // Step 2: Link children to parents
+  // Step 2: Link parents/children
   members.forEach((m) => {
     let hasParent = false;
 
-    // Attach to father
     if (m.fatherId && memberMap[m.fatherId]) {
-      const parent = memberMap[m.fatherId];
-      if (!parent.children.some((c) => c._id === m._id)) {
-        parent.children.push(memberMap[m._id]);
-      }
+      memberMap[m.fatherId].children.push(memberMap[m._id]);
       hasParent = true;
     }
 
-    // Attach to mother
     if (m.motherId && memberMap[m.motherId]) {
-      const parent = memberMap[m.motherId];
-      if (!parent.children.some((c) => c._id === m._id)) {
-        parent.children.push(memberMap[m._id]);
-      }
+      memberMap[m.motherId].children.push(memberMap[m._id]);
       hasParent = true;
     }
 
-    // Attach children if explicitly listed
     if (m.childrenIds?.length > 0) {
       m.childrenIds.forEach((cid) => {
         if (memberMap[cid]) {
-          const parent = memberMap[m._id];
-          if (!parent.children.some((c) => c._id === cid)) {
-            parent.children.push(memberMap[cid]);
-          }
+          memberMap[m._id].children.push(memberMap[cid]);
         }
       });
     }
 
-    // Step 3: If no parents → treat as root
     if (!hasParent) {
       roots.push(memberMap[m._id]);
     }
   });
 
-  // Step 4: Handle multiple roots (wrap in a virtual root if needed)
-  if (roots.length > 1) {
-    return [
-      {
-        _id: "root",
-        name: "Family Roots",
-        gender: "unknown",      // ✅ required by FamilyTreeData
-        generation: 0,          // ✅ root level
-        side: "current",        // ✅ neutral side
-        photo: undefined,
-        dateOfBirth: undefined,
-        dateOfDeath: undefined,
-        isAlive: true,
-        children: roots,
-      },
-    ];
-  }
-
   return roots;
 };
+
+
