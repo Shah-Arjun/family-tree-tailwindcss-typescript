@@ -149,7 +149,7 @@ export const updateMember = async (req, res) => {
 export const deleteMember = async (req, res) => {
   const {id} =req.params
   try {
-    const deleted = await FamilyMember.findByIdAndDelete();
+    const deleted = await FamilyMember.findByIdAndDelete(id);
     
     if(!deleted){
       res.status(404).json({ message: "Member not found" });
