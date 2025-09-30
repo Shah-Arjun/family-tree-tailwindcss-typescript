@@ -33,6 +33,8 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   onDelete,
   compact = false 
 }) => {
+
+  
   const getGenderColor = (gender: string) => {
     switch (gender) {
       case 'male': return 'bg-family-male text-muted-foreground';
@@ -123,6 +125,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       </Card>
     );
   }
+
 
   return (
     <Card className={`hover:shadow-family-card transition-shadow duration-200 border-l-4 ${getSideColor(member.side)}`}>

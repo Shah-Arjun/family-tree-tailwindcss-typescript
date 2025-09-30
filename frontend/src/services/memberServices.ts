@@ -170,6 +170,7 @@ export const memberServices = {
       if (res.data?.error) throw new Error(res.data.error);
 
       return res.data;
+      console.log(res.data)
     } catch (err) {
       throw handleError(err);
     }

@@ -20,7 +20,7 @@ import { useAuth } from "@/hooks/useAuth";
 interface MembersListProps {
   members?: FamilyMember[];
   onEdit?: (member: FamilyMember) => void;
-  onDelete?: (memberId: string) => void;
+  // onDelete?: (memberId: string) => void;
   onAddMember?: () => void;
 }
 
@@ -29,7 +29,7 @@ interface MembersListProps {
 export const MembersList: React.FC<MembersListProps> = ({
   members: initialMembers = [],
   onEdit,
-  onDelete,
+  // onDelete,
   onAddMember
 }) => {
   const [members, setMembers] = useState<FamilyMember[]>(initialMembers || []);
@@ -97,6 +97,17 @@ export const MembersList: React.FC<MembersListProps> = ({
   };
 
 
+  //function to handle delete of member
+  const handleDelete = async (memberId: string) => {
+    try {
+       await memberServices.deleteMember(memberId)
+
+        alert("member deleted")
+      
+    } catch (err) {
+      console.log("failed to delete member", err)
+    }
+  }
 
 
   //to fetch members from backend  
@@ -294,7 +305,7 @@ export const MembersList: React.FC<MembersListProps> = ({
                     key={member._id}
                     member={member}
                     onEdit={onEdit}
-                    onDelete={onDelete}
+                    onDelete={handleDelete}
                     compact                     //or compact={true}
                   ></MemberCard>
                 ))}
