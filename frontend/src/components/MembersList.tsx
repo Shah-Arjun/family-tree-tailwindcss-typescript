@@ -20,7 +20,7 @@ import { useAuth } from "@/hooks/useAuth";
 interface MembersListProps {
   members?: FamilyMember[];
   onEdit?: (member: FamilyMember) => void;
-  onDelete?: (memberId: string) => void;
+  onDelete?: (memberId: string) => void | Promise<void>;
   onAddMember?: () => void;
 }
 
