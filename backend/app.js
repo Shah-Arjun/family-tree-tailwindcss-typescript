@@ -37,8 +37,8 @@ app.use('/api/family', familyRoutes);   //base route for all other routes
 
 import createUser from './routes/createUser.js'
 import login from './routes/login.js'
-app.use('/api', createUser)
-app.use('/api', login)
+app.use('/api', createUser)   //for new user
+app.use('/api', login)        //for existing user
 
 import userRoutes from './routes/userRoutes.js'
 app.use("/api/user", userRoutes)
