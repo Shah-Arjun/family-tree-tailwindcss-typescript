@@ -33,12 +33,13 @@ export const transformFamilyMember = (data: any): FamilyMember => ({
 /**
  * Build a nested FamilyTreeData structure from flat FamilyMember[]
  */
+
 export const buildFamilyTree = (members: FamilyMember[]): FamilyTreeData[] => {
   const memberMap: Record<string, FamilyTreeData> = {};
-  const spousePairs: Record<string, FamilyTreeData> = {};
   const visitedSpouses = new Set<string>();
+  const roots: FamilyTreeData[] = [];
 
-  // Step 1: Convert FamilyMember → FamilyTreeData (without relations)
+  // Step 1: convert FamilyMember → FamilyTreeData
   members.forEach((m) => {
     memberMap[m._id] = {
       _id: m._id,
@@ -54,9 +55,7 @@ export const buildFamilyTree = (members: FamilyMember[]): FamilyTreeData[] => {
     };
   });
 
-  const roots: FamilyTreeData[] = [];
-
-  // Step 2: Create spouse pairs
+  // Step 2: create spouse pairs
   members.forEach((m) => {
     if (
       m.spouseId &&
@@ -79,32 +78,35 @@ export const buildFamilyTree = (members: FamilyMember[]): FamilyTreeData[] => {
         spouses: [memberMap[m._id], spouse],
       };
 
-      spousePairs[pairId] = pairNode;
-      memberMap[pairId] = pairNode;
+      // collect children from both
+      const allChildren = new Set([
+        ...(m.childrenIds || []),
+        ...(members.find((x) => x._id === m.spouseId)?.childrenIds || []),
+      ]);
 
-      visitedSpouses.add(m._id);
-      visitedSpouses.add(m.spouseId);
-
-      // Attach children to pair
-      const childrenIds = new Set([...(m.childrenIds || []), ...(members.find(x => x._id === m.spouseId)?.childrenIds || [])]);
-      childrenIds.forEach((cid) => {
+      allChildren.forEach((cid) => {
         if (memberMap[cid]) {
           pairNode.children.push(memberMap[cid]);
         }
       });
 
-      // If no parents for either spouse, treat pair as root
+      memberMap[pairId] = pairNode;
+      visitedSpouses.add(m._id);
+      visitedSpouses.add(m.spouseId);
+
+      // attach as root if no parents
       if (!m.fatherId && !m.motherId) {
-        if (!(members.find(x => x._id === m.spouseId)?.fatherId) && !(members.find(x => x._id === m.spouseId)?.motherId)) {
+        const spouseMember = members.find((x) => x._id === m.spouseId);
+        if (!spouseMember?.fatherId && !spouseMember?.motherId) {
           roots.push(pairNode);
         }
       }
     }
   });
 
-  // Step 3: Link parents/children for non-paired members
+  // Step 3: link parents → children (for singles & orphaned children)
   members.forEach((m) => {
-    if (visitedSpouses.has(m._id)) return; // skip paired spouses
+    if (visitedSpouses.has(m._id)) return; // already paired
 
     let hasParent = false;
 
@@ -118,19 +120,12 @@ export const buildFamilyTree = (members: FamilyMember[]): FamilyTreeData[] => {
       hasParent = true;
     }
 
-    if (m.childrenIds?.length > 0) {
-      m.childrenIds.forEach((cid) => {
-        if (memberMap[cid]) {
-          memberMap[m._id].children.push(memberMap[cid]);
-        }
-      });
-    }
-
     if (!hasParent) {
       roots.push(memberMap[m._id]);
     }
   });
 
+  // Step 4: unify multiple roots
   return roots.length > 1
     ? [
         {
@@ -145,6 +140,7 @@ export const buildFamilyTree = (members: FamilyMember[]): FamilyTreeData[] => {
       ]
     : roots;
 };
+
 
 
 
