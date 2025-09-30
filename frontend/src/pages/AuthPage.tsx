@@ -119,15 +119,18 @@ const AuthPage = () => {
       }
 
       if (isLogin) {
+        setLoading(false)
         navigate("/family-tree");
         alert("Login Successful!");
       } else {
         setIsLogin(true);
+        setLoading(false)
         navigate("/family-tree");
         alert("Sign Up Successful!");
       }
     } else {
       alert(data.error || "Invalid credentials, please try again.");
+      setLoading(false)
     }
   };
 
