@@ -42,7 +42,6 @@ export const UpdateMemberById: React.FC<UpdateMemberFormProps> = ({ onUpdated })
   const [photo, setPhoto] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
 
-  const [fetchedMembers, setFetchedMembers] = useState<FamilyMember[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Fetch current member
@@ -61,19 +60,6 @@ export const UpdateMemberById: React.FC<UpdateMemberFormProps> = ({ onUpdated })
     };
     fetchMember();
   }, [id]);
-
-  // Fetch all members for relationship dropdowns
-  useEffect(() => {
-    const fetchMembers = async () => {
-      try {
-        const res = await memberServices.getMembersByUser();
-        setFetchedMembers(res);
-      } catch (err) {
-        console.error("Error fetching members:", err);
-      }
-    };
-    fetchMembers();
-  }, []);
 
   if (loading) return <p className="text-center">Loading member...</p>;
   if (!formData) return <p className="text-center text-red-500">Member not found.</p>;
@@ -128,15 +114,6 @@ export const UpdateMemberById: React.FC<UpdateMemberFormProps> = ({ onUpdated })
       );
     }
   };
-
-  // Relationship filtering
-  const availableParents = fetchedMembers.filter((m) => {
-    const gender = m.gender?.toLowerCase();
-    return gender === "male" || gender === "female";
-  });
-  const availableFathers = availableParents.filter(m => m.gender?.toLowerCase() === "male");
-  const availableMothers = availableParents.filter(m => m.gender?.toLowerCase() === "female");
-  const availableSpouses = fetchedMembers.filter(m => !m.spouseId && m.gender !== formData.gender);
 
   return (
     <Card className="max-w-4xl mx-auto border-muted-foreground">
@@ -216,44 +193,6 @@ export const UpdateMemberById: React.FC<UpdateMemberFormProps> = ({ onUpdated })
               <div>
                 <Label>Location</Label>
                 <Input value={formData.address || ""} onChange={e => handleInputChange("address", e.target.value)} />
-              </div>
-            </div>
-          </div>
-
-          {/* Relationships */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold border-b border-muted-foreground pb-2">Relationships</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div>
-                <Label>Father</Label>
-                <Select value={formData.fatherId || ""} onValueChange={v => handleInputChange("fatherId", v)}>
-                  <SelectTrigger><SelectValue placeholder="Select father" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">No father</SelectItem>
-                    {availableFathers.map(f => <SelectItem key={f._id} value={f._id}>{f.name}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label>Mother</Label>
-                <Select value={formData.motherId || ""} onValueChange={v => handleInputChange("motherId", v)}>
-                  <SelectTrigger><SelectValue placeholder="Select mother" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">No mother</SelectItem>
-                    {availableMothers.map(m => <SelectItem key={m._id} value={m._id}>{m.name}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label>Spouse</Label>
-                <Select value={formData.spouseId || ""} onValueChange={v => handleInputChange("spouseId", v)}>
-                  <SelectTrigger><SelectValue placeholder="Select spouse" /></SelectTrigger>
-                  <SelectContent>
-                    {availableSpouses.length === 0 ? (
-                      <SelectItem value="">No available spouses</SelectItem>
-                    ) : availableSpouses.map(s => <SelectItem key={s._id} value={s._id}>{s.name}</SelectItem>)}
-                  </SelectContent>
-                </Select>
               </div>
             </div>
           </div>
