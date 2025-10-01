@@ -30,6 +30,7 @@ import type { FamilyMember } from "@/types/family";
 
 // services
 import { memberServices } from "@/services/memberServices";
+import Navigation from "@/components/Navigation";
 
 interface UpdateMemberFormProps {
   onUpdated?: (updated: FamilyMember) => void;
@@ -116,6 +117,8 @@ export const UpdateMemberById: React.FC<UpdateMemberFormProps> = ({ onUpdated })
   };
 
   return (
+    <>
+    <Navigation  />
     <Card className="max-w-4xl mx-auto border-muted-foreground">
       <CardHeader className="items-start text-left">
         <CardTitle className="text-2xl font-bold flex items-center space-x-2">
@@ -212,6 +215,7 @@ export const UpdateMemberById: React.FC<UpdateMemberFormProps> = ({ onUpdated })
         </form>
       </CardContent>
     </Card>
+    </>
   );
 };
 
