@@ -105,7 +105,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate(`updateMember/${member._id}`)}
+                  onClick={() => navigate(`/updateMember/${member._id}`)}
                   className="h-8 w-8 p-0"
                 >
                   <Edit className="h-4 w-4" />
@@ -179,7 +179,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => navigate(`updateMember/${member._id}`)}
+                onClick={() => navigate(`/updateMember/${member._id}`)}
               >
                 <Edit className="h-4 w-4 mr-2" />
                 Edit

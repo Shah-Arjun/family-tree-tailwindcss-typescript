@@ -194,7 +194,7 @@ export const MembersList: React.FC<MembersListProps> = ({
         {filteredAndSortedMembers.length === 0 ? (
           <Card>
             <CardContent className='text-center py-12'>
-              <Users className='w-12 h-12 text-muted-foreground mx-auto mg-4' />
+              <Users className='w-12 h-12 text-muted-foreground mx-auto my-4' />
               <h3 className='text-lg font-semibold text-muted-foreground mb-2'>No members found</h3>
               <p className='text-muted-foreground'>Try adjusting your search criteria or filters.</p>
             </CardContent>

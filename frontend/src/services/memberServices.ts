@@ -148,7 +148,7 @@ export const memberServices = {
       headers["Content-Type"] = "application/json";
     }
 
-    const res = await axios.patch(`${API_URL}/${id}`, payload, { headers });
+    const res = await axios.patch(`${API_URL}updateMember/${id}`, payload, { headers });
 
     if (res.data?.error) throw new Error(res.data.error);
 
