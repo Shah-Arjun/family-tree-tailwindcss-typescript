@@ -92,6 +92,7 @@ import MembersList from "./components/MembersList";
 import { AddMemberForm } from "./components/AddMemberForm";
 import type { FamilyMember } from "./types/family";
 import { memberServices } from "./services/memberServices";
+import UpdateMemberById from "./pages/UpdateMemberById";
 
 const AppRoutes = () => {
 
@@ -115,6 +116,7 @@ const AppRoutes = () => {
       <Route path="/family-tree" element={<FamilyTreeApp />} />
       <Route path="/memberslist" element={<MembersList />} />
       <Route path="/add-member" element={<AddMemberForm onAddMember={handleAddMember} onCancel={() => navigate(-1)} />} />
+      <Route path="/updateMember/:id" element={<UpdateMemberById />} />
     </Routes>
   );
 };

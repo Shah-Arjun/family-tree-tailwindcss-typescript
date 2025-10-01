@@ -15,10 +15,11 @@ import {
   Heart,
   Baby
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface MemberCardProps {
   member: FamilyMember;
-  onEdit?: (member: FamilyMember) => void;
+  //onEdit?: (member: FamilyMember) => void;
   onDelete?: (memberId: string) => void;
   compact?: boolean;
 }
@@ -29,11 +30,12 @@ interface MemberCardProps {
 
 export const MemberCard: React.FC<MemberCardProps> = ({ 
   member, 
-  onEdit, 
+//  onEdit, 
   onDelete,
   compact = false 
 }) => {
 
+  const navigate = useNavigate()
   
   const getGenderColor = (gender: string) => {
     switch (gender) {
@@ -99,16 +101,16 @@ export const MemberCard: React.FC<MemberCardProps> = ({
             </div>
 
             <div className="flex space-x-1">
-              {onEdit && (
+              
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => onEdit(member)}
+                  onClick={() => navigate(`updateMember/${member._id}`)}
                   className="h-8 w-8 p-0"
                 >
                   <Edit className="h-4 w-4" />
                 </Button>
-              )}
+              
               {onDelete && (
                 <Button
                   variant="ghost"
@@ -173,16 +175,16 @@ export const MemberCard: React.FC<MemberCardProps> = ({
           </div>
 
           <div className="flex space-x-2">
-            {onEdit && (
+            
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => onEdit(member)}
+                onClick={() => navigate(`updateMember/${member._id}`)}
               >
                 <Edit className="h-4 w-4 mr-2" />
                 Edit
               </Button>
-            )}
+         
             {onDelete && (
               <Button
                 variant="outline"

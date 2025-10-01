@@ -126,30 +126,37 @@ export const memberServices = {
 
 
   // Update a member
-  updateMember: async (
-    id: string,
-    member: Partial<FamilyMember>
-  ): Promise<FamilyMember> => {
-    try {
-      const token = localStorage.getItem("token")
-      if(!token) throw new Error("Unauthorized: No token")
+ updateMember: async (
+  id: string,
+  member: Partial<FamilyMember> | FormData
+): Promise<FamilyMember> => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("Unauthorized: No token");
 
-      const payload = cleanMemberPayload(member);
+    let headers: Record<string, string> = {
+      Authorization: `Bearer ${token}`,
+    };
 
-      const res = await axios.put(`${API_URL}/${id}`, payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (res.data?.error) throw new Error(res.data.error);
-
-      return transformFamilyMember(res.data);
-    } catch (err) {
-      throw handleError(err);
+    // If it's FormData (photo upload)
+    let payload: any;
+    if (member instanceof FormData) {
+      payload = member;
+      // ❌ Do NOT set Content-Type manually, axios will set it with boundary
+    } else {
+      payload = cleanMemberPayload(member);
+      headers["Content-Type"] = "application/json";
     }
-  },
+
+    const res = await axios.patch(`${API_URL}/${id}`, payload, { headers });
+
+    if (res.data?.error) throw new Error(res.data.error);
+
+    return transformFamilyMember(res.data);
+  } catch (err) {
+    throw handleError(err);
+  }
+},
 
 
 
@@ -218,12 +225,6 @@ export const memberServices = {
     });
     return res.data.count
   }
-
-
-
-
-
-
 
 };
 

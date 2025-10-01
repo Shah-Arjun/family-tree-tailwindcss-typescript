@@ -16,14 +16,14 @@ import { MemberCard } from '@/components/MemberCard'
 // props
 interface MembersListProps {
   members?: FamilyMember[];
-  onEdit?: (member: FamilyMember) => void;
+  //onEdit?: (member: FamilyMember) => void;
   onDelete?: (memberId: string) => void | Promise<void>;
   onAddMember?: () => void;
 }
 
 export const MembersList: React.FC<MembersListProps> = ({
   members: initialMembers = [],
-  onEdit,
+  //onEdit,
   onDelete,
   onAddMember
 }) => {
@@ -205,7 +205,7 @@ export const MembersList: React.FC<MembersListProps> = ({
               <MemberCard
                 key={member._id}
                 member={member}
-                onEdit={onEdit}
+               // onEdit={onEdit}
                 onDelete={onDelete}
                 compact
               />
