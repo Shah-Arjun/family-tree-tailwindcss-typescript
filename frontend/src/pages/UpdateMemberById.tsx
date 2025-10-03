@@ -52,6 +52,7 @@ export const UpdateMemberById: React.FC<UpdateMemberFormProps> = ({ onUpdated })
         if (!id) return;
         const res = await memberServices.getMemberById(id);
         setFormData(res);
+        console.log(res)
         setPreview(res.photo || null);
       } catch (err) {
         console.error("Error fetching member:", err);
