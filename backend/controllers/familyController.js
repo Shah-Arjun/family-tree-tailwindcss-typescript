@@ -137,7 +137,7 @@ export const updateMember = async (req, res) => {
       { new: true } // return updated data
     );
 
-    res.json(updated); // response to frontend
+    res.status(200).send({ message: "updated successfully"}); // response to frontend
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

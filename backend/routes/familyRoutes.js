@@ -51,7 +51,7 @@ router.get('/members/count', verifyToken, getMembersCountByUser)
 
 router.get("/:id",verifyToken, getMemberById);
 
-router.put("/:id", upload.single("photo"), updateMember);
+router.patch("/updateMember/:id", upload.single("photo"), updateMember);
 
 router.delete('/:id', deleteMember);
 
