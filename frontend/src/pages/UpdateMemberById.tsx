@@ -127,7 +127,7 @@ export const UpdateMemberById: React.FC<UpdateMemberFormProps> = ({ onUpdated })
     {/* back arrow button */}
       <Button variant="ghost"
         onClick={() => navigate('/family-tree')}
-        className="mb-4 text-muted-foreground hover:text-foreground flex justify-start"
+        className="mb-4 text-muted-foreground hover:text-foreground flex justify-start mt-4 mx-auto"
       >
       <ArrowLeft className="w-4 h-4 mr-2" />
         Back
