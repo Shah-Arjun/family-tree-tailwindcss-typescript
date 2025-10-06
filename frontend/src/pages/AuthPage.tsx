@@ -181,7 +181,6 @@ const AuthPage = () => {
     <>
       {/* <DarkModeToggleButton /> */}
 
-      {/* back arrow button */}
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-accent/10 p-6 relative">
         {/* Background Glow */}
         <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-accent/5 blur-3xl opacity-60"></div>

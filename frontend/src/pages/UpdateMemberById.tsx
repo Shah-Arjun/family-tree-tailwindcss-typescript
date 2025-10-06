@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // shadcn components
 import {
@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select";
 
 // icons
-import { Upload, UserPlus } from "lucide-react";
+import { ArrowLeft, Upload, UserPlus } from "lucide-react";
 
 // types
 import type { FamilyMember } from "@/types/family";
@@ -44,6 +44,9 @@ export const UpdateMemberById: React.FC<UpdateMemberFormProps> = ({ onUpdated })
   const [preview, setPreview] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(true);
+
+
+  const navigate = useNavigate()
 
   // Fetch current member
   useEffect(() => {
@@ -120,6 +123,16 @@ export const UpdateMemberById: React.FC<UpdateMemberFormProps> = ({ onUpdated })
   return (
     <>
     <Navigation  />
+
+    {/* back arrow button */}
+      <Button variant="ghost"
+        onClick={() => navigate('/family-tree')}
+        className="mb-4 text-muted-foreground hover:text-foreground flex justify-start"
+      >
+      <ArrowLeft className="w-4 h-4 mr-2" />
+        Back
+      </Button>
+
     <Card className="max-w-4xl mx-auto border-muted-foreground">
       <CardHeader className="items-start text-left">
         <CardTitle className="text-2xl font-bold flex items-center space-x-2">
