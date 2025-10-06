@@ -124,16 +124,19 @@ export const UpdateMemberById: React.FC<UpdateMemberFormProps> = ({ onUpdated })
     <>
     <Navigation  />
 
+
+    <Card className="max-w-4xl mx-auto flex flex-col items-start border-muted-foreground">
+
     {/* back arrow button */}
       <Button variant="ghost"
         onClick={() => navigate('/family-tree')}
-        className="mb-4 text-muted-foreground hover:text-foreground flex justify-start mt-4 mx-auto"
+        className="mb-4 text-muted-foreground hover:text-foreground mt-4 mx-auto"
       >
       <ArrowLeft className="w-4 h-4 mr-2" />
         Back
       </Button>
 
-    <Card className="max-w-4xl mx-auto border-muted-foreground">
+
       <CardHeader className="items-start text-left">
         <CardTitle className="text-2xl font-bold flex items-center space-x-2">
           <UserPlus className="w-6 h-6" />
